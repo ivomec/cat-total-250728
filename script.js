@@ -1,3 +1,7 @@
+/*
+  [최종 수정] '모니터링' 항목의 색상을 눈에 띄는 색으로 변경했습니다.
+  이 파일의 모든 내용을 기존 script.js 파일에 덮어쓰기 하세요.
+*/
 document.addEventListener('DOMContentLoaded', () => {
     const hospitalData = {
       "main": {
@@ -71,62 +75,24 @@ document.addEventListener('DOMContentLoaded', () => {
         "headerSubtitle": "💖 안전한 마취를 위한 첫걸음! 🌈 연령별 맞춤 플랜을 확인하세요! 💖",
         "packages": [
           {
-            "borderColor": "#4db6ac",
-            "titleColor": "#00796b",
-            "title": "🍼 아깽이 기본 플랜 🍼",
-            "items": [
-              "🩸 (1) 혈구검사 <small>빈혈, 염증, 혈소판 체크</small>",
-              "🧪 (2) 혈액 화학 검사 <small>(7종) 간, 콩팥, 혈당 등 기본 기능</small>",
-              "⚡️ (3) 전해질 검사 <small>몸 속 수분 밸런스 체크</small>",
-              "🩻 (4) 흉부 X-RAY (3컷) <small>심장, 폐 모양 확인</small>",
-              "🩺 (5) 혈압 체크 <small>기본 순환기 상태 평가</small>"
-            ],
-            "originalPrice": 209000,
-            "discountPrice": 160000
+            "borderColor": "#4db6ac", "titleColor": "#00796b", "title": "🍼 아깽이 기본 플랜 🍼",
+            "items": [ "🩸 (1) 혈구검사 <small>빈혈, 염증, 혈소판 체크</small>", "🧪 (2) 혈액 화학 검사 <small>(7종) 간, 콩팥, 혈당 등 기본 기능</small>", "⚡️ (3) 전해질 검사 <small>몸 속 수분 밸런스 체크</small>", "🩻 (4) 흉부 X-RAY (3컷) <small>심장, 폐 모양 확인</small>", "🩺 (5) 혈압 체크 <small>기본 순환기 상태 평가</small>" ],
+            "originalPrice": 209000, "discountPrice": 160000
           },
           {
-            "borderColor": "#ffd54f",
-            "titleColor": "#f9a825",
-            "title": "💖 아깽이 안심+ 플랜 💖",
-            "items": [
-              "🩸 (1) 혈구검사 <small>빈혈, 염증, 혈소판 체크</small>",
-              "🧪 (2) 혈액 화학 검사 <small>(7종) 간, 콩팥, 혈당 등 기본 기능</small>",
-              "⚡️ (3) 전해질 검사 <small>몸 속 수분 밸런스 체크</small>",
-              "🩻 (4) 흉부 X-RAY (3컷) <small>심장, 폐 모양 확인</small>",
-              "🩺 (5) 혈압 체크 <small>기본 순환기 상태 평가</small>",
-              "❤️ (6) proBNP <small>숨어있는 심장병 조기 진단!</small>"
-            ],
-            "originalPrice": 264000,
-            "discountPrice": 199000
+            "borderColor": "#ffd54f", "titleColor": "#f9a825", "title": "💖 아깽이 안심+ 플랜 💖",
+            "items": [ "🩸 (1) 혈구검사 <small>빈혈, 염증, 혈소판 체크</small>", "🧪 (2) 혈액 화학 검사 <small>(7종) 간, 콩팥, 혈당 등 기본 기능</small>", "⚡️ (3) 전해질 검사 <small>몸 속 수분 밸런스 체크</small>", "🩻 (4) 흉부 X-RAY (3컷) <small>심장, 폐 모양 확인</small>", "🩺 (5) 혈압 체크 <small>기본 순환기 상태 평가</small>", "❤️ (6) proBNP <small>숨어있는 심장병 조기 진단!</small>" ],
+            "originalPrice": 264000, "discountPrice": 199000
           },
           {
-            "borderColor": "#ff8a65",
-            "titleColor": "#d84315",
-            "title": "💪 7세 미만 으른냥 플랜 💪",
-            "items": [
-              "🩸 (1) 혈구검사 & 화학검사 (12종)",
-              "🔥 (2) SAA <small>몸 속 급성 염증 정밀 체크</small>",
-              "🩻 (3) X-RAY (흉부3+복부2)",
-              "🩺 (4) 혈압 & proBNP 심장 체크",
-              "🦠 (5) 전염병 키트 <small>심장사상충+백혈병+면역결핍</small>"
-            ],
-            "originalPrice": 414000,
-            "discountPrice": 299000
+            "borderColor": "#ff8a65", "titleColor": "#d84315", "title": "💪 7세 미만 으른냥 플랜 💪",
+            "items": [ "🩸 (1) 혈구검사 & 화학검사 (12종)", "🔥 (2) SAA <small>몸 속 급성 염증 정밀 체크</small>", "🩻 (3) X-RAY (흉부3+복부2)", "🩺 (4) 혈압 & proBNP 심장 체크", "🦠 (5) 전염병 키트 <small>심장사상충+백혈병+면역결핍</small>" ],
+            "originalPrice": 414000, "discountPrice": 299000
           },
           {
-            "borderColor": "#ba68c8",
-            "titleColor": "#7b1fa2",
-            "title": "👑 7세+ 어르신냥 VIP 플랜 👑",
-            "items": [
-              "🩸 (1) 혈구검사 & 화학검사 (12종)",
-              "🔥 (2) SAA & proBNP & 혈압",
-              "🩻 (3) X-RAY (흉부3+복부2)",
-              "🦠 (4) 전염병 키트",
-              "🦋 (5) SDMA/T4 <small>신장/갑상선 기능 정밀 평가</small>",
-              "🐾 (6) fPL 검사 <small>췌장염 수치 체크</small>"
-            ],
-            "originalPrice": 569000,
-            "discountPrice": 449000
+            "borderColor": "#ba68c8", "titleColor": "#7b1fa2", "title": "👑 7세+ 어르신냥 VIP 플랜 👑",
+            "items": [ "🩸 (1) 혈구검사 & 화학검사 (12종)", "🔥 (2) SAA & proBNP & 혈압", "🩻 (3) X-RAY (흉부3+복부2)", "🦠 (4) 전염병 키트", "🦋 (5) SDMA/T4 <small>신장/갑상선 기능 정밀 평가</small>", "🐾 (6) fPL 검사 <small>췌장염 수치 체크</small>" ],
+            "originalPrice": 569000, "discountPrice": 449000
           }
         ],
         "explanation": {
@@ -142,49 +108,19 @@ document.addEventListener('DOMContentLoaded', () => {
         "headerSubtitle": "💖 사랑과 정성을 담아! 🌈 화려한 혜택가로 안내합니다! 💖",
         "packages": [
           {
-            "borderColor": "#ff7eb9",
-            "titleColor": "#ff7eb9",
-            "title": "🐱 5kg 미만 아깽이 🐱",
-            "items": [
-              "💧 술 전 수액 처치",
-              "💉 술 전 주사 마취",
-              "😴 호흡 마취 <small>(기본 1시간)</small>",
-              "📸 전체 치과 X-ray <small>(수술 전/후 10장 이상 꼼꼼 촬영!)</small>",
-              "🧼 스케일링",
-              "💎 폴리싱 <small>(반짝반짝 광택 마무리!)</small>"
-            ],
-            "originalPrice": 329000,
-            "discountPrice": 239000
+            "borderColor": "#ff7eb9", "titleColor": "#ff7eb9", "title": "🐱 5kg 미만 아깽이 🐱",
+            "items": [ "💧 술 전 수액 처치", "💉 술 전 주사 마취", "😴 호흡 마취 <small>(기본 1시간)</small>", "📸 전체 치과 X-ray <small>(수술 전/후 10장 이상 꼼꼼 촬영!)</small>", "🧼 스케일링", "💎 폴리싱 <small>(반짝반짝 광택 마무리!)</small>" ],
+            "originalPrice": 329000, "discountPrice": 239000
           },
           {
-            "borderColor": "#ffc107",
-            "titleColor": "#ffc107",
-            "title": "🐈 5kg ~ 10kg 미만 냥이 🐈",
-            "items": [
-              "💧 술 전 수액 처치",
-              "💉 술 전 주사 마취",
-              "😴 호흡 마취 <small>(기본 1시간)</small>",
-              "📸 전체 치과 X-ray <small>(수술 전/후 10장 이상 꼼꼼 촬영!)</small>",
-              "🧼 스케일링",
-              "💎 폴리싱 <small>(반짝반짝 광택 마무리!)</small>"
-            ],
-            "originalPrice": 389000,
-            "discountPrice": 299000
+            "borderColor": "#ffc107", "titleColor": "#ffc107", "title": "🐈 5kg ~ 10kg 미만 냥이 🐈",
+            "items": [ "💧 술 전 수액 처치", "💉 술 전 주사 마취", "😴 호흡 마취 <small>(기본 1시간)</small>", "📸 전체 치과 X-ray <small>(수술 전/후 10장 이상 꼼꼼 촬영!)</small>", "🧼 스케일링", "💎 폴리싱 <small>(반짝반짝 광택 마무리!)</small>" ],
+            "originalPrice": 389000, "discountPrice": 299000
           },
           {
-            "borderColor": "#20c997",
-            "titleColor": "#20c997",
-            "title": "🐈‍⬛ 10kg ~ 15kg 미만 뚱냥이 🐈‍⬛",
-            "items": [
-              "💧 술 전 수액 처치",
-              "💉 술 전 주사 마취",
-              "😴 호흡 마취 <small>(기본 1시간)</small>",
-              "📸 전체 치과 X-ray <small>(수술 전/후 10장 이상 꼼꼼 촬영!)</small>",
-              "🧼 스케일링",
-              "💎 폴리싱 <small>(반짝반짝 광택 마무리!)</small>"
-            ],
-            "originalPrice": 459000,
-            "discountPrice": 389000
+            "borderColor": "#20c997", "titleColor": "#20c997", "title": "🐈‍⬛ 10kg ~ 15kg 미만 뚱냥이 🐈‍⬛",
+            "items": [ "💧 술 전 수액 처치", "💉 술 전 주사 마취", "😴 호흡 마취 <small>(기본 1시간)</small>", "📸 전체 치과 X-ray <small>(수술 전/후 10장 이상 꼼꼼 촬영!)</small>", "🧼 스케일링", "💎 폴리싱 <small>(반짝반짝 광택 마무리!)</small>" ],
+            "originalPrice": 459000, "discountPrice": 389000
           }
         ],
         "explanation": {
@@ -239,26 +175,17 @@ document.addEventListener('DOMContentLoaded', () => {
         "headerSubtitle": "무조건 뽑지 않아요! 💪 소중한 치아를 지켜주는 치료 비용 안내",
         "costs": [
           {
-            "borderColor": "#ffc078",
-            "titleColor": "#f76707",
-            "title": "✨ 살아있는 신경 살리기! (VPT)",
+            "borderColor": "#ffc078", "titleColor": "#f76707", "title": "✨ 살아있는 신경 살리기! (VPT)",
             "description": "<strong>⏳ 48시간 골든타임! ⏳</strong><br>치아가 부러진 직후, 아직 신경이 살아있을 때만 가능해요! 오염된 신경만 살짝 걷어내고 🩹 특수 보호 약품으로 코팅해서 치아의 생명력을 지켜준답니다.<span style=\"display:block;font-size:.9em;color:#e64980;font-weight:700;margin-top:10px;text-align:center\">🚨 레진 충전 비용은 별도예요!</span>",
-            "price": 270000,
-            "priceStyle": "single"
+            "price": 270000, "priceStyle": "single"
           },
           {
-            "borderColor": "#ff87c2",
-            "titleColor": "#c2255c",
-            "title": "💔 아픈 신경 치료하기 (신경치료)",
+            "borderColor": "#ff87c2", "titleColor": "#c2255c", "title": "💔 아픈 신경 치료하기 (신경치료)",
             "description": "이미 신경이 죽었거나 🦠 세균에 감염되어 아야! 할 때 필요해요. 감염된 신경을 싹~ 제거하고 깨끗하게 소독한 뒤, 특수 재료로 채워서 통증의 원인을 없애고 치아는 보존해요.<span style=\"display:block;font-size:.9em;color:#e64980;font-weight:700;margin-top:10px;text-align:center\">🚨 레진 충전 비용은 별도예요!</span>",
-            "price": 770000,
-            "priceNote": "(송곳니 기준)",
-            "priceStyle": "single"
+            "price": 770000, "priceNote": "(송곳니 기준)", "priceStyle": "single"
           },
           {
-            "borderColor": "#4dabf7",
-            "titleColor": "#1c7ed6",
-            "title": "🎨 예쁘게 때워주기 (레진 치료)",
+            "borderColor": "#4dabf7", "titleColor": "#1c7ed6", "title": "🎨 예쁘게 때워주기 (레진 치료)",
             "description": "충치나 마모, 살짝 깨진 부위를 치아 색과 비슷한 예쁜 재료로 메워서, 원래 모양과 기능을 되찾아주는 치료예요! 손상 범위와 치아에 따라 비용이 달라져요.",
             "prices": [
               { "label": "쪼꼬만 손상", "value": 55000 },
@@ -664,7 +591,8 @@ function initCalculator() {
                         idCell.style.backgroundColor = '#b2dfdb'; // 연한 청록
                         break;
                     case '기타 (모니터링)':
-                        idCell.style.backgroundColor = '#d1c4e9'; // 연한 보라 (눈에 띄게)
+                        idCell.style.backgroundColor = '#f50057'; // 강조하는 핫핑크
+                        idCell.style.color = 'white';
                         idCell.style.fontWeight = 'bold';
                         break;
                     default:
