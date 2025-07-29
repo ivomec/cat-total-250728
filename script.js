@@ -319,9 +319,8 @@ function populateContent(data) {
             return '';
         }).join('');
         
-        const mainContainer = document.querySelector('#content-main .container > main');
-        const parkingAndMapViewHTML = `
-            <section class="info-section" style="margin-top: 30px;">
+        const parkingHTML = `
+            <section class="info-section parking-section" style="margin-top: 30px;">
                 <div class="info-grid">
                      <div class="info-card" style="grid-column:1/-1; border-top:none;">
                         <h3>${data.main.parking.title}</h3>
@@ -332,7 +331,10 @@ function populateContent(data) {
                     </div>
                 </div>
             </section>
-            <section class="info-section" style="margin-top: 30px;">
+        `;
+
+        const mapHTML = `
+            <section class="info-section map-section" style="margin-top: 30px;">
                 <div class="info-grid">
                     <div class="info-card" style="grid-column:1/-1; border-top:none; padding: 10px;">
                         <h3>🗺️ 병원 오시는 길 🗺️</h3>
@@ -341,7 +343,12 @@ function populateContent(data) {
                 </div>
             </section>
         `;
-        mainContainer.insertAdjacentHTML('beforeend', parkingAndMapViewHTML);
+        
+        const noticeSection = document.querySelector('#content-main .important-notice');
+        if (noticeSection) {
+            noticeSection.insertAdjacentHTML('afterend', mapHTML);
+            noticeSection.insertAdjacentHTML('afterend', parkingHTML);
+        }
 
         const footer = document.getElementById('main-footer');
         footer.innerHTML = `<h2>${data.main.footer.title}</h2>
