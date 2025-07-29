@@ -1,5 +1,6 @@
 /*
-  [최종 수정] 고양이용 계산기 '모니터링' 항목 강조 및 범주 분리
+  [최종 수정] '모니터링' 항목의 색상을 눈에 띄는 색으로 변경했습니다.
+  이 파일의 모든 내용을 기존 script.js 파일에 덮어쓰기 하세요.
 */
 document.addEventListener('DOMContentLoaded', () => {
     const hospitalData = {
@@ -74,30 +75,22 @@ document.addEventListener('DOMContentLoaded', () => {
         "headerSubtitle": "💖 안전한 마취를 위한 첫걸음! 🌈 연령별 맞춤 플랜을 확인하세요! 💖",
         "packages": [
           {
-            "borderColor": "#4db6ac",
-            "titleColor": "#00796b",
-            "title": "🍼 아깽이 기본 플랜 🍼",
+            "borderColor": "#4db6ac", "titleColor": "#00796b", "title": "🍼 아깽이 기본 플랜 🍼",
             "items": [ "🩸 (1) 혈구검사 <small>빈혈, 염증, 혈소판 체크</small>", "🧪 (2) 혈액 화학 검사 <small>(7종) 간, 콩팥, 혈당 등 기본 기능</small>", "⚡️ (3) 전해질 검사 <small>몸 속 수분 밸런스 체크</small>", "🩻 (4) 흉부 X-RAY (3컷) <small>심장, 폐 모양 확인</small>", "🩺 (5) 혈압 체크 <small>기본 순환기 상태 평가</small>" ],
             "originalPrice": 209000, "discountPrice": 160000
           },
           {
-            "borderColor": "#ffd54f",
-            "titleColor": "#f9a825",
-            "title": "💖 아깽이 안심+ 플랜 💖",
+            "borderColor": "#ffd54f", "titleColor": "#f9a825", "title": "💖 아깽이 안심+ 플랜 💖",
             "items": [ "🩸 (1) 혈구검사 <small>빈혈, 염증, 혈소판 체크</small>", "🧪 (2) 혈액 화학 검사 <small>(7종) 간, 콩팥, 혈당 등 기본 기능</small>", "⚡️ (3) 전해질 검사 <small>몸 속 수분 밸런스 체크</small>", "🩻 (4) 흉부 X-RAY (3컷) <small>심장, 폐 모양 확인</small>", "🩺 (5) 혈압 체크 <small>기본 순환기 상태 평가</small>", "❤️ (6) proBNP <small>숨어있는 심장병 조기 진단!</small>" ],
             "originalPrice": 264000, "discountPrice": 199000
           },
           {
-            "borderColor": "#ff8a65",
-            "titleColor": "#d84315",
-            "title": "💪 7세 미만 으른냥 플랜 💪",
+            "borderColor": "#ff8a65", "titleColor": "#d84315", "title": "💪 7세 미만 으른냥 플랜 💪",
             "items": [ "🩸 (1) 혈구검사 & 화학검사 (12종)", "🔥 (2) SAA <small>몸 속 급성 염증 정밀 체크</small>", "🩻 (3) X-RAY (흉부3+복부2)", "🩺 (4) 혈압 & proBNP 심장 체크", "🦠 (5) 전염병 키트 <small>심장사상충+백혈병+면역결핍</small>" ],
             "originalPrice": 414000, "discountPrice": 299000
           },
           {
-            "borderColor": "#ba68c8",
-            "titleColor": "#7b1fa2",
-            "title": "👑 7세+ 어르신냥 VIP 플랜 👑",
+            "borderColor": "#ba68c8", "titleColor": "#7b1fa2", "title": "👑 7세+ 어르신냥 VIP 플랜 👑",
             "items": [ "🩸 (1) 혈구검사 & 화학검사 (12종)", "🔥 (2) SAA & proBNP & 혈압", "🩻 (3) X-RAY (흉부3+복부2)", "🦠 (4) 전염병 키트", "🦋 (5) SDMA/T4 <small>신장/갑상선 기능 정밀 평가</small>", "🐾 (6) fPL 검사 <small>췌장염 수치 체크</small>" ],
             "originalPrice": 569000, "discountPrice": 449000
           }
@@ -473,8 +466,7 @@ function initCalculator() {
             forl: '치아흡수병변',
             periodontal: '치주 치료',
             restorative: '신경/보존 치료',
-            etc: '기타 처치',
-            monitoring: '모니터링'
+            monitoring: '기타 (모니터링)'
         };
 
         addOption(select, '--', 0);
@@ -515,7 +507,7 @@ function initCalculator() {
         addOption(select, 'Crown Reduction', 99000, categories.restorative);
         
         addOption(select, '▼ 기타', 'disabled');
-        addOption(select, '미노클린 처치', 22000, categories.etc);
+        addOption(select, '미노클린 처치', 22000, categories.monitoring);
         addOption(select, '모니터링', 0, categories.monitoring);
     }
     
@@ -598,10 +590,7 @@ function initCalculator() {
                     case '신경/보존 치료':
                         idCell.style.backgroundColor = '#b2dfdb'; // 연한 청록
                         break;
-                    case '기타 처치':
-                        idCell.style.backgroundColor = '#e0e0e0'; // 중립 회색
-                        break;
-                    case '모니터링':
+                    case '기타 (모니터링)':
                         idCell.style.backgroundColor = '#f50057'; // 강조하는 핫핑크
                         idCell.style.color = 'white';
                         idCell.style.fontWeight = 'bold';
@@ -725,7 +714,7 @@ function initCalculator() {
         const patientName = page.querySelector('#patient-name-calc').value || '고양이';
         summarySection.querySelector('.summary-patient-name').textContent = patientName;
         const extractionCategories = { '발치/제거': 0, '치아흡수병변': 0 };
-        const treatmentCategories = { '치주 치료': 0, '신경/보존 치료': 0, '기타 처치': 0, '모니터링': 0 };
+        const treatmentCategories = { '치주 치료': 0, '신경/보존 치료': 0, '기타 (모니터링)': 0 };
 
         page.querySelectorAll('.procedure-select').forEach(select => {
             const selectedOption = select.options[select.selectedIndex];
@@ -1116,7 +1105,9 @@ function addExportListeners(pageSelector, type) {
     });
 }
 
-// 최종 익스포트 리스너 연결
+// --- 최종 애플리케이션 실행 ---
+initCalculator();
+setupPageNavigation();
 addExportListeners('#Calculator-Page', '치과차트');
 addExportListeners('#Estimate-Page', '예상비용');
 addExportListeners('#GuardianReport-Page', '보호자용_치료내역');
