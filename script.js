@@ -1,9 +1,7 @@
 /*
-  [수정 완료] 두 파일의 장점을 결합하여 모든 기능을 복원했습니다.
-  - 최신 '병원소개' 데이터 구조를 반영하고 해당 내용을 출력하도록 수정했습니다.
-  - 누락되었던 모든 정보 페이지(건강검진, 스케일링 등)의 콘텐츠 생성 로직을 복원했습니다.
-  - 불완전했던 계산기 기능을 완벽하게 복원했습니다.
-  - 탭이 정상적으로 작동하도록 스크립트 오류를 모두 해결했습니다.
+  [수정 완료] 계산기 탭의 색상 강조 표시 로직을 수정했습니다.
+  - '모니터링' 항목 선택 시, 가장 눈에 띄는 색상(핫핑크)으로 강조되도록 변경했습니다.
+  - 기존에 강조되던 '미노클린 처치'는 일반 항목처럼 표시되도록 변경했습니다.
   이 파일의 모든 내용을 기존 script.js 파일에 덮어쓰기 하세요.
 */
 document.addEventListener('DOMContentLoaded', () => {
@@ -64,8 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
             { "type": "text", "content": "<strong>치과 치료(수술)비는 예측이 힘들어요.</strong><br>사람과 달리 아이들은 입 안을 자세히 보여주지 않아요. 겉으로 보이는 것만으로는 치아 뿌리의 상태나 숨겨진 질병을 정확히 알 수 없습니다. 안전하게 마취한 후 치과 전용 엑스레이를 찍고 정밀 탐침 검사까지 마쳐야 비로소 아이의 구강 상태를 100% 파악할 수 있답니다. 따라서, 정확한 예상비용을 알려드릴 수 없는점, 너그러이 양해 부탁드립니다." },
             { "type": "text", "content": "<strong>장시간 마취의 위험성을 이해해주세요.</strong><br>치과 치료는 정교함을 요하는 작업이라 생각보다 시간이 오래 걸립니다. 기본적인 엑스레이 검사와 스케일링만으로도 중성화 수술과 비슷한 시간이 소요되며, 발치나 신경치료 등 추가 시술이 들어가면 마취 시간은 더 길어질 수밖에 없습니다. 치과 시술 자체는 위험성이 낮지만, 마취 시간이 길어지는 만큼 일반 수술보다 마취의 부담이나 위험은 더 높을 수 있습니다." },
             { "type": "text", "content": "<strong>안전을 위해, 수술 전 병원 방문은 필수예요.</strong><br>위와 같은 이유로, 아이의 안전을 위해 마취 전 검사는 선택이 아닌 필수입니다. 전화상으로 바로 수술 예약을 잡을 수는 없으며, 반드시 병원에 먼저 내원하시어 구강 상태 평가 및 건강검진(마취 전 검사)을 받아야 합니다. 검사 결과를 바탕으로 마취 위험성을 평가하고, 보호자님과 충분히 상의한 후에 안전하게 수술 날짜를 잡고 있습니다." },
-            { 
-              "type": "sublist", 
+            {
+              "type": "sublist",
               "main": "<strong>부득이한 경우, 타병원 검사 결과도 인정해드려요.</strong><br>시간이나 거리 문제로 본원에서 검사가 힘든 경우, 타병원에서 검사를 진행하고 결과를 보내주셔도 좋습니다. 될수 있으면 아래 항목이 포함된 1개월 이내의 검사 결과여야만 수술 가능 여부를 판단에 도움이 됩니다.",
               "sublist": [
                 "간과 신장 기능 수치 (혈액화학검사)",
@@ -245,7 +243,6 @@ const formatPrice = (price) => {
 function populateContent(data) {
     if (!data) return;
 
-    // '병원소개' 탭 채우기 (최신 데이터 구조 반영)
     if (data.main) {
         document.getElementById('main-header-title').innerHTML = data.main.headerTitle;
         document.getElementById('main-header-subtitle').innerHTML = data.main.headerSubtitle;
@@ -327,7 +324,6 @@ function populateContent(data) {
         }
     }
 
-    // 다른 정보 탭 채우기 (script1.js 로직 복원)
     if (data.healthCheck) {
         document.getElementById('healthcheck-header-title').innerHTML = data.healthCheck.headerTitle;
         document.getElementById('healthcheck-header-subtitle').innerHTML = data.healthCheck.headerSubtitle;
@@ -472,7 +468,7 @@ function initCalculator() {
     const page = document.querySelector('#Calculator-Page');
     if (!page) return;
 
-    const CURRENT_VERSION = "3.0-cat";
+    const CURRENT_VERSION = "3.1-cat";
     let isChartDirty = false;
     window.jsPDF = window.jspdf.jsPDF;
 
@@ -601,47 +597,54 @@ function initCalculator() {
         if (!row) return;
         const notes = row.querySelector('.notes');
         const select = row.querySelector('select');
-        let isHighlighted = false;
-        if (notes) isHighlighted = isHighlighted || notes.value.trim() !== '';
-        if (select) isHighlighted = isHighlighted || (select.value !== '0' && select.value !== 'disabled');
-        
+        const selectedOption = select ? select.options[select.selectedIndex] : null;
+
+        // '모니터링'이 선택되었거나, 다른 유효한 값이 있을 때 하이라이트 결정
+        let isHighlighted = (notes && notes.value.trim() !== '') ||
+                            (select && select.value !== '0' && select.value !== 'disabled') ||
+                            (selectedOption && selectedOption.text === '모니터링');
+
         row.classList.toggle('row-highlight', isHighlighted);
 
         const idCell = row.querySelector('.tooth-id-cell');
         if (idCell) {
+            // 스타일 초기화
             idCell.style.backgroundColor = '';
             idCell.style.color = '';
             idCell.style.fontWeight = '';
 
-            if (isHighlighted && select && select.value !== '0' && select.value !== 'disabled') {
-                const selectedOption = select.options[select.selectedIndex];
-                const category = selectedOption?.dataset.category;
-
-                switch (category) {
-                    case '발치/제거':
-                        idCell.style.backgroundColor = '#ffcdd2';
-                        break;
-                    case '치아흡수병변':
-                        idCell.style.backgroundColor = '#ffe0b2';
-                        break;
-                    case '치주 치료':
-                        idCell.style.backgroundColor = '#c5cae9';
-                        break;
-                    case '신경/보존 치료':
-                        idCell.style.backgroundColor = '#b2dfdb';
-                        break;
-                    case '기타 (모니터링)':
-                        idCell.style.backgroundColor = '#f50057';
-                        idCell.style.color = 'white';
-                        idCell.style.fontWeight = 'bold';
-                        break;
-                    default:
-                        break;
+            // 하이라이트가 필요하고, 유효한 옵션이 선택되었을 경우
+            if (isHighlighted && selectedOption) {
+                // "모니터링"을 위한 특별 스타일링
+                if (selectedOption.text === '모니터링') {
+                    idCell.style.backgroundColor = '#f50057'; // 핫핑크
+                    idCell.style.color = 'white';
+                    idCell.style.fontWeight = 'bold';
+                } 
+                // 다른 항목들을 위한 일반 카테고리 기반 스타일링
+                else if (select.value !== '0' && select.value !== 'disabled') {
+                    const category = selectedOption.dataset.category;
+                    switch (category) {
+                        case '발치/제거':
+                            idCell.style.backgroundColor = '#ffcdd2';
+                            break;
+                        case '치아흡수병변':
+                            idCell.style.backgroundColor = '#ffe0b2';
+                            break;
+                        case '치주 치료':
+                            idCell.style.backgroundColor = '#c5cae9';
+                            break;
+                        case '신경/보존 치료':
+                            idCell.style.backgroundColor = '#b2dfdb';
+                            break;
+                        // '기타 (모니터링)' 케이스는 "모니터링" 전용 로직으로 분리되었으므로 여기서 제외
+                    }
                 }
             }
         }
         updateAllTypeCellHighlights();
     }
+
 
     function handleSelectionChange(target) {
         const row = target.closest('tr');
