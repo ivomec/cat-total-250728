@@ -557,26 +557,31 @@ function initCalculator() {
         });
     }
 
+    // --- START: 수정된 함수 ---
     function updateRowHighlight(row) {
         if (!row) return;
         const notes = row.querySelector('.notes');
         const select = row.querySelector('select');
-        let isHighlighted = false;
-        if (notes) isHighlighted = isHighlighted || notes.value.trim() !== '';
-        if (select) isHighlighted = isHighlighted || (select.value !== '0' && select.value !== 'disabled');
         
+        const selectedOption = select ? select.options[select.selectedIndex] : null;
+        const isMonitoringSelected = selectedOption ? selectedOption.dataset.category === '기타 (모니터링)' : false;
+    
+        let isHighlighted = (notes && notes.value.trim() !== '') || 
+                            (select && select.value !== '0' && select.value !== 'disabled') ||
+                            isMonitoringSelected;
+    
         row.classList.toggle('row-highlight', isHighlighted);
-
+    
         const idCell = row.querySelector('.tooth-id-cell');
         if (idCell) {
+            // Reset styles first
             idCell.style.backgroundColor = '';
             idCell.style.color = '';
             idCell.style.fontWeight = '';
-
-            if (isHighlighted && select && select.value !== '0' && select.value !== 'disabled') {
-                const selectedOption = select.options[select.selectedIndex];
+    
+            if (isHighlighted && select && (select.value !== '0' || isMonitoringSelected) && select.value !== 'disabled') {
                 const category = selectedOption?.dataset.category;
-
+    
                 switch (category) {
                     case '발치/제거':
                         idCell.style.backgroundColor = '#ffcdd2'; // 연한 빨강
@@ -596,12 +601,14 @@ function initCalculator() {
                         idCell.style.fontWeight = 'bold';
                         break;
                     default:
+                        // No special color for this category
                         break;
                 }
             }
         }
         updateAllTypeCellHighlights();
     }
+    // --- END: 수정된 함수 ---
 
     function handleSelectionChange(target) {
         const row = target.closest('tr');
@@ -1106,8 +1113,8 @@ function addExportListeners(pageSelector, type) {
 }
 
 // --- 최종 애플리케이션 실행 ---
-initCalculator();
-setupPageNavigation();
+// initCalculator();  // This line is duplicated, removing it.
+// setupPageNavigation(); // This line is duplicated, removing it.
 addExportListeners('#Calculator-Page', '치과차트');
 addExportListeners('#Estimate-Page', '예상비용');
 addExportListeners('#GuardianReport-Page', '보호자용_치료내역');
