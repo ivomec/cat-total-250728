@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 "키트검사 : proBNP 키트검사(심장병) & FeLV(백혈병) & FIV(면역부전) 바이러스 검사"
               ]
             },
-            { "type": "text", "content": "<strong>보호자님의 치료 의사를 미리 알려주세요.</strong><br>겉으로 보이는 것만으로는 멀쩡해 보여도 검사 후에 치료가 필요한 치아가 발견될 수 있습니다. 만약 이런 치아가 발견되었을 때, 보호자님께 연락하여 동의를 구한 후 치료를 할지, 혹은 즉시 필요한 치료를 진행할지, 아니면 그냥 스케일링 만을 진행할지 를 마취 전에 꼭 저희에게 알려주셔야 합니다. 아이를 위한 최선의 결정을 함께 할 수 있도록 미리 소통해주세요!" }
+            { "type": "text", "content": "<strong>보호자님의 치료 의사를 미리 알려주세요.</strong><br>겉으로는 멀쩡해 보여도 검사 후에 치료가 필요한 치아가 발견될 수 있습니다. 만약 이런 치아가 발견되었을 때, 보호자님께 연락하여 동의를 구한 후 치료를 할지, 혹은 즉시 필요한 치료를 진행할지, 아니면 그냥 스케일링 만을 진행할지 를 마취 전에 꼭 저희에게 알려주셔야 합니다. 아이를 위한 최선의 결정을 함께 할 수 있도록 미리 소통해주세요!" }
           ]
         },
         "footer": {
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
           { "borderColor": "#ffa726", "titleColor": "#f57c00", "title": "😴 마취 관련 처치", "description": "수술이 길어지거나, 아이 상태에 따라 더 안전한 마취를 유지하기 위한 추가적인 관리 비용입니다.", "prices": [{ "label": "마취 시간 연장 (30분당)", "value": "45,000원~" }, { "label": "국소 마취 (부위당)", "value": "10,000원~" }, { "label": "알팍산 도입마취 변경", "value": "33,000원~" }] },
           { "borderColor": "#ef5350", "titleColor": "#c62828", "title": "🪄 통증 관리 처치", "description": "수술 직후부터 집에 가서까지, 우리 냥이가 아프지 않도록 통증을 효과적으로 관리해주는 마법 같은 처치들이에요.", "prices": [{ "label": "마약성 진통 주사", "value": "20,000원~" }, { "label": "24시간 지속 진통 주사", "value": "15,000원~" }, { "label": "마약성 진통 패치", "value": "40,000원~" }] },
           { "borderColor": "#66bb6a", "titleColor": "#2e7d32", "title": "🚀 빠른 회복 부스터", "description": "감염 예방, 염증 완화, 세포 재생 촉진! 우리 냥이가 에너지를 되찾고 빨리 일상으로 돌아가도록 돕는 부스터 처치예요.", "prices": [{ "label": "항생/소염 주사 (일반)", "value": "11,000원~" }, { "label": "항생 주사 (1주 지속)", "value": "15,000원~" }, { "label": "레이저 치료 (부위당)", "value": "20,000원~" }, { "label": "불소 도포", "value": "35,000원~" }] },
-          { "borderColor": "#26c6da", "titleColor": "#00838f", "title": "🏡 홈케어 용품", "description": "집에 가서도 집사님의 사랑으로 케어할 수 있도록! 안전과 회복을 위한 필수 아이템들이에요.", "prices": [{ "label": "내복약 (1일분)", "value": "3,300원~" }, { "label": "액상 진통제", "value": "별도문의" }, { "label": "구강 소독 스프레이", "value": 10000 }, { "label": "구강 항생/소염 연고", "value": 15000 }, {"label": "파라돈 겔", "value": 25000}, { "label": "구강 유산균", "value": 50000 }, { "label": "넥카라", "value": "8,000원~" }] }
+          { "borderColor": "#26c6da", "titleColor": "#00838f", "title": "🏡 홈케어 용품", "description": "집에 가서도 집사님의 사랑로 케어할 수 있도록! 안전과 회복을 위한 필수 아이템들이에요.", "prices": [{ "label": "내복약 (1일분)", "value": "3,300원~" }, { "label": "액상 진통제", "value": "별도문의" }, { "label": "구강 소독 스프레이", "value": 10000 }, { "label": "구강 항생/소염 연고", "value": 15000 }, {"label": "파라돈 겔", "value": 25000}, { "label": "구강 유산균", "value": 50000 }, { "label": "넥카라", "value": "8,000원~" }] }
         ],
         "explanation": {
           "title": "💡 추가 처치는 왜 필요할까요? 🤔",
@@ -418,7 +418,7 @@ function populateAllTabs(data) {
         }
         
         if(d.packages) {
-            contentHTML += `<div class="package-grid" id="healthcheck-packages">
+            contentHTML += `<div class="package-grid" id="healthcheck-packages" style="margin-top: 30px;">
                 ${d.packages.map(pkg => `
                     <div class="package-card" style="border-top-color: ${pkg.borderColor};">
                         <h3 style="color: ${pkg.titleColor};">${pkg.title}</h3>
