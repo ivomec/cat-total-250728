@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 "키트검사 : proBNP 키트검사(심장병) & FeLV(백혈병) & FIV(면역부전) 바이러스 검사"
               ]
             },
-            { "type": "text", "content": "<strong>보호자님의 치료 의사를 미리 알려주세요.</strong><br>겉으로는 멀쩡해 보여도 검사 후에 치료가 필요한 치아가 발견될 수 있습니다. 만약 이런 치아가 발견되었을 때, 보호자님께 연락하여 동의를 구한 후 치료를 할지, 혹은 즉시 필요한 치료를 진행할지, 아니면 그냥 스케일링 만을 진행할지 를 마취 전에 꼭 저희에게 알려주셔야 합니다. 아이를 위한 최선의 결정을 함께 할 수 있도록 미리 소통해주세요!" }
+            { "type": "text", "content": "<strong>보호자님의 치료 의사를 미리 알려주세요.</strong><br>겉으로 보이는 것만으로는 멀쩡해 보여도 검사 후에 치료가 필요한 치아가 발견될 수 있습니다. 만약 이런 치아가 발견되었을 때, 보호자님께 연락하여 동의를 구한 후 치료를 할지, 혹은 즉시 필요한 치료를 진행할지, 아니면 그냥 스케일링 만을 진행할지 를 마취 전에 꼭 저희에게 알려주셔야 합니다. 아이를 위한 최선의 결정을 함께 할 수 있도록 미리 소통해주세요!" }
           ]
         },
         "footer": {
@@ -106,6 +106,11 @@ document.addEventListener('DOMContentLoaded', () => {
       "healthCheck": {
         "headerTitle": "🩺✨ 우리 냥이 맞춤! 안심 건강검진 ✨🩺",
         "headerSubtitle": "💖 안전한 마취를 위한 첫걸음! 🌈 연령별 맞춤 플랜을 확인하세요! 💖",
+        "youtube": {
+            "title": "영상으로 미리보는 고양이 건강검진 🎬",
+            "url": "http://youtube.com/watch?v=i2jJofhhH00&feature=youtu.be",
+            "description": "우리 아이 건강검진, 어떻게 진행될까요? 영상을 통해 전체 과정을 미리 살펴보시고 궁금증과 긴장을 해소하세요!"
+        },
         "preNotice": {
             "title": "병원 방문 전, 보호자님 필독! 📢",
             "content": "혹시 우리 아이가 많이 예민하거나 긴장을 많이 하나요? 😿 그렇다면 내원하시기 전에 미리 병원에 연락주셔서 **안정제(가바펜틴 등)를 처방**받아 방문 2~3시간 전에 복용하고 오시는 것을 강력히 추천드려요! 아이의 스트레스를 크게 줄여줄 수 있어, 아이와 의료진 모두에게 훨씬 편안하고 안전한 검사 환경이 만들어진답니다. **특히 예민하거나 사나운 성격의 고양이라면 선택이 아닌 필수**라는 점, 꼭 기억해주세요! 🙏"
@@ -201,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
           { "borderColor": "#ffa726", "titleColor": "#f57c00", "title": "😴 마취 관련 처치", "description": "수술이 길어지거나, 아이 상태에 따라 더 안전한 마취를 유지하기 위한 추가적인 관리 비용입니다.", "prices": [{ "label": "마취 시간 연장 (30분당)", "value": "45,000원~" }, { "label": "국소 마취 (부위당)", "value": "10,000원~" }, { "label": "알팍산 도입마취 변경", "value": "33,000원~" }] },
           { "borderColor": "#ef5350", "titleColor": "#c62828", "title": "🪄 통증 관리 처치", "description": "수술 직후부터 집에 가서까지, 우리 냥이가 아프지 않도록 통증을 효과적으로 관리해주는 마법 같은 처치들이에요.", "prices": [{ "label": "마약성 진통 주사", "value": "20,000원~" }, { "label": "24시간 지속 진통 주사", "value": "15,000원~" }, { "label": "마약성 진통 패치", "value": "40,000원~" }] },
           { "borderColor": "#66bb6a", "titleColor": "#2e7d32", "title": "🚀 빠른 회복 부스터", "description": "감염 예방, 염증 완화, 세포 재생 촉진! 우리 냥이가 에너지를 되찾고 빨리 일상으로 돌아가도록 돕는 부스터 처치예요.", "prices": [{ "label": "항생/소염 주사 (일반)", "value": "11,000원~" }, { "label": "항생 주사 (1주 지속)", "value": "15,000원~" }, { "label": "레이저 치료 (부위당)", "value": "20,000원~" }, { "label": "불소 도포", "value": "35,000원~" }] },
-          { "borderColor": "#26c6da", "titleColor": "#00838f", "title": "🏡 홈케어 용품", "description": "집에 가서도 집사님의 사랑으로 케어할 수 있도록! 안전과 회복을 위한 필수 아이템들이에요.", "prices": [{ "label": "내복약 (1일분)", "value": "3,300원~" }, { "label": "액상 진통제", "value": "별도문의" }, { "label": "구강 소독 스프레이", "value": 10000 }, { "label": "구강 항생/소염 연고", "value": 15000 }, { "label": "구강 유산균", "value": 50000 }, { "label": "넥카라", "value": "8,000원~" }] }
+          { "borderColor": "#26c6da", "titleColor": "#00838f", "title": "🏡 홈케어 용품", "description": "집에 가서도 집사님의 사랑으로 케어할 수 있도록! 안전과 회복을 위한 필수 아이템들이에요.", "prices": [{ "label": "내복약 (1일분)", "value": "3,300원~" }, { "label": "액상 진통제", "value": "별도문의" }, { "label": "구강 소독 스프레이", "value": 10000 }, { "label": "구강 항생/소염 연고", "value": 15000 }, {"label": "파라돈 겔", "value": 25000}, { "label": "구강 유산균", "value": 50000 }, { "label": "넥카라", "value": "8,000원~" }] }
         ],
         "explanation": {
           "title": "💡 추가 처치는 왜 필요할까요? 🤔",
@@ -394,20 +399,40 @@ function populateAllTabs(data) {
         const d = data.healthCheck;
         document.getElementById('healthcheck-header-title').innerHTML = d.headerTitle;
         document.getElementById('healthcheck-header-subtitle').innerHTML = d.headerSubtitle;
+        const healthCheckContent = document.getElementById('healthcheck-content-area');
+        
+        let contentHTML = '';
 
-        document.getElementById('healthcheck-pre-notice').innerHTML = `<h2>${d.preNotice.title}</h2><p>${d.preNotice.content}</p>`;
-
-        const packagesContainer = document.getElementById('healthcheck-packages');
-        packagesContainer.innerHTML = d.packages.map(pkg => `
-            <div class="package-card" style="border-top-color: ${pkg.borderColor};">
-                <h3 style="color: ${pkg.titleColor};">${pkg.title}</h3>
-                <ul>${pkg.items.map(item => `<li>${item}</li>`).join('')}</ul>
-                <div class="price-wrapper">
-                    <span class="original-price">${formatPrice(pkg.originalPrice, '')}</span>
-                    <span class="discount-price heartbeat">${formatPrice(pkg.discountPrice)}</span>
+        if(d.youtube) {
+             contentHTML += `
+                <div class="info-card" style="border-top: 8px solid #00e5ff; text-align:center;">
+                    <h3 style="font-size: 1.8em; color: #00b8d4;">${d.youtube.title}</h3>
+                    <p style="font-size: 1.1em; line-height: 1.7;">${d.youtube.description}</p>
+                    <a href="${d.youtube.url}" target="_blank" class="action-button" style="background:linear-gradient(135deg, #00e5ff, #00b8d4); max-width:300px;">🎬 영상 보러가기</a>
                 </div>
-            </div>
-        `).join('');
+            `;
+        }
+
+        if(d.preNotice) {
+            contentHTML += `<div class="important-notice" id="healthcheck-pre-notice" style="border-left-color:#81d4fa; background:#e1f5fe; margin-top:30px;"><h2>${d.preNotice.title}</h2><p>${d.preNotice.content}</p></div>`;
+        }
+        
+        if(d.packages) {
+            contentHTML += `<div class="package-grid" id="healthcheck-packages">
+                ${d.packages.map(pkg => `
+                    <div class="package-card" style="border-top-color: ${pkg.borderColor};">
+                        <h3 style="color: ${pkg.titleColor};">${pkg.title}</h3>
+                        <ul>${pkg.items.map(item => `<li>${item}</li>`).join('')}</ul>
+                        <div class="price-wrapper">
+                            <span class="original-price">${formatPrice(pkg.originalPrice, '')}</span>
+                            <span class="discount-price heartbeat">${formatPrice(pkg.discountPrice)}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>`;
+        }
+
+        healthCheckContent.innerHTML = contentHTML;
         document.getElementById('healthcheck-explanation-title').innerHTML = d.explanation.title;
         document.getElementById('healthcheck-explanation-content').innerHTML = d.explanation.content.map(p => `<p>${p}</p>`).join('');
     }
@@ -676,7 +701,7 @@ function initCalculator() {
         if (idCell) { 
             idCell.style.backgroundColor = '';
             idCell.style.color = '';
-            idCell.style.fontWeight = '';
+            idCell.style.fontWeight = 'bold';
             
             if (isHighlighted && selectedOption && selectedOption.value !== '0') {
                  const category = selectedOption.dataset.category;
@@ -708,50 +733,54 @@ function initCalculator() {
 
         const treatments = [
             { side: 'left', group: '😴 마취 관련', items: [
-                { name: '마취 시간 연장', options: [
+                { name: '마취 시간 연장', fullText: '마취 시간 연장 {option}', options: [
                     { text: '30분', value: 'ext_30', cost: w => getCostByWeight([45000, 55000, 66000], w) },
                     { text: '60분', value: 'ext_60', cost: w => getCostByWeight([45000, 55000, 66000], w) * 2 },
                 ]},
-                { name: '국소 마취', options: [
+                { name: '국소 마취', fullText: '국소 마취 {option}', options: [
                     { text: '1 부위', value: 'local_1', cost: w => getCostByWeight([10000, 12000], w) },
                     { text: '2 부위', value: 'local_2', cost: w => getCostByWeight([15000, 17000], w) },
                     { text: '3 부위', value: 'local_3', cost: w => getCostByWeight([18000, 20000], w) },
                     { text: '4 부위', value: 'local_4', cost: w => getCostByWeight([20000, 22000], w) },
                 ]},
-                { name: '도입마취 변경(알팍산)', options: [{ text: '선택', value: 'alfaxan', cost: w => getCostByWeight([33000, 44000, 55000], w) }]},
+                { name: '도입마취 변경(알팍산)', fullText: '도입마취 변경(알팍산)', options: [{ text: '선택', value: 'alfaxan', cost: w => getCostByWeight([33000, 44000, 55000], w) }]},
             ]},
             { side: 'left', group: '🪄 통증 관리', items: [
-                { name: '마약성 진통 주사', options: [{ text: '선택', value: 'opioid_inj', cost: w => getCostByWeight([20000, 25000, 26000], w) }]},
-                { name: '24시 지속 진통 주사', options: [{ text: '선택', value: '24h_pain_inj', cost: w => getCostByWeight([15000, 20000, 25000], w) }]},
-                { name: '마약성 진통 패치', options: [
+                { name: '마약성 진통 주사', fullText: '마약성 진통 주사', options: [{ text: '선택', value: 'opioid_inj', cost: w => getCostByWeight([20000, 25000, 26000], w) }]},
+                { name: '24시 지속 진통 주사', fullText: '24시 지속 진통 주사', options: [{ text: '선택', value: '24h_pain_inj', cost: w => getCostByWeight([15000, 20000, 25000], w) }]},
+                { name: '마약성 진통 패치', fullText: '마약성 진통 패치 {option}', options: [
                     { text: '5ug', value: 'patch_5', cost: () => 40000 },
                     { text: '10ug', value: 'patch_10', cost: () => 50000 },
                     { text: '20ug', value: 'patch_20', cost: () => 60000 },
                 ]},
             ]},
             { side: 'right', group: '🚀 회복 부스터', items: [
-                { name: '항생/소염 주사 (일반)', options: [{ text: '선택', value: 'abx_basic', cost: w => getCostByWeight([11000, 13000], w) }]},
-                { name: '항생 주사 (1주 지속)', options: [{ text: '선택', value: 'abx_1w', cost: w => getCostByWeight([15000, 18000], w) }]},
-                { name: '레이저 치료', options: [
+                { name: '항생/소염 주사 (일반)', fullText: '항생/소염 주사(일반)', options: [{ text: '선택', value: 'abx_basic', cost: w => getCostByWeight([11000, 13000], w) }]},
+                { name: '항생 주사 (1주 지속)', fullText: '항생 주사(1주 지속)', options: [{ text: '선택', value: 'abx_1w', cost: w => getCostByWeight([15000, 18000], w) }]},
+                { name: '레이저 치료', fullText: '레이저 치료 ({option})', options: [
                     { text: '국소', value: 'laser_local', cost: w => getCostByWeight([20000, 23000], w) },
                     { text: '전체', value: 'laser_full', cost: w => getCostByWeight([25000, 28000], w) },
                 ]},
-                { name: '불소 도포', options: [{ text: '선택', value: 'fluoride', cost: w => getCostByWeight([35000, 44000], w) }]},
-                { name: '수액 첨가제 (간회복)', options: [{ text: '선택', value: 'iv_liver', cost: () => 11000 }]},
+                { name: '불소 도포', fullText: '불소 도포', options: [{ text: '선택', value: 'fluoride', cost: w => getCostByWeight([35000, 44000], w) }]},
+                { name: '수액 첨가제 (간회복)', fullText: '수액 첨가제(간회복)', options: [{ text: '선택', value: 'iv_liver', cost: () => 11000 }]},
             ]},
             { side: 'right', group: '🏡 홈케어 용품', items: [
-                { name: '내복약 (1일분)', options: [
-                    { text: '1일', value: 'med_1', cost: w => getCostByWeight([3300, 3800], w) * 1 },
-                    { text: '3일', value: 'med_3', cost: w => getCostByWeight([3300, 3800], w) * 3 },
-                    { text: '7일', value: 'med_7', cost: w => getCostByWeight([3300, 3800], w) * 7 },
-                ]},
-                { name: '헥시딘 스프레이', options: [{ text: '구매', value: 'hexidine_spray', cost: () => 10000 }]},
-                { name: '항생/소염 연고', options: [{ text: '구매', value: 'abx_oint', cost: () => 15000 }]},
-                { name: '구강 유산균', options: [{ text: '구매', value: 'probiotics', cost: () => 50000 }]},
-                { name: '넥카라', options: [
+                { name: '내복약', fullText: '내복약 (1일 2회, {option})', options: Array.from({length: 7}, (_, i) => ({
+                    text: `${i + 1}일분`, value: `med_${i+1}`, cost: w => getCostByWeight([3300, 3800], w) * (i + 1)
+                }))},
+                { name: '헥시딘 스프레이', fullText: '헥시딘 스프레이', options: [{ text: '구매', value: 'hexidine_spray', cost: () => 10000 }]},
+                { name: '항생/소염 연고', fullText: '항생/소염 연고', options: [{ text: '구매', value: 'abx_oint', cost: () => 15000 }]},
+                { name: '파라돈 겔', fullText: '파라돈 겔', options: [{ text: '구매', value: 'paradorn_gel', cost: () => 25000 }]},
+                { name: '구강 유산균', fullText: '구강 유산균', options: [{ text: '구매', value: 'probiotics', cost: () => 50000 }]},
+                { name: '넥카라', fullText: '넥카라 {option}', options: [
+                    { text: '8cm', value: 'ecollar_8', cost: () => 8000 },
                     { text: '10cm', value: 'ecollar_10', cost: () => 10000 },
                     { text: '13cm', value: 'ecollar_13', cost: () => 12000 },
                     { text: '15cm', value: 'ecollar_15', cost: () => 15000 },
+                    { text: '17cm', value: 'ecollar_17', cost: () => 17000 },
+                    { text: '20cm', value: 'ecollar_20', cost: () => 20000 },
+                    { text: '25cm', value: 'ecollar_25', cost: () => 25000 },
+                    { text: '35cm', value: 'ecollar_35', cost: () => 30000 },
                 ]},
             ]},
         ];
@@ -775,6 +804,7 @@ function initCalculator() {
             section.items.forEach(item => {
                 const row = document.createElement('tr');
                 row.dataset.itemName = item.name;
+                row.dataset.fullTextTemplate = item.fullText;
                 row.innerHTML = `
                     <td>${item.name}</td>
                     <td><select><option value="0">-- 선택 --</option></select></td>
@@ -899,9 +929,11 @@ function copyCalculatorDataTo(targetId) {
     clonedArea.querySelectorAll('input, select, button').forEach(el => {
         const parent = el.parentNode;
         if (el.tagName.toLowerCase() === 'select') {
-            const selectedText = el.options[el.selectedIndex].text;
-            if (el.value !== "0" && el.value !== 'disabled') {
-                parent.innerHTML = selectedText;
+            const selectedOption = el.options[el.selectedIndex];
+            const row = el.closest('tr');
+            if (el.value !== "0" && el.value !== 'disabled' && row) {
+                const template = row.dataset.fullTextTemplate || '{option}';
+                parent.innerHTML = template.replace('{option}', selectedOption.text);
             } else {
                  parent.innerHTML = '-';
             }
@@ -919,12 +951,20 @@ function copyCalculatorDataTo(targetId) {
         }
     });
     
-    clonedArea.querySelectorAll('tbody tr').forEach(row => {
-        const select = row.querySelector('.procedure-select');
-        const notes = row.querySelector('.notes');
-        if (select && select.value === '0' && notes && notes.textContent === '-') {
-             // 비어있는 서브 행 제거
-             if (!row.querySelector('.tooth-id-cell')) row.style.display = 'none';
+    clonedArea.querySelectorAll('.main-container tbody tr').forEach(row => {
+        const notesCell = row.querySelector('td:nth-child(2)'); // 특이사항
+        const procedureCell = row.querySelector('td:nth-child(3)'); // 시술선택
+
+        if (notesCell && notesCell.textContent.trim() === '-' && 
+            procedureCell && procedureCell.textContent.trim() === '시술선택') {
+            // 메인 행이 비어있으면 숨김
+            if (row.querySelector('.tooth-id-cell')) {
+                row.style.display = 'none';
+            }
+        }
+        // 서브 행이 비어있으면 숨김
+        if (!row.querySelector('.tooth-id-cell') && procedureCell && procedureCell.textContent.trim() === '시술선택' ) {
+            row.style.display = 'none';
         }
     });
 
