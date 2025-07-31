@@ -1,985 +1,430 @@
-/*
-  [최종 수정] 2025년 고양이 치과 비용 및 안내사항 전체 업데이트 버전
-  요청하신 모든 사항(탭 추가, 가격 업데이트, 내용 수정, 계산기 기능 강화)을 반영했습니다.
-  이 파일의 모든 내용을 기존 script.js 파일에 덮어쓰기 하세요.
-*/
-document.addEventListener('DOMContentLoaded', () => {
-    const hospitalData = {
-      "main": {
-        "headerTitle": "💖 치과 특화 금호동물병원 💖",
-        "headerSubtitle": "🦷 우리 아이들의 건강한 미소를 지켜주는 곳 🦷",
-        "contact": {
-          "phone": "062-383-7572"
-        },
-        "hours": {
-            "title": "⏰ 진료시간 & 수술 안내",
-            "surgeryNotice": "* 우리 아이들의 치과 수술에 최선을 다하고 회복에 힘쓰기 위해서 치과 수술은 매일 평일 오전 9시30분 한 아이씩만 진행됨을 양해 부탁 드립니다.",
-            "times": [
-              { "day": "평일", "time": "오전 9:30 ~ 오후 6:00" },
-              { "day": "토요일", "time": "오전 9:30 ~ 오후 3:00" },
-              { "day": "점심시간", "time": "오후 12:30 ~ 2:00 (평일, 토요일 동일)", "highlight": true },
-              { "day": "휴무", "time": "빨간날은 쉬어요! (공휴일 휴무)", "isHoliday": true }
-            ]
-        },
-        "parking": {
-          "title": "🅿️ 주차 안내 (무료!)",
-          "content": [
-            { "label": "오전", "desc": "널널해요! 😊" },
-            { "label": "오후", "desc": "자리가 없을 수도 있어요 😥" },
-            { "label": "꿀팁🍯", "desc": "주차타워는 거의 항상 비어있어요! (다들 귀찮아서 주차를 안해요... 속닥속닥)", "highlight": true }
-          ]
-        },
-        "pride": {
-            "title": "✨ 고양이 치과, 왜 금호동물병원일까요? 🐈‍⬛",
-            "points": [
-              {
-                "title": "최신 전문 장비 완비! 빵빵해요! 🚀",
-                "items": [
-                  "📸 <strong>치아 전용 X-ray (최신 덴츠플라이 센서):</strong> 최상의 화질을 자랑하는 최신 덴츠플라이 센서로 정확하게 진단해요.",
-                  "💎 <strong>브러쉬리스 모터 덴탈 유닛:</strong> 속도 조절이 가능해서 훨씬 정교하고 섬세한 치료가 가능해요.",
-                  "💧 <strong>피에조톰 수술기:</strong> 사람 성형외과 & 치과 대학병원에서 쓰는 장비로, 뼈 손상을 최소화하여 안전한 수술을 진행해요.",
-                  "🌬️ <strong>최신 호흡마취기:</strong> Ai가 아이의 호흡을 자동으로 감지하고 관리해 무호흡 상태를 방지하며 안전한 마취를 도와줘요.",
-                  "❤️‍🩹 <strong>최신호흡마취기와 연동되는 페이션트 모니터:</strong> 혈압, 심전도, 체온 등 모든 활력 징후를 마취기와 연동하여 실시간으로 감시하며 안전하게 수술해요.",
-                  "🔥 <strong>수의용 베어허거:</strong> 저온화상의 위험 없이 마취 중 아이의 체온을 가장 안전하게 유지하는 최신 체온 조절 장치예요.",
-                  "📡 <strong>광주 전남 최초 동물용 치과 CT 검사기 도입 예정:</strong> 더욱 정밀한 진단과 치료를 위해, 곧 만나요!"
-                ]
-              },
-              {
-                "title": "고양이 치과 진료, 경험치 MAX! 💪",
-                "items": [
-                  "❤️‍🩹 고양이 전발치 & 만성 구내염 치료",
-                  "💔 고양이 치아흡수 병변(FORL) 치료",
-                  "🦷 신경치료 & 치주치료 & VPT(신경보존)",
-                  "<br>이처럼 다양한 고난도 치료 케이스들은 <a href='https://blog.naver.com/kumhoanimal' target='_blank' style='color:#0277bd; font-weight:bold;'>병원 블로그</a>에서 직접 확인하실 수 있어요!"
-                ]
-              }
-            ]
-        },
-        "notice": {
-          "title": "🦷 꼭 읽어주세요! 안전한 치과 수술을 위한 안내 🦷",
-          "items": [
-            { "type": "text", "content": "<strong>치과 치료(수술)비는 예측이 힘들어요.</strong><br>사람과 달리 아이들은 입 안을 자세히 보여주지 않아요. 겉으로 보이는 것만으로는 치아 뿌리의 상태나 숨겨진 질병을 정확히 알 수 없습니다. 안전하게 마취한 후 치과 전용 엑스레이를 찍고 정밀 탐침 검사까지 마쳐야 비로소 아이의 구강 상태를 100% 파악할 수 있답니다. 따라서, 정확한 예상비용을 알려드릴 수 없는점, 너그러이 양해 부탁드립니다." },
-            { "type": "text", "content": "<strong>장시간 마취의 위험성을 이해해주세요.</strong><br>치과 치료는 정교함을 요하는 작업이라 생각보다 시간이 오래 걸립니다. 기본적인 엑스레이 검사와 스케일링만으로도 중성화 수술과 비슷한 시간이 소요되며, 발치나 신경치료 등 추가 시술이 들어가면 마취 시간은 더 길어질 수밖에 없습니다. 치과 시술 자체는 위험성이 낮지만, 마취 시간이 길어지는 만큼 일반 수술보다 마취의 부담이나 위험은 더 높을 수 있습니다." },
-            { "type": "text", "content": "<strong>안전을 위해, 수술 전 병원 방문은 필수예요.</strong><br>위와 같은 이유로, 아이의 안전을 위해 마취 전 검사는 선택이 아닌 필수입니다. 전화상으로 바로 수술 예약을 잡을 수는 없으며, 반드시 병원에 먼저 내원하시어 구강 상태 평가 및 건강검진(마취 전 검사)을 받아야 합니다. 검사 결과를 바탕으로 마취 위험성을 평가하고, 보호자님과 충분히 상의한 후에 안전하게 수술 날짜를 잡고 있습니다." },
-            { 
-              "type": "sublist", 
-              "main": "<strong>부득이한 경우, 타병원 검사 결과도 인정해드려요.</strong><br>시간이나 거리 문제로 본원에서 검사가 힘든 경우, 타병원에서 검사를 진행하고 결과를 보내주셔도 좋습니다. 될수 있으면 아래 항목이 포함된 1개월 이내의 검사 결과여야만 수술 가능 여부를 판단에 도움이 됩니다.",
-              "sublist": [
-                "간과 신장 기능 수치 (혈액화학검사)",
-                "안전한 기관 삽관을 위한 기관 사이즈 평가",
-                "혈압 이상 유무",
-                "흉부 엑스레이 검사",
-                "키트검사 : proBNP 키트검사(심장병) & FeLV(백혈병) & FIV(면역부전) 바이러스 검사"
-              ]
-            },
-            { "type": "text", "content": "<strong>보호자님의 치료 의사를 미리 알려주세요.</strong><br>겉으로는 멀쩡해 보여도 검사 후에 치료가 필요한 치아가 발견될 수 있습니다. 만약 이런 치아가 발견되었을 때, 보호자님께 연락하여 동의를 구한 후 치료를 할지, 혹은 즉시 필요한 치료를 진행할지, 아니면 그냥 스케일링 만을 진행할지 를 마취 전에 꼭 저희에게 알려주셔야 합니다. 아이를 위한 최선의 결정을 함께 할 수 있도록 미리 소통해주세요!" }
-          ]
-        },
-        "footer": {
-          "title": "🚀 빠른 상담 & 예약 🚀",
-          "kakaoLink": "https://pf.kakao.com/_jiICK/chat",
-          "telLink": "tel:062-383-7572"
-        }
-      },
-      "process": {
-        "headerTitle": "💡 우리 아이 치과 수술, 이렇게 진행돼요! 💡",
-        "headerSubtitle": "🔬 하나부터 열까지! 보호자님이 안심하실 수 있도록 모든 과정을 투명하게 공개합니다 💖",
-        "steps": [
-            {
-                "icon": "📝",
-                "title": "1단계: 상담 및 마취 전 검사",
-                "description": "가장 먼저, 아이의 구강 상태를 눈으로 확인하고 보호자님과 충분히 상담해요. 그 후, 안전한 마취를 위해 혈액검사, 엑스레이 등 필수적인 건강검진을 진행해서 우리 아이의 컨디션을 꼼꼼하게 체크합니다. 이 과정을 통해 아이에게 가장 안전한 마취 계획을 세울 수 있어요. ✨"
-            },
-            {
-                "icon": "😴",
-                "title": "2단계: 안전한 마취 및 모니터링",
-                "description": "수술 당일, 아이는 안전하게 주사 마취로 잠이 든 후, 기도를 확보하고 호흡 마취로 전환됩니다. 수술 내내 최신 환자 감시 장치를 통해 심박수, 호흡, 혈압, 체온 등 모든 활력 징후를 실시간으로 모니터링하며, 응급상황에 즉시 대처할 수 있도록 수의사가 곁을 지킵니다. 🩺❤️"
-            },
-            {
-                "icon": "📸",
-                "title": "3단계: 전체 치과 방사선(X-ray) 촬영",
-                "description": "마취 후에는 눈에 보이지 않는 치아 뿌리와 잇몸뼈의 상태를 확인하기 위해 치과 전용 엑스레이를 모든 치아에 대해 촬영합니다. 이를 통해 숨어있는 염증, 치아 흡수 병변, 손상된 뿌리 등을 정확하게 진단할 수 있어요. 🔍"
-            },
-            {
-                "icon": "🧼",
-                "title": "4단계: 스케일링 및 폴리싱",
-                "description": "진단이 끝나면, 초음파 스케일러를 이용해 치아 표면과 잇몸 속에 숨어있는 치석을 깨끗하게 제거합니다(스케일링). 그 다음엔, 치아 표면을 매끄럽게 다듬어(폴리싱) 치석이 다시 잘 붙지 않도록 예방해주는 과정을 거칩니다. 반짝반짝 빛나는 치아를 기대해주세요! 💎"
-            },
-            {
-                "icon": "🧐",
-                "title": "5단계: 정밀 구강 검사 (프로빙)",
-                "description": "깨끗해진 치아를 바탕으로, 치주 탐침(프로브)라는 전문 기구를 사용해 각 치아의 잇몸 주머니 깊이를 측정하고, 흔들림이나 출혈 여부 등을 다시 한번 세밀하게 평가합니다. 엑스레이와 종합하여 최종 치료 계획을 확정해요. 📋"
-            },
-            {
-                "icon": "💪",
-                "title": "6단계: 발치 및 추가 시술",
-                "description": "검사 결과, 치료가 필요하다고 판단된 치아는 보호자님과 상의 하에 발치나 신경치료, 잇몸치료 등을 진행합니다. 아픈 치아를 안전하게 제거하고, 통증의 원인을 근본적으로 해결해주는 가장 중요한 과정이에요. 모든 수술은 멸균된 기구를 사용하며 최소한의 통증과 빠른 회복을 위해 최선을 다합니다. 🩹"
-            },
-            {
-                "icon": "🥰",
-                "title": "7단계: 회복 및 퇴원 안내",
-                "description": "모든 치료가 끝나면, 아이는 마취에서 안전하게 깨어날 때까지 따뜻한 입원실에서 집중적인 돌봄을 받습니다. 충분히 회복된 것을 확인한 후, 집에서 아이를 어떻게 돌봐주셔야 하는지(주의사항, 약 복용법 등) 자세히 설명해드리고 보호자님의 품으로 돌아가게 됩니다. 🏡❤️"
-            }
-        ]
-      },
-      "healthCheck": {
-        "headerTitle": "🩺✨ 우리 냥이 맞춤! 안심 건강검진 ✨🩺",
-        "headerSubtitle": "💖 안전한 마취를 위한 첫걸음! 🌈 연령별 맞춤 플랜을 확인하세요! 💖",
-        "preNotice": {
-            "title": "병원 방문 전, 보호자님 필독! 📢",
-            "content": "혹시 우리 아이가 많이 예민하거나 긴장을 많이 하나요? 😿 그렇다면 내원하시기 전에 미리 병원에 연락주셔서 **안정제(가바펜틴 등)를 처방**받아 방문 2~3시간 전에 복용하고 오시는 것을 강력히 추천드려요! 아이의 스트레스를 크게 줄여줄 수 있어, 아이와 의료진 모두에게 훨씬 편안하고 안전한 검사 환경이 만들어진답니다. **특히 예민하거나 사나운 성격의 고양이라면 선택이 아닌 필수**라는 점, 꼭 기억해주세요! 🙏"
-        },
-        "packages": [
-          {
-            "borderColor": "#4db6ac", "titleColor": "#00796b", "title": "🍼 아깽이 기본 플랜 🍼",
-            "items": [ "🩸 혈구검사 <small>빈혈, 염증, 혈소판</small>", "🧪 혈액 화학 검사 (7종) <small>간, 콩팥, 혈당 등</small>", "⚡️ 전해질 검사 <small>몸 속 수분 밸런스</small>", "🩻 흉부 X-RAY (3컷) <small>심장, 폐 모양</small>", "🩺 혈압 체크 <small>기본 순환기 상태</small>" ],
-            "originalPrice": 244600, "discountPrice": 160000
-          },
-          {
-            "borderColor": "#ffd54f", "titleColor": "#f9a825", "title": "💖 아깽이 안심+ 플랜 💖",
-            "items": [ "🩸 혈구검사", "🧪 혈액 화학 검사 (7종)", "⚡️ 전해질 검사", "🩻 흉부 X-RAY (3컷)", "🩺 혈압 체크", "❤️ proBNP 키트 <small>숨어있는 심장병 조기 진단!</small>" ],
-            "originalPrice": 299600, "discountPrice": 199000
-          },
-          {
-            "borderColor": "#ff8a65", "titleColor": "#d84315", "title": "💪 7세 미만 으른냥 플랜 💪",
-            "items": [ "🩸 혈구 & 화학검사 (12종)", "🔥 SAA <small>몸 속 급성 염증 정밀 체크</small>", "🩻 X-RAY (흉부3+복부2)", "🩺 혈압 체크", "❤️ proBNP 키트", "🦠 전염병 키트 <small>사상충+백혈병+면역결핍</small>" ],
-            "originalPrice": 428600, "discountPrice": 299000
-          },
-          {
-            "borderColor": "#ba68c8", "titleColor": "#7b1fa2", "title": "👑 7세+ 어르신냥 VIP 플랜 👑",
-            "items": [ "🩸 혈구 & 화학검사 (12종)", "🔥 SAA", "🩺 혈압 체크", "❤️ proBNP 키트", "🦠 전염병 키트", "🦋 SDMA & T4 <small>신장/갑상선 정밀 평가</small>", "🐾 fPL 키트 <small>췌장염 수치 체크</small>", "🩻 X-RAY (흉부3+복부2)" ],
-            "originalPrice": 583600, "discountPrice": 449000
-          }
-        ],
-        "explanation": {
-          "title": "💡 마취 전 건강검진, 왜 꼭 필요할까요? 💡",
-          "content": [
-            "전신 마취는 마치 <strong>'비행기 여행 ✈️'</strong>과 같아요. 여행 전에 <strong>날씨를 꼭! 체크 🌤️</strong>하는 것처럼, 마취 전 건강검진은 우리 아이의 몸 상태를 미리 확인해서 가장 안전한 여행(마취) 계획을 세우는 과정이랍니다.",
-            "겉으로는 보이지 않는 장기의 이상이나 숨겨진 질병을 미리 발견해서, 마취 중 발생할 수 있는 위험을 최소화하고 <strong>우리 냥이에게 가장 안전한 방법을 찾기 위한 💖사랑의 과정💖</strong>이에요.",
-            "<br>🚨 <strong>심장 관련 추가 검사 안내</strong><br>만약 검사 중 proBNP 키트에서 양성 반응이 나오거나, 심잡음이 들리거나, 엑스레이에서 심장 크기가 커 보이는 등 심장병이 의심되는 소견이 있을 경우, 보다 정밀한 심근 손상 수치 확인을 위해 <strong>TNI 검사(비용: 55,000원)</strong>가 추가될 수 있습니다. 이는 더 안전한 마취를 위한 필수 과정이오니 보호자님의 깊은 양해를 부탁드립니다."
-          ]
-        }
-      },
-      "scaling": {
-        "headerTitle": "🦷✨ 우리 냥냥이 반짝반짝 스케일링 ✨🦷",
-        "headerSubtitle": "💖 사랑과 정성을 담아! 🌈 화려한 혜택가로 안내합니다! 💖",
-        "preNotice": {
-            "title": "더 안전한 마취를 위한 꿀팁! 🍯",
-            "content": "수술 당일, 아이가 병원으로 이동하고 낯선 환경에 적응하는 동안 불안감을 느끼면 스트레스 호르몬이 분비될 수 있어요. 😥 이 스트레스는 마취에 영향을 줄 수 있답니다. 만약 내원 전에 미리 **안정제를 처방받아 먹이고 오시면, 아이의 긴장이 완화되어 더 적은 용량의 마취제로도 안정적인 마취가 가능**해져요. 이는 곧 우리 아이의 마취가 한층 더 안전해진다는 의미! ✨ 더 편안하고 안전한 치료를 위한 작은 배려, 함께해요! 🥰"
-        },
-        "packages": [
-          {
-            "borderColor": "#ff7eb9", "titleColor": "#ff7eb9", "title": "🐱 5kg 미만 냥이 🐱",
-            "items": [ "💧 술 전 산소 처치", "💧 술 전 수액 처치", "💉 도입 마취(프로포폴)", "😴 호흡 마취 Isoflurane <small>(마무리까지)</small>", "📸 전체 치과 X-ray <small>(10장 이상 꼼꼼 촬영!)</small>", "🧼 스케일링", "💎 폴리싱 – Airflow 시술 <small>(반짝반짝 광택 마무리!)" ],
-            "originalPrice": 512000, "discountPrice": 239000
-          },
-          {
-            "borderColor": "#ffc107", "titleColor": "#ffc107", "title": "🐈 5kg ~ 10kg 미만 냥이 🐈",
-            "items": [ "💧 술 전 산소 처치", "💧 술 전 수액 처치", "💉 도입 마취(프로포폴)", "😴 호흡 마취 Isoflurane <small>(마무리까지)</small>", "📸 전체 치과 X-ray <small>(10장 이상 꼼꼼 촬영!)</small>", "🧼 스케일링", "💎 폴리싱 – Airflow 시술 <small>(반짝반짝 광택 마무리!)" ],
-            "originalPrice": 603000, "discountPrice": 299000
-          },
-          {
-            "borderColor": "#20c997", "titleColor": "#20c997", "title": "🐈‍⬛ 10kg ~ 15kg 미만 냥이 🐈‍⬛",
-            "items": [ "💧 술 전 산소 처치", "💧 술 전 수액 처치", "💉 도입 마취(프로포폴)", "😴 호흡 마취 Isoflurane <small>(마무리까지)</small>", "📸 전체 치과 X-ray <small>(10장 이상 꼼꼼 촬영!)</small>", "🧼 스케일링", "💎 폴리싱 – Airflow 시술 <small>(반짝반짝 광택 마무리!)" ],
-            "originalPrice": 704000, "discountPrice": 389000
-          }
-        ],
-        "explanation": {
-          "title": "💡 필독! 혜택 적용 비용 안내 💡",
-          "content": [
-            "저희 금호동물병원에서는 아이의 <strong>안전을 💖최우선💖</strong>으로 생각해요. 그래서 최근 <strong>✅ 저희 병원에서 직접 마취 전 혈액검사</strong>를 진행해서, 아이의 건강 상태를 저희 의료진이 완벽하게 파악하고 있는 경우! 감사의 마음을 담아 <strong>👑혜택가👑</strong>를 적용해 드리고 있답니다.",
-            "다른 병원에서 검사를 받으셨거나 사정상 검사를 못 하셨어도 괜찮아요! 물론 안전한 치과 치료가 가능합니다. 다만, 외부 데이터를 다시 검토하고 저희 시스템에 맞게 적용하는 과정이 필요해서 정상 비용으로 진행되는 점(타병원 검사 시 10만원 추가), 보호자님의 너른 양해를 부탁드려요. 🙏",
-            "<strong>🚨 잠깐!</strong> 안내된 비용은 스케일링과 기본 처치 비용이에요. 아이의 구강 상태에 따라 발치, 신경치료, 약 처방 등 추가 치료가 필요할 수 있어요. 이 경우, 꼭! <strong>보호자님과 충분히 상의 후 진행</strong>하니 걱정 마세요! 😉"
-          ]
-        }
-      },
-      "surgery": {
-        "headerTitle": "🦷😿 우리 냥이 아픈 치아 수술 비용 😿🦷",
-        "headerSubtitle": "❤️ 아이의 고통을 덜어주는 치료 비용을 투명하게 안내해요 ❤️",
-        "costs": [
-            { "id": "card-basic-extraction", "borderColor": "#a5d8ff", "titleColor": "#1971c2", "title": "🦷 기본 발치", "description": "잇몸병으로 인해 이미 많이 흔들리는 치아를 잇몸 절개 없이 제거합니다.", "prices": [{ "label": "뿌리 1개", "value": 22000 }, { "label": "뿌리 2개", "value": 66000 }, { "label": "고양이 대구치(M1)", "value": 88000 }] },
-            { "id": "card-surgical-extraction", "borderColor": "#ffc078", "titleColor": "#d9480f", "title": "💪 수술 발치", "description": "아직 단단히 박혀있는 치아를 잇몸 절개 및 봉합을 통해 안전하게 제거하는 전문적인 수술입니다.", "prices": [{ "label": "뿌리 1개", "value": 44000 }, { "label": "뿌리 2개", "value": 120000 }, { "label": "고양이 대구치(M1)", "value": 165000 }, { "label": "열육치(PM4)", "value": 220000 }] },
-            { "id": "card-canine-extraction", "borderColor": "#4dd0e1", "titleColor": "#00838f", "title": "😼 송곳니 수술 발치", "description": "길고 튼튼한 송곳니는 정교한 수술적 접근이 필요합니다. 턱 구조에 따라 난이도가 달라집니다.", "prices": [{ "label": "상악 (위턱) 송곳니", "value": 220000 }, { "label": "하악 (아래턱) 송곳니", "value": 270000 }] },
-            { "id": "card-deciduous-extraction", "borderColor": "#b39ddb", "titleColor": "#512da8", "title": "🍼 유치 발치", "description": "제때 빠지지 않고 남아 문제를 일으키는 유치를 제거합니다.", "prices": [{ "label": "일반 유치", "value": 22000 }, { "label": "유치 송곳니 (X-ray 포함)", "value": 33000 }, { "label": "유치 송곳니 (수술 발치)", "value": 66000 }] },
-            { "id": "card-forl-extraction", "borderColor": "#f06292", "titleColor": "#c2185b", "title": "💔 치아흡수병변(FORL) 발치", "description": "치아가 녹아내리는 병변으로, 상태에 따라 치관만 제거하거나 뿌리까지 모두 제거합니다.", "prices": [{ "label": "치관 절제술 (1-2개 뿌리)", "value": 44000 }, { "label": "흡수치근 제거 (1개 뿌리)", "value": 88000 }, { "label": "흡수치근 제거 (2개 뿌리)", "value": 140000 }] },
-            { "id": "card-root-remains-extraction", "borderColor": "#9ccc65", "titleColor": "#558b2f", "title": "🔍 잔존치근 제거", "description": "과거 발치 후 남겨졌거나 부러진 치아의 뿌리를 찾아 제거하는 정밀한 수술입니다.", "prices": [{ "label": "뿌리 1개", "value": 77000 }, { "label": "뿌리 2개", "value": 120000 }, { "label": "송곳니 잔존치근", "value": "25~30만원" }] },
-            { "id": "card-etc-surgery", "borderColor": "#78909c", "titleColor": "#37474f", "title": "🛠️ 기타 수술 및 처치", "description": "잇몸 종양이나 낭종 제거, 조직검사 등 추가적인 외과적 처치입니다.", "prices": [{ "label": "잇몸 종양 제거 (1cm 이하)", "value": 110000 }, { "label": "함치성 치낭 제거술", "value": 280000 }, { "label": "조직검사 (1 site)", "value": 170000 }] }
-        ],
-        "explanation": {
-          "title": "💡 꼭! 확인해주세요! '기본' vs '수술' 발치 💡",
-          "content": [
-            "<strong>기본 발치 (쏙!) 😿</strong><br>잇몸병으로 치아가 이미 <strong>많이많이 흔들릴 때!</strong> 잇몸 절개 없이 쏙~ 뽑아요. (봉합이 필요하면 비용이 추가될 수 있어요!)",
-            "<strong>수술 발치 (샥!) 💪</strong><br>치아 뿌리가 아직 <strong>잇몸뼈에 단단히 박혀있을 때!</strong> 잇몸을 열고 안전하게 조각내어 제거한 뒤, 꼼꼼하게 봉합까지 하는 전문적인 과정이에요."
-          ]
-        }
-      },
-      "addons": {
-        "headerTitle": "💊 우리 냥이 회복을 돕는 케어 비용 💊",
-        "headerSubtitle": "💖 아프지 않게, 더 빨리 나을 수 있도록! 사랑의 추가 처치 안내 💖",
-        "costs": [
-          { "borderColor": "#ffa726", "titleColor": "#f57c00", "title": "😴 마취 관련 처치", "description": "수술이 길어지거나, 아이 상태에 따라 더 안전한 마취를 유지하기 위한 추가적인 관리 비용입니다.", "prices": [{ "label": "마취 시간 연장 (30분당)", "value": "45,000원~" }, { "label": "국소 마취 (부위당)", "value": "10,000원~" }, { "label": "알팍산 도입마취 변경", "value": "33,000원~" }] },
-          { "borderColor": "#ef5350", "titleColor": "#c62828", "title": "🪄 통증 관리 처치", "description": "수술 직후부터 집에 가서까지, 우리 냥이가 아프지 않도록 통증을 효과적으로 관리해주는 마법 같은 처치들이에요.", "prices": [{ "label": "마약성 진통 주사", "value": "20,000원~" }, { "label": "24시간 지속 진통 주사", "value": "15,000원~" }, { "label": "마약성 진통 패치", "value": "40,000원~" }] },
-          { "borderColor": "#66bb6a", "titleColor": "#2e7d32", "title": "🚀 빠른 회복 부스터", "description": "감염 예방, 염증 완화, 세포 재생 촉진! 우리 냥이가 에너지를 되찾고 빨리 일상으로 돌아가도록 돕는 부스터 처치예요.", "prices": [{ "label": "항생/소염 주사 (일반)", "value": "11,000원~" }, { "label": "항생 주사 (1주 지속)", "value": "15,000원~" }, { "label": "레이저 치료 (부위당)", "value": "20,000원~" }, { "label": "불소 도포", "value": "35,000원~" }] },
-          { "borderColor": "#26c6da", "titleColor": "#00838f", "title": "🏡 홈케어 용품", "description": "집에 가서도 집사님의 사랑으로 케어할 수 있도록! 안전과 회복을 위한 필수 아이템들이에요.", "prices": [{ "label": "내복약 (1일분)", "value": "3,300원~" }, { "label": "액상 진통제", "value": "별도문의" }, { "label": "구강 소독 스프레이", "value": 10000 }, { "label": "구강 항생/소염 연고", "value": 15000 }, { "label": "구강 유산균", "value": 50000 }, { "label": "넥카라", "value": "8,000원~" }] }
-        ],
-        "explanation": {
-          "title": "💡 추가 처치는 왜 필요할까요? 🤔",
-          "content": [
-            "우리 냥이들은 <strong>\"나 아파요😿\" 라고 말을 못하고 꾹~ 참는 습성</strong>이 있어요. 그래서 미리 통증을 관리해주는 건 아이의 고통을 덜어주는 <strong>가장 큰 사랑이자 배려</strong>랍니다.💖",
-            "또, 항생제나 레이저, 소독 용품들은 수술 후 생길 수 있는 <strong>나쁜 균들을 막아주고 🦠 회복 속도를 높여서⚡️</strong> 아이가 빨리 캣타워로 점프! 할 수 있게 도와줘요!",
-            "저희 병원은 아이의 상태를 꼼꼼히 살펴, <strong>정말 꼭! 필요한 처치만 골라서 보호자님과 상의</strong>드릴 것을 약속해요.🤙"
-          ]
-        }
-      },
-      "nerve": {
-        "headerTitle": "❤️‍🩹 신경 및 보존 치료 ❤️‍🩹",
-        "headerSubtitle": "무조건 뽑지 않아요! 💪 소중한 치아를 지켜주는 다양한 치료 안내",
-        "costs": [
-          {
-            "borderColor": "#ffc078", "titleColor": "#f76707", "title": "✨ 살아있는 신경 살리기! (VPT)",
-            "description": "<strong>⏳ 48시간 골든타임! ⏳</strong><br>치아가 부러진 직후, 아직 신경이 살아있을 때만 가능해요! 오염된 신경만 살짝 걷어내고 🩹 특수 보호 약품으로 코팅해서 치아의 생명력을 지켜준답니다.<span style=\"display:block;font-size:.9em;color:#e64980;font-weight:700;margin-top:10px;text-align:center\">🚨 레진 충전 비용은 별도예요!</span>",
-            "prices": [{ "label": "송곳니 기준", "value": 450000 }]
-          },
-          {
-            "borderColor": "#ff87c2", "titleColor": "#c2255c", "title": "💔 아픈 신경 치료하기 (신경치료)",
-            "description": "이미 신경이 죽었거나 🦠 세균에 감염되어 아야! 할 때 필요해요. 감염된 신경을 싹~ 제거하고 깨끗하게 소독한 뒤, 특수 재료로 채워서 통증의 원인을 없애고 치아는 보존해요.<span style=\"display:block;font-size:.9em;color:#e64980;font-weight:700;margin-top:10px;text-align:center\">🚨 레진 충전 비용은 별도예요!</span>",
-            "prices": [{ "label": "송곳니 기준", "value": 770000 }]
-          },
-          {
-            "borderColor": "#4dabf7", "titleColor": "#1c7ed6", "title": "🎨 예쁘게 때워주기 (레진 치료)",
-            "description": "충치나 마모, 살짝 깨진 부위를 치아 색과 비슷한 예쁜 재료로 메워서, 원래 모양과 기능을 되찾아주는 치료예요! 손상 범위와 치아에 따라 비용이 달라져요.",
-            "prices": [ { "label": "쪼꼬만 손상", "value": 55000 }, { "label": "송곳니", "value": 110000 } ]
-          },
-          {
-            "borderColor": "#8ce99a", "titleColor": "#2f9e44", "title": "🌿 튼튼한 잇몸 만들기 (치주 치료)",
-            "description": "잇몸병의 원인이 되는 세균막과 치석을 잇몸 속 깊은 곳까지 깨끗하게 제거하고, 잇몸 재생을 유도하는 전문적인 잇몸 관리입니다. (치아당 비용)",
-            "prices": [{ "label": "미노클린 연고", "value": 22000 }, { "label": "치근활택술", "value": 45000 }, { "label": "인공뼈 이식 등", "value": "별도문의" }]
-          }
-        ],
-        "explanation": {
-          "title": "💡 '신경치료' vs '치주치료', 뭐가 다른가요? 🧐",
-          "content": [
-            "보호자님들께서 가장 헷갈려하시는 두 가지 치료! 알기 쉽게 설명해 드릴게요. 😉",
-            "<br><strong>❤️‍🩹 신경치료 (Endodontics)</strong><br>이것은 **'치아 🦷 내부'**의 문제예요. 치아가 부러지거나 깊은 충치가 생겨 치아 속 신경(치수)이 감염되고 죽었을 때, 이 감염된 신경을 제거하고 그 공간을 생체 친화적인 재료로 채워넣는 치료랍니다. 즉, **'치아 자체를 살리는'** 치료라고 할 수 있죠. 나무의 썩은 속을 파내고 튼튼하게 보강하는 것과 비슷해요! 💪",
-            "<br><strong>🌿 치주치료 (Periodontics)</strong><br>이것은 **'치아 주변 🌳'**의 문제예요. 치아를 지지하는 잇몸과 잇몸뼈에 염증이 생긴 것(치주염)을 치료하는 거예요. 치아와 잇몸 사이 깊숙한 곳의 치석을 제거하고(치근활택술), 염증 조직을 긁어내고, 심한 경우 뼈이식을 통해 무너진 잇몸뼈를 재건하기도 합니다. **'치아의 기반을 튼튼하게 다지는'** 치료라고 생각하시면 돼요. 집의 약해진 땅을 단단하게 보강하는 공사와 같답니다! 🏠"
-          ]
-        }
-      }
-    };
-
-    try {
-        populateAllTabs(hospitalData);
-    } catch (error) {
-        console.error('전체 탭 콘텐츠 처리 중 오류 발생:', error);
-        alert('콘텐츠를 처리하는 데 실패했습니다. 코드에 문제가 없는지 확인해주세요.');
-    }
-
-    setupPageNavigation(hospitalData);
-});
-
-const formatPrice = (price, prefix = '💸 ') => {
-    if (typeof price === 'number') {
-        return `${prefix}${price.toLocaleString('ko-KR')}원`;
-    }
-    return `${price}`; // Handle cases like "별도문의" or "12만~30만원"
-};
-
-function populateAllTabs(data) {
-    if (!data) return;
-
-    // 1. 병원소개 탭
-    if (data.main) {
-        document.getElementById('main-header-title').innerHTML = data.main.headerTitle;
-        document.getElementById('main-header-subtitle').innerHTML = data.main.headerSubtitle;
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💖고양이 치과 특화 금호동물병원💖</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
         
-        const mainContent = document.getElementById('main-content-area');
-        if (mainContent) {
-            const hoursItemsHTML = data.main.hours.times.map(h => {
-                let style = '';
-                if (h.highlight) style = 'color:#d81b60;font-weight:bold';
-                if (h.isHoliday) style = 'color:red';
-                return `<li><strong style="${style}">${h.day}:</strong> ${h.time}</li>`;
-            }).join('');
+        /* --- 기본 & 애니메이션 스타일 --- */
+        @keyframes heartbeat { 0%{transform:scale(1)} 50%{transform:scale(1.07);text-shadow:0 0 15px rgba(255,82,82,.7)} 100%{transform:scale(1)} }
+        @keyframes pulse { 0%{transform:scale(1)} 50%{transform:scale(1.05);text-shadow:0 0 15px rgba(255,107,107,.7)} 100%{transform:scale(1)} }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-            const prideItemsHTML = data.main.pride.points.map(p => `
-                <div style="margin-bottom: 20px;">
-                    <strong style="font-size: 1.2em; color: #0277bd;">${p.title}</strong>
-                    <ul style="list-style-type: '✔️ '; padding-left: 20px; margin-top: 10px;">${p.items.map(i => `<li style="margin-bottom: 8px;">${i}</li>`).join('')}</ul>
-                </div>`).join('');
-
-            const noticeItemsHTML = data.main.notice.items.map(item => {
-                if (item.type === 'text') {
-                    return `<li>${item.content}</li>`;
-                } else if (item.type === 'sublist') {
-                    const sublistItems = item.sublist.map(subItem => `<li>${subItem}</li>`).join('');
-                    return `<li>${item.main}<ul class="sub-list">${sublistItems}</ul></li>`;
-                }
-                return '';
-            }).join('');
-
-            const parkingItemsHTML = data.main.parking.content.map(p => `<li><strong ${p.highlight ? 'style="color:#d81b60;font-weight:bold"' : ''}>${p.label}:</strong> ${p.desc}</li>`).join('');
-
-            mainContent.innerHTML = `
-                <section class="info-section">
-                    <h2>🏥 병원 안내 🏥</h2>
-                    <div class="info-grid">
-                        <div class="info-card" style="grid-column:1/-1; border-top:none;">
-                            <h3>${data.main.hours.title}</h3>
-                            <p style="color:#d81b60; font-weight:bold; text-align:center;">${data.main.hours.surgeryNotice}</p>
-                            <ul>${hoursItemsHTML}</ul>
-                        </div>
-                    </div>
-                </section>
-                <section class="pride-section" style="background:#e3f2fd; padding: 25px; border-radius: 20px; margin-top: 30px;">
-                    <h2 style="color:#0277bd">${data.main.pride.title}</h2>
-                    ${prideItemsHTML}
-                </section>
-                <section class="important-notice" style="margin-top: 30px;">
-                    <h2>${data.main.notice.title}</h2>
-                    <ol>${noticeItemsHTML}</ol>
-                </section>
-                <section class="info-section" style="margin-top: 30px;">
-                    <div class="info-grid">
-                         <div class="info-card" style="grid-column:1/-1; border-top:none;">
-                            <h3>${data.main.parking.title}</h3>
-                            <ul>${parkingItemsHTML}</ul>
-                            <img src="https://raw.githubusercontent.com/ivomec/image/main/parking.png" alt="주차장 안내" style="width: 100%; max-width: 800px; margin: 15px auto 0; display: block; border-radius: 10px;">
-                        </div>
-                    </div>
-                </section>
-                <section class="info-section" style="margin-top: 30px;">
-                    <div class="info-grid">
-                        <div class="info-card" style="grid-column:1/-1; border-top:none; padding: 10px;">
-                            <h3>🗺️ 병원 오시는 길 🗺️</h3>
-                            <p style="text-align:center; font-size:1.1em; font-weight:bold; margin-bottom:15px;">광주 서구 운천로 100, 1층 금호동물병원</p>
-                            <img src="https://raw.githubusercontent.com/ivomec/image/main/map.jpg" alt="병원 지도" style="width: 100%; border-radius: 15px;">
-                        </div>
-                    </div>
-                </section>
-            `;
-            
-            const footer = document.getElementById('main-footer');
-            footer.innerHTML = `<h2>${data.main.footer.title}</h2>
-                <a href="${data.main.footer.kakaoLink}" target="_blank" class="action-button kakao-btn">💬 카카오톡 채널로 상담하기</a>
-                <a href="${data.main.footer.telLink}" class="action-button tel-btn">📞 ${data.main.contact.phone}</a>`;
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f3ff;
+            color: #333;
+            -webkit-font-smoothing: antialiased;
         }
-    }
+        .container { max-width: 900px; margin: 20px auto; padding: 15px; }
 
-    // 2. 수술과정 탭
-    if(data.process) {
-        document.getElementById('process-header-title').innerHTML = data.process.headerTitle;
-        document.getElementById('process-header-subtitle').innerHTML = data.process.headerSubtitle;
-        const processContent = document.getElementById('process-content-area');
-        const stepsHtml = data.process.steps.map(step => `
-            <div class="info-card" style="border-top: 8px solid #f6d365; text-align:left;">
-                <h3 style="font-size: 1.8em; text-align:left;"><span style="font-size:1.5em; margin-right:10px;">${step.icon}</span>${step.title}</h3>
-                <p style="font-size: 1.1em; line-height: 1.7; padding-left: 10px;">${step.description}</p>
+        /* --- 대시보드 탭 네비게이션 스타일 --- */
+        .dashboard-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding: 10px;
+        }
+        .nav-tab {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background-color: #fff;
+            color: #555;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .nav-tab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+        .nav-tab.active {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        /* 각 탭 활성화 시 색상 */
+        #tab-main.active { background: linear-gradient(135deg, #81c7f5, #a092ed); }
+        #tab-process.active { background: linear-gradient(135deg, #f6d365, #fda085); }
+        #tab-healthcheck.active { background: linear-gradient(135deg, #69f0ae, #00e5ff); }
+        #tab-scaling.active { background: linear-gradient(135deg, #ff9a9e, #a1c4fd); }
+        #tab-surgery.active { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
+        #tab-addons.active { background: linear-gradient(135deg, #f8bbd0, #b39ddb); }
+        #tab-nerve.active { background: linear-gradient(135deg, #ff9a44, #ff5e62); }
+        #tab-calculator.active, #tab-estimate.active, #tab-guardian-report.active { background: linear-gradient(135deg, #fbc2eb, #a6c1ee); }
+
+        /* --- 콘텐츠 패널 스타일 --- */
+        .content-panel { display: none; }
+        .content-panel.active { display: block; animation: fadeIn 0.5s; }
+        
+        /* --- 정보 안내 페이지 공통 스타일 --- */
+        .info-page header { padding: 40px 20px; border-radius: 25px; text-align: center; margin-bottom: 30px; border: 3px solid white; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .info-page header h1 { margin: 0; font-size: 2.5em; font-weight: 900; }
+        .info-page header p { margin: 10px 0 0; font-size: 1.2em; opacity: 0.95; }
+        .info-page .info-section, .info-page .pride-section, .info-page .explanation-box, .info-page .cost-grid, .info-page .package-grid { margin-top: 20px; }
+        .info-page .info-section h2, .info-page .pride-section h2, .info-page .explanation-box h2, .info-page .important-notice h2 { font-size: 1.8em; font-weight: 700; margin-top: 0; margin-bottom: 20px; text-align: center; }
+        .info-page .cost-grid, .info-page .package-grid, .info-page .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .info-page .cost-card, .info-page .package-card, .info-page .info-card { background-color: #fff; border-radius: 20px; box-shadow: 0 6px 25px rgba(0,0,0,0.08); padding: 25px; display: flex; flex-direction: column; transition: transform 0.3s; border-top: 8px solid transparent;}
+        .info-page .cost-card:hover, .info-page .package-card:hover { transform: translateY(-8px); }
+        .info-page .cost-card h3, .info-page .package-card h3, .info-page .info-card h3 { font-size: 1.6em; margin: 0 0 20px 0; text-align: center; font-weight: 700; }
+        .info-page ul { list-style: none; padding: 0; flex-grow: 1; }
+        .info-page .price-wrapper { text-align: center; border-top: 2px dashed #eee; padding-top: 20px; margin-top: auto; }
+        .info-page .price-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 1.1em; }
+        .info-page .price-label { color: #444; }
+        .info-page .price-value { font-weight: 700; }
+        .info-page .original-price { font-size: 1.2em; color: #aaa; text-decoration: line-through; display: block; }
+        .info-page .discount-price { font-weight: 900; display: inline-block; margin-top: 5px; }
+        .info-page .discount-price.heartbeat { font-size: 2.5em; color: #ff5252; animation: heartbeat 1.5s infinite; }
+        .info-page .discount-price.pulse { font-size: 2.5em; color: #ff52a5; animation: pulse 2s infinite; }
+        .info-page .explanation-box { padding: 25px; border-radius: 15px; border-left: 8px solid; }
+        .info-page footer { text-align: center; padding: 30px 15px; margin-top: 30px; }
+        .info-page .action-button { display: inline-block; width: auto; max-width: 400px; margin: 15px auto; padding: 18px 30px; border-radius: 15px; text-decoration: none; color: white; font-size: 1.3em; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: transform 0.2s; }
+        .info-page .action-button:hover { transform: scale(1.05); }
+        .info-page .kakao-btn { background-color: #FEE500; color: #3C1E1E; }
+        .info-page .tel-btn { background-color: #4CAF50; }
+
+        .important-notice { background: #fff5f5; border-left: 8px solid #fa5252; padding: 25px; margin-bottom: 30px; border-radius:15px; }
+        .important-notice h2 { color: #c92a2a; }
+        .important-notice ol { padding-left: 25px; }
+        .important-notice li { margin-bottom: 22px; line-height: 1.7; font-size: 1.05em; }
+        .important-notice li::marker { font-weight: bold; }
+        .important-notice strong { color: #d84315; }
+        .important-notice .sub-list { padding-left: 20px; list-style-type: '✅ '; margin-top: 10px; font-size: 0.95em; color: #555;}
+        .important-notice .sub-list li { margin-bottom: 8px;}
+
+        /* --- 페이지별 고유 스타일 --- */
+        #content-main header { background: linear-gradient(135deg, #81c7f5, #a092ed); }
+        #content-process header { background: linear-gradient(135deg, #f6d365, #fda085); }
+        #content-healthcheck header { background: linear-gradient(135deg, #69f0ae, #00e5ff); }
+        #content-scaling header { background: linear-gradient(135deg, #ff9a9e, #a1c4fd); }
+        #content-surgery header { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
+        #content-addons header { background: linear-gradient(135deg, #f8bbd0, #b39ddb); }
+        #content-nerve header { background: linear-gradient(135deg, #ff9a44, #ff5e62); }
+
+        /* --- 수술 과정 타임라인 스타일 --- */
+        .timeline-container { border-left: 3px solid #fda085; padding: 20px 0 20px 30px; margin: 20px 0; }
+        .timeline-item { display: flex; align-items: flex-start; position: relative; margin-bottom: 30px; }
+        .timeline-item::before { content: ''; width: 15px; height: 15px; background-color: white; border: 3px solid #fda085; border-radius: 50%; position: absolute; left: -39px; top: 5px; }
+        .timeline-time { flex-shrink: 0; width: 100px; font-weight: 900; color: #555; font-size: 1.2em; }
+        .timeline-icon { margin: -5px 20px 0; font-size: 2.5em; }
+        .timeline-content { background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.07); width: 100%; }
+        .timeline-content h3 { margin: 0 0 10px; font-size: 1.4em; color: #333; }
+        .timeline-content p { margin: 0; line-height: 1.6; }
+
+        #content-surgery .price-value { color: #e64980; font-size: 1.2em; }
+        #content-surgery .explanation-box { background: #fff0f6; border-left-color: #ff87c2; }
+        #content-surgery .explanation-box h2 { color: #c2255c; }
+        
+        /* --- 계산기 페이지 스타일 --- */
+        .calculator-common .capture-area { background-color: #fff; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6;}
+        .calculator-common .patient-info-inputs { padding-bottom: 20px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; border-bottom: 1px dashed #ccc; margin-bottom: 20px; }
+        .calculator-common .dynamic-chart-title { font-size: 1.8em; color: #0056b3; text-align: center; margin: -10px 0 20px 0; padding: 15px; border-radius: 8px; background: linear-gradient(135deg, #e9ecef, #f8f9fa); font-weight: bold; }
+        .calculator-common .main-container { display: flex; justify-content: space-between; width: 100%; gap: 20px; flex-wrap: wrap;}
+        .calculator-common .table-section { width: 100%; }
+        @media (min-width: 1024px) { .calculator-common .table-section { width: 49%; } }
+        .calculator-common h2, .calculator-common h3 { background-color: #0056b3; color: white; padding: 10px; text-align: center; font-size: 1.1em; border-radius: 5px; margin-top: 0; }
+        .calculator-common h3 { background-color: #5a6268; font-size: 1em; }
+        .calculator-common table { width: 100%; border-collapse: collapse; margin-bottom: 20px; table-layout: fixed; } 
+        .calculator-common td { border: 1px solid #ccc; padding: 2px; text-align: center; font-size: 0.85em; vertical-align: middle; transition: background-color 0.2s; }
+        .calculator-common th { border: 1px solid #ccc; padding: 6px; text-align: center; font-size: 0.85em; background-color: #FFC107; color: #333; vertical-align: middle; }
+        .calculator-common .notes, .calculator-common .procedure-select, .calculator-common .additional-tbody select { -webkit-appearance: none; -moz-appearance: none; appearance: none; width: 100%; box-sizing: border-box; height: 30px; padding: 0 8px; border: 1px solid #ccc; border-radius: 3px; font-size: 1em; background-color: #fff; line-height: 28px; text-align: center; text-align-last: center; }
+        .calculator-common td:has(> select) { position: relative; }
+        .calculator-common td:has(> select)::after { content: '▼'; font-size: 12px; color: #555; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+        .calculator-common .cost { text-align: right; font-weight: bold; min-width: 80px; padding-right: 5px; }
+        .calculator-common tr.row-highlight > td { font-weight: bold; }
+        .calculator-common .main-container tr.row-highlight > td:last-child { border-right: 3px solid #0056b3; }
+        .calculator-common .tooth-type { vertical-align: middle !important; font-weight: bold; }
+        .calculator-common .total-cost-container { text-align:center; margin-top:40px; padding:25px; background-color:#fff; border:3px solid #0056b3; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.15); }
+        .calculator-common .total-cost-container h2 { font-size: 1.6em; color: #0056b3; margin: 0 0 15px 0; background-color: transparent; }
+        .calculator-common .cost-summary-table { width: 100%; border-collapse: collapse; }
+        .calculator-common .cost-summary-table td { padding: 12px 8px; font-size: 1.2em; border-top: 1px solid #eee; }
+        .calculator-common .cost-summary-table td:first-child { text-align: left; font-weight: bold; color: #333; width: 50%; }
+        .calculator-common .cost-summary-table td:last-child { text-align: right; font-weight: bold; font-family: monospace, sans-serif; }
+        .calculator-common .cost-summary-table .total-row td { font-size: 1.5em; color: #c82333; border-top: 2px solid #333; padding-top: 15px; }
+        .calculator-common .treatment-summary-section { margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #e0f7fa, #fffdef); border: 2px solid #00acc1; border-radius: 16px; box-shadow: 0 8px 25px rgba(0, 121, 107, 0.1); }
+        .calculator-common .treatment-summary-section h2 { font-size: 1.8em; color: #00796b; margin: 0 0 25px 0; text-align: center; background-color: transparent; font-weight: bold; }
+        .calculator-common .summary-container { display: flex; gap: 25px; flex-wrap: wrap; }
+        .calculator-common .summary-box { flex: 1; min-width: 300px; background-color: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.07); }
+        .calculator-common .summary-box h3 { font-size: 1.4em; color: white; margin: -20px -20px 20px -20px; padding: 12px 20px; border-radius: 12px 12px 0 0; text-align: center; }
+        .calculator-common .summary-box:first-child h3 { background-color: #ef5350; }
+        .calculator-common .summary-box:last-child h3 { background-color: #42a5f5; }
+        .calculator-common .summary-table { width: 100%; border-collapse: collapse; }
+        .calculator-common .summary-table td { padding: 12px 5px; border-bottom: 1px solid #eee; text-align: left; font-size: 1.05em; border-left: none; border-right: none; }
+        .calculator-common .summary-table .summary-item { color: #333; }
+        .calculator-common .summary-table .summary-count { text-align: right; font-weight: bold; font-size: 1.1em; }
+        .calculator-common .summary-table .summary-total td { font-weight: bold; color: #c82333; border-top: 2px solid #333; font-size: 1.1em; }
+        .calculator-common .guardian-comment-section { margin-top: 40px; padding: 25px; background-color: #f3f9ff; border: 2px solid #81c784; border-radius: 16px; }
+        .calculator-common .guardian-comment-section h2 { font-size: 1.8em; color: #388e3c; margin: 0 0 25px 0; text-align: center; font-weight: bold; }
+        .calculator-common .comment-box { background-color: #fff; border-radius: 8px; padding: 20px; margin-bottom: 20px; border-left: 5px solid #ffa726; }
+        .calculator-common .comment-box h3 { font-size: 1.4em; color: #f57c00; margin: 0 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid #ffe0b2; }
+        .calculator-common .comment-box ul { list-style-type: '✅'; padding-left: 25px; margin: 0; }
+        .calculator-common .comment-box li { margin-bottom: 10px; font-size: 1.05em; line-height: 1.8; color: #444; }
+        .calculator-common .thank-you-message { text-align: center; font-style: italic; color: #555; margin-top: 30px; padding-top: 20px; border-top: 1px dashed #ccc; }
+        .calculator-common .disclaimer-box { margin-top: 40px; padding: 25px; background-color: #fff9e6; border: 2px solid #ffc107; border-radius: 10px; text-align: center; box-shadow: 0 4px 15px rgba(255,193,7,0.2); }
+        .calculator-common .disclaimer-box h3 { color: #b95000; font-size: 1.4em; margin: 0 0 15px 0; }
+        .calculator-common .disclaimer-box p { line-height: 1.8; font-size: 1em; color: #555; margin: 0; }
+        .calculator-common .export-container { text-align:center; margin-top:20px; padding:20px; background-color:#f8f9fa; border-radius:8px; }
+        .calculator-common .export-container button { background-color: #007bff; color: white; border: none; padding: 12px 25px; border-radius: 6px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin: 0 10px; transition: background-color 0.3s, transform 0.2s; }
+        .calculator-common .export-container button:hover { background-color: #0056b3; transform: translateY(-2px); }
+        .calculator-common .export-container button.save-data-btn { background-color: #28a745; }
+        .calculator-common .export-container button.save-data-btn:hover { background-color: #218838; }
+        .calculator-common .export-container button.load-data-btn { background-color: #ffc107; color: #212529; }
+        .calculator-common .export-container button.load-data-btn:hover { background-color: #e0a800; }
+        
+        /* 추가 처치 내역 2단 레이아웃 */
+        .calculator-common .additional-treatments-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .calculator-common .additional-treatments-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        .calculator-common .additional-treatments-section table {
+            table-layout: fixed;
+        }
+        .calculator-common .additional-treatments-section .selected-row > td {
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="dashboard-nav">
+        <a href="#" class="nav-tab" id="tab-main" data-target="content-main">💖 병원소개</a>
+        <a href="#" class="nav-tab" id="tab-process" data-target="content-process">💡 수술과정</a>
+        <a href="#" class="nav-tab" id="tab-healthcheck" data-target="content-healthcheck">🩺 건강검진</a>
+        <a href="#" class="nav-tab" id="tab-scaling" data-target="content-scaling">🦷 스케일링</a>
+        <a href="#" class="nav-tab" id="tab-surgery" data-target="content-surgery">😿 수술비용</a>
+        <a href="#" class="nav-tab" id="tab-addons" data-target="content-addons">💊 추가처치</a>
+        <a href="#" class="nav-tab" id="tab-nerve" data-target="content-nerve">❤️‍🩹 신경 및 보존 치료</a>
+        <a href="#" class="nav-tab" id="tab-calculator" data-target="content-calculator">🧮 치료비 계산기</a>
+        <a href="#" class="nav-tab" id="tab-estimate" data-target="content-estimate">📄 예상비용 안내</a>
+        <a href="#" class="nav-tab" id="tab-guardian-report" data-target="content-guardian-report">❤️ 보호자용 치료내역</a>
+    </nav>
+
+    <div class="dashboard-content">
+
+        <div id="content-main" class="content-panel info-page">
+            <div class="container">
+                <header>
+                    <h1 id="main-header-title"></h1>
+                    <p id="main-header-subtitle"></p>
+                </header>
+                <main id="main-content-area">
+                    </main>
+                <footer id="main-footer"></footer>
             </div>
-        `).join('');
-        processContent.innerHTML = `<div class="info-grid">${stepsHtml}</div>`;
-    }
+        </div>
 
-    // 3. 건강검진 탭
-    if (data.healthCheck) {
-        const d = data.healthCheck;
-        document.getElementById('healthcheck-header-title').innerHTML = d.headerTitle;
-        document.getElementById('healthcheck-header-subtitle').innerHTML = d.headerSubtitle;
+        <div id="content-process" class="content-panel info-page">
+            <div class="container">
+                <header>
+                    <h1 id="process-header-title"></h1>
+                    <p id="process-header-subtitle"></p>
+                </header>
+                <main id="process-content-area">
+                    </main>
+            </div>
+        </div>
 
-        document.getElementById('healthcheck-pre-notice').innerHTML = `<h2>${d.preNotice.title}</h2><p>${d.preNotice.content}</p>`;
+        <div id="content-healthcheck" class="content-panel info-page">
+            <div class="container">
+                 <header>
+                    <h1 id="healthcheck-header-title"></h1>
+                    <p id="healthcheck-header-subtitle"></p>
+                 </header>
+                 <div class="important-notice" id="healthcheck-pre-notice" style="border-left-color:#81d4fa; background:#e1f5fe;">
+                    </div>
+                 <div class="package-grid" id="healthcheck-packages"></div>
+                 <div class="explanation-box" id="healthcheck-explanation-box" style="background:#f1f8e9;border-left-color:#aed581">
+                    <h2 id="healthcheck-explanation-title"></h2>
+                    <div id="healthcheck-explanation-content"></div>
+                 </div>
+            </div>
+        </div>
 
-        const packagesContainer = document.getElementById('healthcheck-packages');
-        packagesContainer.innerHTML = d.packages.map(pkg => `
-            <div class="package-card" style="border-top-color: ${pkg.borderColor};">
-                <h3 style="color: ${pkg.titleColor};">${pkg.title}</h3>
-                <ul>${pkg.items.map(item => `<li>${item}</li>`).join('')}</ul>
-                <div class="price-wrapper">
-                    <span class="original-price">${formatPrice(pkg.originalPrice, '')}</span>
-                    <span class="discount-price heartbeat">${formatPrice(pkg.discountPrice)}</span>
+        <div id="content-scaling" class="content-panel info-page">
+            <div class="container">
+                 <header>
+                    <h1 id="scaling-header-title"></h1>
+                    <p id="scaling-header-subtitle"></p>
+                 </header>
+                 <div class="important-notice" id="scaling-pre-notice" style="border-left-color:#80cbc4; background:#e0f2f1;">
+                    </div>
+                 <div class="package-grid" id="scaling-packages"></div>
+                 <div class="explanation-box" style="background:#fffde7;border-left-color:#fdd835">
+                    <h2 id="scaling-explanation-title"></h2>
+                    <div id="scaling-explanation-content"></div>
+                 </div>
+            </div>
+        </div>
+        
+        <div id="content-surgery" class="content-panel info-page">
+            <div class="container">
+                <header>
+                    <h1 id="surgery-header-title"></h1>
+                    <p id="surgery-header-subtitle"></p>
+                </header>
+
+                <div class="explanation-box" style="margin-bottom: 30px; background: #e3f2fd; border-left-color: #1976d2; text-align: center;">
+                    <h2 style="color: #1976d2;">🦷 우리 아이 치아 위치 가이드</h2>
+                    <img src="https://github.com/ivomec/image/blob/main/%EC%B9%98%EC%8B%9D.jpg?raw=true" alt="고양이 치아 번호 안내" style="width: 100%; max-width: 600px; border-radius: 10px; display: block; margin: 15px auto;">
+                    <p style="margin: 15px 0 0 0; text-align: center;">
+                        아래 비용표에 나오는 송곳니, 열육치(가장 큰 앞쪽 어금니), 대구치(가장 큰 뒤쪽 어금니) 등의 위치를 그림으로 확인해 보세요! 😊<br>
+                        우리 아이의 어떤 치아를 치료하는지 위치를 알면 내용을 이해하시는 데 훨씬 도움이 될 거예요.
+                    </p>
+                </div>
+
+                <div class="cost-grid" id="surgery-costs"></div>
+                <div class="explanation-box">
+                    <h2 id="surgery-explanation-title"></h2>
+                    <div id="surgery-explanation-content"></div>
                 </div>
             </div>
-        `).join('');
-        document.getElementById('healthcheck-explanation-title').innerHTML = d.explanation.title;
-        document.getElementById('healthcheck-explanation-content').innerHTML = d.explanation.content.map(p => `<p>${p}</p>`).join('');
-    }
+        </div>
 
-    // 4. 스케일링 탭
-    if (data.scaling) {
-        const d = data.scaling;
-        document.getElementById('scaling-header-title').innerHTML = d.headerTitle;
-        document.getElementById('scaling-header-subtitle').innerHTML = d.headerSubtitle;
+        <div id="content-addons" class="content-panel info-page">
+            <div class="container">
+                 <header>
+                    <h1 id="addons-header-title"></h1>
+                    <p id="addons-header-subtitle"></p>
+                 </header>
+                 <div class="cost-grid" id="addons-costs"></div>
+                 <div class="explanation-box" style="background:#e1f5fe;border-left-color:#4fc3f7">
+                    <h2 id="addons-explanation-title"></h2>
+                    <div id="addons-explanation-content"></div>
+                 </div>
+            </div>
+        </div>
         
-        document.getElementById('scaling-pre-notice').innerHTML = `<h2>${d.preNotice.title}</h2><p>${d.preNotice.content}</p>`;
-
-        const packagesContainer = document.getElementById('scaling-packages');
-        packagesContainer.innerHTML = d.packages.map(pkg => `
-            <div class="package-card" style="border-top-color: ${pkg.borderColor};">
-                <h3 style="color: ${pkg.titleColor};">${pkg.title}</h3>
-                <ul>${pkg.items.map(item => `<li>${item}</li>`).join('')}</ul>
-                <div class="price-wrapper">
-                    <span class="original-price">${formatPrice(pkg.originalPrice, '')}</span>
-                    <span class="discount-price pulse">${formatPrice(pkg.discountPrice)}</span>
+        <div id="content-nerve" class="content-panel info-page">
+            <div class="container">
+                <header>
+                    <h1 id="nerve-header-title"></h1>
+                    <p id="nerve-header-subtitle"></p>
+                </header>
+                <div class="cost-grid" id="nerve-costs"></div>
+                <div class="explanation-box" style="background:#e3fafc;border-left-color:#66d9e8">
+                    <h2 id="nerve-explanation-title"></h2>
+                    <div id="nerve-explanation-content"></div>
                 </div>
             </div>
-        `).join('');
-        document.getElementById('scaling-explanation-title').innerHTML = d.explanation.title;
-        document.getElementById('scaling-explanation-content').innerHTML = d.explanation.content.map(p => `<p>${p}</p>`).join('');
-    }
-    
-    // 공통 카드 생성 함수
-    const createCostCard = (d, content) => {
-        const headerTitle = document.getElementById(`${content}-header-title`);
-        const headerSubtitle = document.getElementById(`${content}-header-subtitle`);
-        const costsContainer = document.getElementById(`${content}-costs`);
-        const explanationTitle = document.getElementById(`${content}-explanation-title`);
-        const explanationContent = document.getElementById(`${content}-explanation-content`);
+        </div>
 
-        if(headerTitle) headerTitle.innerHTML = d.headerTitle;
-        if(headerSubtitle) headerSubtitle.innerHTML = d.headerSubtitle;
-        if(costsContainer) {
-            costsContainer.innerHTML = d.costs.map(card => `
-                <div class="cost-card" style="border-top-color: ${card.borderColor};">
-                    <h3 style="color: ${card.titleColor};">${card.title}</h3>
-                    <p style="flex-grow:1; text-align: left; line-height:1.6;">${card.description}</p>
-                    <div class="price-wrapper" style="padding-top: 15px; margin-top: 15px;">
-                        ${card.prices.map(p => `<div class="price-item"><span class="price-label">${p.label}</span><span class="price-value">${formatPrice(p.value, ' ')}</span></div>`).join('')}
+        <div id="content-calculator" class="content-panel calculator-common">
+             <div id="Calculator-Page">
+                 <div class="capture-area">
+                    <div class="patient-info-inputs">
+                        <label for="patient-name-calc">환자 이름:</label><input type="text" id="patient-name-calc" placeholder="이름 입력">
+                        <label for="visit-date-calc">진료 날짜:</label><input type="date" id="visit-date-calc">
+                        <label for="patient-weight-calc">몸무게(kg):</label><input type="number" id="patient-weight-calc" placeholder="kg" step="0.1" style="width: 80px;">
                     </div>
-                </div>
-            `).join('');
-        }
-        if(explanationTitle) explanationTitle.innerHTML = d.explanation.title;
-        if(explanationContent) explanationContent.innerHTML = d.explanation.content.map(p => `<p>${p}</p>`).join('');
-    };
-    
-    // 5. 수술비용 탭
-    if (data.surgery) createCostCard(data.surgery, 'surgery');
+                    <h2 class="dynamic-chart-title"></h2>
+                    <div class="main-container">
+                        <div class="table-section">
+                            <h2>우 상악 & 하악</h2>
+                            <h3 class="table-title-upper-right">우 상악 (100번대)</h3>
+                            <table class="table-upper-right">
+                                <colgroup><col style="width: 12%;"><col style="width: 8%;"><col style="width: 35%;"><col style="width: 25%;"><col style="width: 15%;"><col style="width: 5%;"></colgroup>
+                                <thead><tr><th></th><th>번호</th><th>특이사항</th><th>시술 선택</th><th>비용</th><th></th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                            <h3 class="table-title-lower-right">우 하악 (400번대)</h3>
+                            <table class="table-lower-right">
+                                <colgroup><col style="width: 12%;"><col style="width: 8%;"><col style="width: 35%;"><col style="width: 25%;"><col style="width: 15%;"><col style="width: 5%;"></colgroup>
+                                <thead><tr><th></th><th>번호</th><th>특이사항</th><th>시술 선택</th><th>비용</th><th></th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="table-section">
+                            <h2>좌 상악 & 하악</h2>
+                            <h3 class="table-title-upper-left">좌 상악 (200번대)</h3>
+                            <table class="table-upper-left">
+                                <colgroup><col style="width: 12%;"><col style="width: 8%;"><col style="width: 35%;"><col style="width: 25%;"><col style="width: 15%;"><col style="width: 5%;"></colgroup>
+                                <thead><tr><th></th><th>번호</th><th>특이사항</th><th>시술 선택</th><th>비용</th><th></th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                            <h3 class="table-title-lower-left">좌 하악 (300번대)</h3>
+                            <table class="table-lower-left">
+                                <colgroup><col style="width: 12%;"><col style="width: 8%;"><col style="width: 35%;"><col style="width: 25%;"><col style="width: 15%;"><col style="width: 5%;"></colgroup>
+                                <thead><tr><th></th><th>번호</th><th>특이사항</th><th>시술 선택</th><th>비용</th><th></th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="additional-treatments">
+                        <h2>💉 추가 처치 내역</h2>
+                        <div class="additional-treatments-container">
+                             <div class="additional-treatments-section" id="additional-treatments-left">
+                                 </div>
+                             <div class="additional-treatments-section" id="additional-treatments-right">
+                                 </div>
+                        </div>
+                    </div>
+                    <div class="total-cost-container">
+                        <h2>💰 전체 비용 내역</h2>
+                        <table class="cost-summary-table">
+                            <tbody>
+                                <tr>
+                                    <td>🦷 치과 수술 비용</td>
+                                    <td class="dental-surgery-cost-display">₩0</td>
+                                </tr>
+                                <tr>
+                                    <td>➕ 추가 처치 비용</td>
+                                    <td class="additional-treatment-cost-display">₩0</td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td>합계</td>
+                                    <td class="total-cost-display">₩0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="treatment-summary-section">
+                        <h2 class="summary-title">📊 우리 <span class="summary-patient-name">환자</span>의 오늘 치료 기록 요약 📊</h2>
+                        <div class="summary-container">
+                            <div class="summary-box"><h3>🔥 발치/수술</h3><table class="extraction-summary-table summary-table"><tbody></tbody></table></div>
+                            <div class="summary-box"><h3>🩹 치주/보존 치료</h3><table class="treatment-summary-table summary-table"><tbody></tbody></table></div>
+                        </div>
+                    </div>
+                 </div>
+                <div class="export-container"><button class="save-data-btn">💾 기록 저장</button><button class="load-data-btn">📂 기록 불러오기</button><input type="file" class="load-data-input" accept=".json" style="display: none;"><button class="export-png-btn">🖼️ PNG 저장</button><button class="export-pdf-btn">📄 PDF 저장</button></div>
+            </div>
+        </div>
 
-    // 6. 추가처치 탭
-    if (data.addons) createCostCard(data.addons, 'addons');
-    
-    // 7. 신경 및 보존 치료 탭
-    if (data.nerve) createCostCard(data.nerve, 'nerve');
-}
-
-function setupPageNavigation(hospitalData) {
-    const navTabs = document.querySelectorAll('.nav-tab');
-    const contentPanels = document.querySelectorAll('.content-panel');
-    let calculatorInitialized = false;
-
-    function showContent(targetId) {
-        contentPanels.forEach(panel => panel.classList.remove('active'));
-        navTabs.forEach(tab => tab.classList.remove('active'));
+        <div id="content-estimate" class="content-panel calculator-common">
+             <div id="Estimate-Page">
+                <div class="capture-area"></div>
+                <div class="export-container"><button class="export-png-btn">🖼️ PNG 저장</button><button class="export-pdf-btn">📄 PDF 저장</button></div>
+             </div>
+        </div>
         
-        const targetContent = document.getElementById(targetId);
-        if (targetContent) {
-            targetContent.classList.add('active');
-        }
-        
-        const activeTab = document.querySelector(`.nav-tab[data-target="${targetId}"]`);
-        if (activeTab) {
-            activeTab.classList.add('active');
-        }
+        <div id="content-guardian-report" class="content-panel calculator-common">
+            <div id="GuardianReport-Page">
+                <div class="capture-area"></div>
+                <div class="export-container"><button class="export-png-btn">🖼️ PNG 저장</button><button class="export-pdf-btn">📄 PDF 저장</button></div>
+            </div>
+        </div>
 
-        if (targetId === 'content-calculator' && !calculatorInitialized) {
-            initCalculator();
-            calculatorInitialized = true;
-        }
-    }
-
-    navTabs.forEach(tab => {
-        tab.addEventListener('click', (event) => {
-            event.preventDefault();
-            const targetId = tab.dataset.target;
-            
-            if (targetId === 'content-estimate' || targetId === 'content-guardian-report') {
-                copyCalculatorDataTo(targetId);
-            }
-            showContent(targetId);
-        });
-    });
-
-    const initialTarget = window.location.hash.substring(1) || 'content-main';
-    showContent(initialTarget);
-}
-
-// ===================================================================================
-// ============================= 치료비 계산기 로직 (수정됨) ========================
-// ===================================================================================
-function initCalculator() {
-    const page = document.querySelector('#Calculator-Page');
-    if (!page) return;
-
-    const toothData = {
-        'upper-right': [ { id: '101', type: '앞니', roots: 1 }, { id: '102', type: '앞니', roots: 1 }, { id: '103', type: '앞니', roots: 1 }, { id: '104', type: '송곳니', roots: 1, special: 'canineUpper' }, { id: '106', type: '작은<br>어금니', roots: 1 }, { id: '107', type: '작은<br>어금니', roots: 2 }, { id: '108', type: '작은<br>어금니', roots: 3, special: 'carnassialUpper' }, { id: '109', type: '큰<br>어금니', roots: 1 } ],
-        'lower-right': [ { id: '401', type: '앞니', roots: 1 }, { id: '402', type: '앞니', roots: 1 }, { id: '403', type: '앞니', roots: 1 }, { id: '404', type: '송곳니', roots: 1, special: 'canineLower' }, { id: '407', type: '작은<br>어금니', roots: 2 }, { id: '408', type: '작은<br>어금니', roots: 2 }, { id: '409', type: '큰<br>어금니', roots: 2, special: 'molarLower' } ],
-        'upper-left': [ { id: '201', type: '앞니', roots: 1 }, { id: '202', type: '앞니', roots: 1 }, { id: '203', type: '앞니', roots: 1 }, { id: '204', type: '송곳니', roots: 1, special: 'canineUpper' }, { id: '206', type: '작은<br>어금니', roots: 1 }, { id: '207', type: '작은<br>어금니', roots: 2 }, { id: '208', type: '작은<br>어금니', roots: 3, special: 'carnassialUpper' }, { id: '209', type: '큰<br>어금니', roots: 1 } ],
-        'lower-left': [ { id: '301', type: '앞니', roots: 1 }, { id: '302', type: '앞니', roots: 1 }, { id: '303', type: '앞니', roots: 1 }, { id: '304', type: '송곳니', roots: 1, special: 'canineLower' }, { id: '307', type: '작은<br>어금니', roots: 2 }, { id: '308', type: '작은<br>어금니', roots: 2 }, { id: '309', type: '큰<br>어금니', roots: 2, special: 'molarLower' } ]
-    };
-
-    const getWeight = () => parseFloat(document.getElementById('patient-weight-calc').value) || 0;
+    </div>
     
-    function populateProcedureSelect(select, tooth) {
-        select.innerHTML = '';
-        const weight = getWeight();
-        
-        const procedures = [
-            { category: '기본', text: '--- 시술 선택 ---', value: '0' },
-            { category: '구분선', text: '▼ 상태 모니터링' },
-            { category: '모니터링', text: '집중관리 / 모니터링', value: 'monitoring', cost: 0 },
-            { category: '구분선', text: '▼ 기본/수술 발치' },
-            { category: '발치', text: '기본 발치', value: 'basic_extraction_1', cost: 22000, roots: [1] },
-            { category: '발치', text: '기본 발치 (뿌리 2개)', value: 'basic_extraction_2', cost: 66000, roots: [2,3] },
-            { category: '발치', text: '수술 발치', value: 'surgical_extraction_1', cost: 44000, roots: [1] },
-            { category: '발치', text: '수술 발치 (뿌리 2개)', value: 'surgical_extraction_2', cost: 120000, roots: [2] },
-            { category: '발치', text: '수술 발치 (뿌리 3개)', value: 'surgical_extraction_3', cost: 220000, roots: [3], exclude_special: ['molarLower'] },
-            { category: '구분선', text: '▼ 특수 발치' },
-            { category: '발치', text: '고양이 대구치(M1) 기본', value: 'molar_basic', cost: 88000, special: ['molarLower'] },
-            { category: '발치', text: '고양이 대구치(M1) 수술', value: 'molar_surgical', cost: 165000, special: ['molarLower'] },
-            { category: '발치', text: '열육치(PM4) 수술', value: 'carnassial_surgical', cost: 220000, special: ['carnassialUpper'] },
-            { category: '발치', text: '상악 송곳니 수술', value: 'canine_upper_surgical', cost: 220000, special: ['canineUpper'] },
-            { category: '발치', text: '하악 송곳니 수술', value: 'canine_lower_surgical', cost: 270000, special: ['canineLower'] },
-            { category: '구분선', text: '▼ 유치 발치' },
-            { category: '발치', text: '유치 발치', value: 'deciduous_basic', cost: 22000 },
-            { category: '발치', text: '유치 송곳니 (X-ray)', value: 'deciduous_canine_xray', cost: 33000, special: ['canineUpper', 'canineLower'] },
-            { category: '발치', text: '유치 송곳니 (수술)', value: 'deciduous_canine_surgical', cost: 66000, special: ['canineUpper', 'canineLower'] },
-            { category: '구분선', text: '▼ 치아흡수병변(FORL)' },
-            { category: '흡수병변', text: 'FORL 치관절제술', value: 'forl_crown_amputation', cost: 44000 },
-            { category: '흡수병변', text: 'FORL 흡수치근 제거 (1개)', value: 'forl_root_extraction_1', cost: 88000, roots: [1] },
-            { category: '흡수병변', text: 'FORL 흡수치근 제거 (2개)', value: 'forl_root_extraction_2', cost: 140000, roots: [2,3] },
-            { category: '구분선', text: '▼ 잔존치근/기타' },
-            { category: '기타수술', text: '잔존치근 제거 (1개)', value: 'residual_root_1', cost: 77000 },
-            { category: '기타수술', text: '잔존치근 제거 (2개)', value: 'residual_root_2', cost: 120000 },
-            { category: '기타수술', text: '잇몸 종양 제거 (<1cm)', value: 'gingival_tumor_small', cost: 110000 },
-            { category: '기타수술', text: '함치성 치낭 제거', value: 'dentigerous_cyst', cost: 280000 },
-            { category: '구분선', text: '▼ 신경/보존 치료' },
-            { category: '보존', text: 'VPT (신경살리기)', value: 'vpt', cost: 450000, special: ['canineUpper', 'canineLower'] },
-            { category: '보존', text: '신경치료', value: 'root_canal', cost: 770000, special: ['canineUpper', 'canineLower'] },
-            { category: '보존', text: '레진 (작은 손상)', value: 'resin_small', cost: 55000 },
-            { category: '보존', text: '레진 (송곳니)', value: 'resin_canine', cost: 110000, special: ['canineUpper', 'canineLower'] },
-            { category: '구분선', text: '▼ 치주 치료' },
-            { category: '치주', text: '미노클린 연고', value: 'minocline_ointment', cost: 22000 },
-            { category: '치주', text: '치근 활택술', value: 'root_planing', cost: 45000 },
-            { category: '치주', text: '개방 치근활택술', value: 'open_root_planing', cost: 220000 },
-        ];
+    <script src="script.js" defer></script>
 
-        procedures.forEach(p => {
-            let shouldAdd = false;
-            if (p.category === '기본' || p.category === '구분선' || p.category === '모니터링') {
-                shouldAdd = true;
-            } else if (p.special) {
-                if (Array.isArray(p.special) && p.special.includes(tooth.special)) shouldAdd = true;
-            } else if (p.roots) {
-                if (Array.isArray(p.roots) && p.roots.includes(tooth.roots) && (!p.exclude_special || !p.exclude_special.includes(tooth.special))) shouldAdd = true;
-            } else { 
-                shouldAdd = true;
-            }
-
-            if (shouldAdd) {
-                const opt = new Option(p.text, p.value);
-                if (p.category === '구분선' || p.value === '0') {
-                    opt.disabled = true;
-                } else {
-                    opt.dataset.cost = p.cost;
-                    opt.dataset.category = p.category;
-                }
-                select.add(opt);
-            }
-        });
-    }
-    
-    function addSubRow(parentRow) {
-        const tableBody = parentRow.parentNode;
-        const newSubRow = parentRow.cloneNode(true); 
-        
-        newSubRow.querySelector('.notes').value = '';
-        const newSelect = newSubRow.querySelector('.procedure-select');
-        newSelect.selectedIndex = 0;
-        newSubRow.querySelector('.cost').textContent = formatPrice(0, '₩');
-        newSubRow.classList.remove('row-highlight');
-        
-        const actionCell = newSubRow.querySelector('td:last-child');
-        actionCell.innerHTML = ''; 
-        const removeButton = document.createElement('button');
-        removeButton.textContent = '–';
-        removeButton.style.cssText = 'background-color: #dc3545; color: white; border: none; width: 22px; height: 22px; border-radius: 50%; cursor: pointer;';
-        removeButton.onclick = () => {
-            newSubRow.remove();
-            updateAllCalculations();
-        };
-        actionCell.appendChild(removeButton);
-
-        const typeCell = newSubRow.querySelector('.tooth-type');
-        if(typeCell) typeCell.remove();
-        const idCell = newSubRow.querySelector('.tooth-id-cell');
-        if(idCell) idCell.remove();
-        
-        parentRow.parentNode.insertBefore(newSubRow, parentRow.nextSibling);
-
-        newSelect.addEventListener('change', () => {
-            const selected = newSelect.options[newSelect.selectedIndex];
-            newSubRow.querySelector('.cost').textContent = formatPrice(selected.dataset.cost || 0, '₩');
-            updateAllCalculations();
-        });
-        newSubRow.querySelector('.notes').addEventListener('input', () => updateAllCalculations());
-        updateRowHighlight(newSubRow);
-    }
-
-    function createMainRow(tooth) {
-        const row = document.createElement('tr');
-        row.dataset.toothId = tooth.id;
-        
-        row.innerHTML = `
-            <td class="tooth-id-cell">${tooth.id}</td>
-            <td><input type="text" class="notes"></td>
-            <td><select class="procedure-select"></select></td>
-            <td class="cost">${formatPrice(0, '₩')}</td>
-            <td><button class="add-sub-row-btn" style="width: 22px; height: 22px; border-radius: 50%; border: 1px solid #ccc; cursor: pointer;">+</button></td>
-        `;
-
-        const procedureSelect = row.querySelector('.procedure-select');
-        const notesInput = row.querySelector('.notes');
-        const costCell = row.querySelector('.cost');
-        
-        populateProcedureSelect(procedureSelect, tooth);
-
-        procedureSelect.addEventListener('change', () => {
-            const selected = procedureSelect.options[procedureSelect.selectedIndex];
-            costCell.textContent = formatPrice(selected.dataset.cost || 0, '₩');
-            updateAllCalculations();
-        });
-        
-        notesInput.addEventListener('input', updateAllCalculations);
-        row.querySelector('.add-sub-row-btn').addEventListener('click', () => addSubRow(row));
-
-        return row;
-    }
-
-    function updateRowHighlight(row) {
-        if (!row) return;
-        const notes = row.querySelector('.notes');
-        const select = row.querySelector('.procedure-select');
-        const idCell = row.querySelector('.tooth-id-cell');
-        
-        const selectedOption = select ? select.options[select.selectedIndex] : null;
-        let isHighlighted = (notes && notes.value.trim() !== '') || (select && select.value !== '0');
-        row.classList.toggle('row-highlight', isHighlighted);
-
-        if (idCell) { 
-            idCell.style.backgroundColor = '';
-            idCell.style.color = '';
-            idCell.style.fontWeight = '';
-            
-            if (isHighlighted && selectedOption && selectedOption.value !== '0') {
-                 const category = selectedOption.dataset.category;
-                 const colorMap = {
-                    '발치': '#ffcdd2', '흡수병변': '#ffe0b2', '기타수술': '#d1c4e9',
-                    '보존': '#b2dfdb', '치주': '#c8e6c9', '모니터링': '#f50057'
-                 };
-                 idCell.style.backgroundColor = colorMap[category] || '';
-                 if (category === '모니터링') {
-                     idCell.style.color = 'white';
-                     idCell.style.fontWeight = 'bold';
-                 }
-            }
-        }
-    }
-    
-    function populateAdditionalTreatments() {
-        const leftTableContainer = document.getElementById('additional-treatments-left');
-        const rightTableContainer = document.getElementById('additional-treatments-right');
-        leftTableContainer.innerHTML = '';
-        rightTableContainer.innerHTML = '';
-
-        const getCostByWeight = (costs, weight) => {
-            if (weight < 5) return costs[0];
-            if (weight < 10) return costs[1];
-            if (weight < 15) return costs[2] || costs[costs.length - 1];
-            return costs[costs.length - 1];
-        };
-
-        const treatments = [
-            { side: 'left', group: '😴 마취 관련', items: [
-                { name: '마취 시간 연장', options: [
-                    { text: '30분', value: 'ext_30', cost: w => getCostByWeight([45000, 55000, 66000], w) },
-                    { text: '60분', value: 'ext_60', cost: w => getCostByWeight([45000, 55000, 66000], w) * 2 },
-                ]},
-                { name: '국소 마취', options: [
-                    { text: '1 부위', value: 'local_1', cost: w => getCostByWeight([10000, 12000], w) },
-                    { text: '2 부위', value: 'local_2', cost: w => getCostByWeight([15000, 17000], w) },
-                    { text: '3 부위', value: 'local_3', cost: w => getCostByWeight([18000, 20000], w) },
-                    { text: '4 부위', value: 'local_4', cost: w => getCostByWeight([20000, 22000], w) },
-                ]},
-                { name: '도입마취 변경(알팍산)', options: [{ text: '선택', value: 'alfaxan', cost: w => getCostByWeight([33000, 44000, 55000], w) }]},
-            ]},
-            { side: 'left', group: '🪄 통증 관리', items: [
-                { name: '마약성 진통 주사', options: [{ text: '선택', value: 'opioid_inj', cost: w => getCostByWeight([20000, 25000, 26000], w) }]},
-                { name: '24시 지속 진통 주사', options: [{ text: '선택', value: '24h_pain_inj', cost: w => getCostByWeight([15000, 20000, 25000], w) }]},
-                { name: '마약성 진통 패치', options: [
-                    { text: '5ug', value: 'patch_5', cost: () => 40000 },
-                    { text: '10ug', value: 'patch_10', cost: () => 50000 },
-                    { text: '20ug', value: 'patch_20', cost: () => 60000 },
-                ]},
-            ]},
-            { side: 'right', group: '🚀 회복 부스터', items: [
-                { name: '항생/소염 주사 (일반)', options: [{ text: '선택', value: 'abx_basic', cost: w => getCostByWeight([11000, 13000], w) }]},
-                { name: '항생 주사 (1주 지속)', options: [{ text: '선택', value: 'abx_1w', cost: w => getCostByWeight([15000, 18000], w) }]},
-                { name: '레이저 치료', options: [
-                    { text: '국소', value: 'laser_local', cost: w => getCostByWeight([20000, 23000], w) },
-                    { text: '전체', value: 'laser_full', cost: w => getCostByWeight([25000, 28000], w) },
-                ]},
-                { name: '불소 도포', options: [{ text: '선택', value: 'fluoride', cost: w => getCostByWeight([35000, 44000], w) }]},
-                { name: '수액 첨가제 (간회복)', options: [{ text: '선택', value: 'iv_liver', cost: () => 11000 }]},
-            ]},
-            { side: 'right', group: '🏡 홈케어 용품', items: [
-                { name: '내복약 (1일분)', options: [
-                    { text: '1일', value: 'med_1', cost: w => getCostByWeight([3300, 3800], w) * 1 },
-                    { text: '3일', value: 'med_3', cost: w => getCostByWeight([3300, 3800], w) * 3 },
-                    { text: '7일', value: 'med_7', cost: w => getCostByWeight([3300, 3800], w) * 7 },
-                ]},
-                { name: '헥시딘 스프레이', options: [{ text: '구매', value: 'hexidine_spray', cost: () => 10000 }]},
-                { name: '항생/소염 연고', options: [{ text: '구매', value: 'abx_oint', cost: () => 15000 }]},
-                { name: '구강 유산균', options: [{ text: '구매', value: 'probiotics', cost: () => 50000 }]},
-                { name: '넥카라', options: [
-                    { text: '10cm', value: 'ecollar_10', cost: () => 10000 },
-                    { text: '13cm', value: 'ecollar_13', cost: () => 12000 },
-                    { text: '15cm', value: 'ecollar_15', cost: () => 15000 },
-                ]},
-            ]},
-        ];
-
-        const createTable = (container) => {
-            const table = document.createElement('table');
-            table.innerHTML = `<colgroup><col style="width: 35%;"><col style="width: 45%;"><col style="width: 20%;"></colgroup><thead><tr><th>항목</th><th>선택</th><th>비용</th></tr></thead><tbody></tbody>`;
-            container.appendChild(table);
-            return table.querySelector('tbody');
-        };
-
-        const leftTbody = createTable(leftTableContainer);
-        const rightTbody = createTable(rightTableContainer);
-
-        treatments.forEach(section => {
-            const targetTbody = section.side === 'left' ? leftTbody : rightTbody;
-            const groupHeader = document.createElement('tr');
-            groupHeader.innerHTML = `<td colspan="3" style="background-color: #f8f9fa; font-weight: bold;">${section.group}</td>`;
-            targetTbody.appendChild(groupHeader);
-            
-            section.items.forEach(item => {
-                const row = document.createElement('tr');
-                row.dataset.itemName = item.name;
-                row.innerHTML = `
-                    <td>${item.name}</td>
-                    <td><select><option value="0">-- 선택 --</option></select></td>
-                    <td class="cost">${formatPrice(0, '₩')}</td>
-                `;
-                const select = row.querySelector('select');
-                item.options.forEach(opt => {
-                    select.add(new Option(opt.text, opt.value));
-                });
-                
-                targetTbody.appendChild(row);
-
-                select.addEventListener('change', () => {
-                    const weight = getWeight();
-                    const selectedValue = select.value;
-                    row.classList.toggle('selected-row', selectedValue !== '0');
-                    const costCell = row.querySelector('.cost');
-
-                    if (selectedValue === '0') {
-                        costCell.textContent = formatPrice(0, '₩');
-                        costCell.dataset.cost = 0;
-                    } else {
-                        const selectedOption = item.options.find(o => o.value === selectedValue);
-                        if(selectedOption && selectedOption.cost) {
-                            const newCost = selectedOption.cost(weight);
-                            costCell.textContent = formatPrice(newCost, '₩');
-                            costCell.dataset.cost = newCost;
-                        }
-                    }
-                    updateAllCalculations();
-                });
-            });
-        });
-    }
-
-    function updateAllCalculations() {
-        let dentalCost = 0;
-        page.querySelectorAll('.main-container tbody tr').forEach(row => {
-            const select = row.querySelector('.procedure-select');
-            if(select) {
-                const selected = select.options[select.selectedIndex];
-                 if (selected && selected.dataset.cost) {
-                    dentalCost += Number(selected.dataset.cost);
-                }
-            }
-        });
-        
-        let additionalCost = 0;
-        page.querySelectorAll('.additional-treatments-section .cost').forEach(costCell => {
-            additionalCost += Number(costCell.dataset.cost || 0);
-        });
-
-        page.querySelectorAll('.main-container tbody tr').forEach(row => updateRowHighlight(row));
-
-        const totalCost = dentalCost + additionalCost;
-        const dentalCostDisplay = page.querySelector('.dental-surgery-cost-display');
-        const additionalCostDisplay = page.querySelector('.additional-treatment-cost-display');
-        const totalCostDisplay = page.querySelector('.total-cost-display');
-
-        if(dentalCostDisplay) dentalCostDisplay.textContent = formatPrice(dentalCost, '₩');
-        if(additionalCostDisplay) additionalCostDisplay.textContent = formatPrice(additionalCost, '₩');
-        if(totalCostDisplay) totalCostDisplay.textContent = formatPrice(totalCost, '₩');
-        
-        updateSummary();
-    }
-    
-    function updateSummary() {
-      // 요약 테이블 업데이트 로직 (생략, 기존 로직 유지)
-    }
-
-    Object.entries(toothData).forEach(([tableKey, teeth]) => {
-        const tableBody = page.querySelector(`.table-${tableKey} tbody`);
-        if (!tableBody) return;
-        tableBody.innerHTML = '';
-        
-        const addedTypes = new Set();
-        teeth.forEach(tooth => {
-            const row = createMainRow(tooth);
-            
-            if (tooth.type) {
-                const typeCell = document.createElement('td');
-                typeCell.classList.add('tooth-type');
-                typeCell.innerHTML = tooth.type;
-
-                if (!addedTypes.has(tooth.type)) {
-                    const rowSpanCount = teeth.filter(t => t.type === tooth.type).length;
-                    if (rowSpanCount > 1) {
-                        typeCell.rowSpan = rowSpanCount;
-                    }
-                    row.insertBefore(typeCell, row.firstChild);
-                    addedTypes.add(tooth.type);
-                }
-            }
-            tableBody.appendChild(row);
-        });
-    });
-    
-    populateAdditionalTreatments();
-    
-    document.getElementById('patient-weight-calc').addEventListener('input', () => {
-        populateAdditionalTreatments();
-        updateAllCalculations();
-    });
-
-    addExportListeners('#Calculator-Page');
-}
-
-// ===================================================================================
-// ============================= 기타 헬퍼 함수 =============================
-// ===================================================================================
-
-function copyCalculatorDataTo(targetId) {
-    const sourceArea = document.querySelector('#Calculator-Page .capture-area');
-    const targetAreaContainer = document.getElementById(targetId);
-    if (!sourceArea || !targetAreaContainer) return;
-
-    const targetArea = targetAreaContainer.querySelector('.capture-area');
-    if(!targetArea) return;
-    
-    const clonedArea = sourceArea.cloneNode(true);
-    
-    clonedArea.querySelectorAll('input, select, button').forEach(el => {
-        const parent = el.parentNode;
-        if (el.tagName.toLowerCase() === 'select') {
-            const selectedText = el.options[el.selectedIndex].text;
-            if (el.value !== "0" && el.value !== 'disabled') {
-                parent.innerHTML = selectedText;
-            } else {
-                 parent.innerHTML = '-';
-            }
-        } else if (el.tagName.toLowerCase() === 'input' && (el.type === 'text' || el.type === 'number' || el.type === 'date')) {
-            const value = el.value || '-';
-            parent.innerHTML = value;
-        } else if(el.tagName.toLowerCase() === 'button') {
-            el.remove();
-        }
-    });
-    
-    clonedArea.querySelectorAll('.additional-treatments-section tr').forEach(row => {
-        if (!row.classList.contains('selected-row') && !row.querySelector('td[colspan="3"]')) {
-            row.style.display = 'none';
-        }
-    });
-    
-    clonedArea.querySelectorAll('tbody tr').forEach(row => {
-        const select = row.querySelector('.procedure-select');
-        const notes = row.querySelector('.notes');
-        if (select && select.value === '0' && notes && notes.textContent === '-') {
-             // 비어있는 서브 행 제거
-             if (!row.querySelector('.tooth-id-cell')) row.style.display = 'none';
-        }
-    });
-
-
-    targetArea.innerHTML = '';
-    targetArea.appendChild(clonedArea);
-    
-    addExportListeners(`#${targetId}`);
-}
-
-function addExportListeners(pageSelector) {
-    const page = document.querySelector(pageSelector);
-    if (!page) return;
-
-    const captureArea = page.querySelector('.capture-area');
-    const patientNameInput = document.querySelector('#patient-name-calc');
-    if (!captureArea) return;
-
-    const getFilename = () => {
-        const patientName = (patientNameInput ? patientNameInput.value : '환자') || '환자';
-        const date = new Date().toISOString().slice(0, 10);
-        return `${patientName}_치과치료내역_${date}`;
-    };
-
-    page.querySelector('.export-png-btn')?.addEventListener('click', () => {
-        html2canvas(captureArea, { scale: 2 }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = `${getFilename()}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        });
-    });
-
-    page.querySelector('.export-pdf-btn')?.addEventListener('click', () => {
-        const { jsPDF } = window.jspdf;
-        html2canvas(captureArea, { scale: 2, windowWidth: captureArea.scrollWidth, windowHeight: captureArea.scrollHeight }).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = pdf.internal.pageSize.getHeight();
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            const ratio = canvasWidth / canvasHeight;
-            const imgHeight = pdfWidth / ratio;
-            let heightLeft = imgHeight;
-            let position = 0;
-
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
-            heightLeft -= pdfHeight;
-
-            while (heightLeft > 0) {
-                position = heightLeft - imgHeight;
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-                heightLeft -= pdfHeight;
-            }
-            pdf.save(`${getFilename()}.pdf`);
-        });
-    });
-    
-    const saveDataBtn = page.querySelector('.save-data-btn');
-    const loadDataBtn = page.querySelector('.load-data-btn');
-    const loadDataInput = page.querySelector('.load-data-input');
-
-    if(saveDataBtn) {
-        // 데이터 저장/불러오기 로직 (생략, 필요시 추가)
-    }
-}
+</body>
+</html>
