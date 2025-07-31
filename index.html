@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💖고양이 치과 특화 금호동물병원💖</title>
+    <title>💖치과 특화 금호동물병원💖</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
@@ -58,9 +58,10 @@
         }
         /* 각 탭 활성화 시 색상 */
         #tab-main.active { background: linear-gradient(135deg, #81c7f5, #a092ed); }
+        #tab-process.active { background: linear-gradient(135deg, #f6d365, #fda085); }
         #tab-healthcheck.active { background: linear-gradient(135deg, #69f0ae, #00e5ff); }
         #tab-scaling.active { background: linear-gradient(135deg, #ff9a9e, #a1c4fd); }
-        #tab-extraction.active { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
+        #tab-surgery.active { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
         #tab-addons.active { background: linear-gradient(135deg, #f8bbd0, #b39ddb); }
         #tab-nerve.active { background: linear-gradient(135deg, #ff9a44, #ff5e62); }
         #tab-calculator.active, #tab-estimate.active, #tab-guardian-report.active { background: linear-gradient(135deg, #fbc2eb, #a6c1ee); }
@@ -80,7 +81,7 @@
         .info-page .cost-card:hover, .info-page .package-card:hover { transform: translateY(-8px); }
         .info-page .cost-card h3, .info-page .package-card h3, .info-page .info-card h3 { font-size: 1.6em; margin: 0 0 20px 0; text-align: center; font-weight: 700; }
         .info-page ul { list-style: none; padding: 0; flex-grow: 1; }
-        .info-page .price-wrapper { text-align: center; border-top: 2px dashed #eee; padding-top: 20px; }
+        .info-page .price-wrapper { text-align: center; border-top: 2px dashed #eee; padding-top: 20px; margin-top: auto; }
         .info-page .price-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 1.1em; }
         .info-page .price-label { color: #444; }
         .info-page .price-value { font-weight: 700; }
@@ -106,22 +107,16 @@
 
         /* --- 페이지별 고유 스타일 --- */
         #content-main header { background: linear-gradient(135deg, #81c7f5, #a092ed); }
+        #content-process header { background: linear-gradient(135deg, #f6d365, #fda085); }
         #content-healthcheck header { background: linear-gradient(135deg, #69f0ae, #00e5ff); }
         #content-scaling header { background: linear-gradient(135deg, #ff9a9e, #a1c4fd); }
-        #content-extraction header { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
+        #content-surgery header { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
         #content-addons header { background: linear-gradient(135deg, #f8bbd0, #b39ddb); }
         #content-nerve header { background: linear-gradient(135deg, #ff9a44, #ff5e62); }
 
-        #content-extraction #card-root1 { border-top-color: #ff7eb9; } #content-extraction #card-root1 h3 { color: #ff7eb9; }
-        #content-extraction #card-root2 { border-top-color: #ff922b; } #content-extraction #card-root2 h3 { color: #ff922b; }
-        #content-extraction #card-root3 { border-top-color: #f76707; } #content-extraction #card-root3 h3 { color: #f76707; }
-        #content-extraction #card-canine { border-top-color: #22b8cf; } #content-extraction #card-canine h3 { color: #22b8cf; }
-        #content-extraction #card-molar { border-top-color: #845ef7; } #content-extraction #card-molar h3 { color: #845ef7; }
-        #content-extraction #card-forl { border-top-color: #f06595; } #content-extraction #card-forl h3 { color: #f06595; }
-        #content-extraction #card-remains { border-top-color: #66d9e8; } #content-extraction #card-remains h3 { color: #66d9e8; }
-        #content-extraction .price-value { color: #e64980; font-size: 1.2em; }
-        #content-extraction .explanation-box { background: #fff0f6; border-left-color: #ff87c2; }
-        #content-extraction .explanation-box h2 { color: #c2255c; }
+        #content-surgery .price-value { color: #e64980; font-size: 1.2em; }
+        #content-surgery .explanation-box { background: #fff0f6; border-left-color: #ff87c2; }
+        #content-surgery .explanation-box h2 { color: #c2255c; }
         
         /* --- 계산기 페이지 스타일 --- */
         .calculator-common .capture-area { background-color: #fff; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6;}
@@ -178,17 +173,36 @@
         .calculator-common .export-container button.save-data-btn:hover { background-color: #218838; }
         .calculator-common .export-container button.load-data-btn { background-color: #ffc107; color: #212529; }
         .calculator-common .export-container button.load-data-btn:hover { background-color: #e0a800; }
+        
+        /* 추가 처치 내역 2단 레이아웃 */
+        .calculator-common .additional-treatments-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .calculator-common .additional-treatments-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        .calculator-common .additional-treatments-section table {
+            table-layout: fixed;
+        }
+        .calculator-common .additional-treatments-section .selected-row > td {
+            background-color: #e9ecef;
+        }
     </style>
 </head>
 <body>
 
     <nav class="dashboard-nav">
         <a href="#" class="nav-tab" id="tab-main" data-target="content-main">💖 병원소개</a>
+        <a href="#" class="nav-tab" id="tab-process" data-target="content-process">💡 수술과정</a>
         <a href="#" class="nav-tab" id="tab-healthcheck" data-target="content-healthcheck">🩺 건강검진</a>
         <a href="#" class="nav-tab" id="tab-scaling" data-target="content-scaling">🦷 스케일링</a>
-        <a href="#" class="nav-tab" id="tab-extraction" data-target="content-extraction">😿 발치비용</a>
+        <a href="#" class="nav-tab" id="tab-surgery" data-target="content-surgery">😿 수술비용</a>
         <a href="#" class="nav-tab" id="tab-addons" data-target="content-addons">💊 추가처치</a>
-        <a href="#" class="nav-tab" id="tab-nerve" data-target="content-nerve">❤️‍🩹 신경치료</a>
+        <a href="#" class="nav-tab" id="tab-nerve" data-target="content-nerve">❤️‍🩹 신경 및 보존 치료</a>
         <a href="#" class="nav-tab" id="tab-calculator" data-target="content-calculator">🧮 치료비 계산기</a>
         <a href="#" class="nav-tab" id="tab-estimate" data-target="content-estimate">📄 예상비용 안내</a>
         <a href="#" class="nav-tab" id="tab-guardian-report" data-target="content-guardian-report">❤️ 보호자용 치료내역</a>
@@ -202,36 +216,20 @@
                     <h1 id="main-header-title"></h1>
                     <p id="main-header-subtitle"></p>
                 </header>
-                <main>
-                    <section class="info-section">
-                        <h2>🏥 병원 안내 🏥</h2>
-                        <div class="info-grid">
-                            <div class="info-card" style="border-top:none;">
-                                <h3>📍 찾아오시는 길</h3>
-                                <p id="main-address"></p>
-                            </div>
-                            <div class="info-card" style="border-top:none;">
-                                <h3>☎️ 연락처</h3>
-                                <p id="main-phone"></p>
-                            </div>
-                            <div class="info-card" style="grid-column:1/-1; border-top:none;">
-                                <h3>⏰ 진료 시간</h3>
-                                <ul id="main-hours"></ul>
-                            </div>
-                            <div class="info-card" style="grid-column:1/-1; border-top:none;">
-                                <h3>🅿️ 주차 안내 (무료!)</h3>
-                                <p>건물 뒷편에 주차장이 있어요!</p>
-                                <ul id="main-parking"></ul>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="pride-section" id="main-pride" style="background:#e3f2fd; padding: 25px; border-radius: 20px; margin-top: 30px;"></section>
-                    <section class="important-notice" style="margin-top: 30px;">
-                        <h2 id="main-notice-title"></h2>
-                        <ol id="main-notice-list"></ol>
-                    </section>
-                </main>
+                <main id="main-content-area">
+                    </main>
                 <footer id="main-footer"></footer>
+            </div>
+        </div>
+
+        <div id="content-process" class="content-panel info-page">
+            <div class="container">
+                <header>
+                    <h1 id="process-header-title"></h1>
+                    <p id="process-header-subtitle"></p>
+                </header>
+                <main id="process-content-area">
+                    </main>
             </div>
         </div>
 
@@ -241,8 +239,10 @@
                     <h1 id="healthcheck-header-title"></h1>
                     <p id="healthcheck-header-subtitle"></p>
                  </header>
+                 <div class="important-notice" id="healthcheck-pre-notice" style="border-left-color:#81d4fa; background:#e1f5fe;">
+                    </div>
                  <div class="package-grid" id="healthcheck-packages"></div>
-                 <div class="explanation-box" style="background:#f1f8e9;border-left-color:#aed581">
+                 <div class="explanation-box" id="healthcheck-explanation-box" style="background:#f1f8e9;border-left-color:#aed581">
                     <h2 id="healthcheck-explanation-title"></h2>
                     <div id="healthcheck-explanation-content"></div>
                  </div>
@@ -255,6 +255,8 @@
                     <h1 id="scaling-header-title"></h1>
                     <p id="scaling-header-subtitle"></p>
                  </header>
+                 <div class="important-notice" id="scaling-pre-notice" style="border-left-color:#80cbc4; background:#e0f2f1;">
+                    </div>
                  <div class="package-grid" id="scaling-packages"></div>
                  <div class="explanation-box" style="background:#fffde7;border-left-color:#fdd835">
                     <h2 id="scaling-explanation-title"></h2>
@@ -263,16 +265,24 @@
             </div>
         </div>
         
-        <div id="content-extraction" class="content-panel info-page">
+        <div id="content-surgery" class="content-panel info-page">
             <div class="container">
                 <header>
-                    <h1 id="extraction-header-title"></h1>
-                    <p id="extraction-header-subtitle"></p>
+                    <h1 id="surgery-header-title"></h1>
+                    <p id="surgery-header-subtitle"></p>
                 </header>
-                <div class="cost-grid" id="extraction-costs"></div>
+
+                <div class="explanation-box" style="margin-bottom: 30px; background: #e3f2fd; border-left-color: #1976d2;">
+                    <h2 style="color: #1976d2;">🦷 우리 아이 치아 위치 가이드</h2>
+                    <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+                        <img src="https://github.com/ivomec/image/blob/main/%EC%B9%98%EC%8B%9D.jpg?raw=true" alt="고양이 치아 번호 안내" style="max-width: 250px; border-radius: 10px; flex-shrink: 0;">
+                        <p style="flex-grow: 1; margin: 0;">아래 비용표에 나오는 송곳니, 열육치(가장 큰 앞쪽 어금니), 대구치(가장 큰 뒤쪽 어금니) 등의 위치를 그림으로 확인해 보세요! 😊<br><br>우리 아이의 어떤 치아를 치료하는지 위치를 알면 내용을 이해하시는 데 훨씬 도움이 될 거예요.</p>
+                    </div>
+                </div>
+                <div class="cost-grid" id="surgery-costs"></div>
                 <div class="explanation-box">
-                    <h2 id="extraction-explanation-title"></h2>
-                    <div id="extraction-explanation-content"></div>
+                    <h2 id="surgery-explanation-title"></h2>
+                    <div id="surgery-explanation-content"></div>
                 </div>
             </div>
         </div>
@@ -346,7 +356,15 @@
                             </table>
                         </div>
                     </div>
-                    <div class="additional-treatments" style="margin-top:30px;"><h2>💉 추가 처치 내역</h2><table style="table-layout: fixed;"><colgroup><col style="width: 30%;"><col style="width: 55%;"><col style="width: 15%;"></colgroup><thead><tr><th>항목</th><th>선택</th><th>비용</th></tr></thead><tbody class="additional-tbody"></tbody></table></div>
+                    <div class="additional-treatments">
+                        <h2>💉 추가 처치 내역</h2>
+                        <div class="additional-treatments-container">
+                             <div class="additional-treatments-section" id="additional-treatments-left">
+                                 </div>
+                             <div class="additional-treatments-section" id="additional-treatments-right">
+                                 </div>
+                        </div>
+                    </div>
                     <div class="total-cost-container">
                         <h2>💰 전체 비용 내역</h2>
                         <table class="cost-summary-table">
@@ -369,7 +387,7 @@
                     <div class="treatment-summary-section">
                         <h2 class="summary-title">📊 우리 <span class="summary-patient-name">환자</span>의 오늘 치료 기록 요약 📊</h2>
                         <div class="summary-container">
-                            <div class="summary-box"><h3>🔥 발치 수술</h3><table class="extraction-summary-table summary-table"><tbody></tbody></table></div>
+                            <div class="summary-box"><h3>🔥 발치/수술</h3><table class="extraction-summary-table summary-table"><tbody></tbody></table></div>
                             <div class="summary-box"><h3>🩹 치주/보존 치료</h3><table class="treatment-summary-table summary-table"><tbody></tbody></table></div>
                         </div>
                     </div>
