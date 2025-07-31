@@ -523,7 +523,8 @@ function initCalculator() {
         
         const procedures = [
             { category: '기본', text: '--- 시술 선택 ---', value: '0' },
-            { category: '모니터링', text: '모니터링 (집중관리)', value: 'monitoring', cost: 0 },
+            { category: '구분선', text: '▼ 상태 모니터링' },
+            { category: '모니터링', text: '집중관리 / 모니터링', value: 'monitoring', cost: 0 },
             { category: '구분선', text: '▼ 기본/수술 발치' },
             { category: '발치', text: '기본 발치', value: 'basic_extraction_1', cost: 22000, roots: [1] },
             { category: '발치', text: '기본 발치 (뿌리 2개)', value: 'basic_extraction_2', cost: 66000, roots: [2,3] },
