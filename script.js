@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 "icon": "🧐",
                 "title": "5단계: 정밀 구강 검사 (프로빙)",
-                "description": "깨끗해진 치아를 바탕으로, 치주 탐침(프로브)이라는 전문 기구를 사용해 각 치아의 잇몸 주머니 깊이를 측정하고, 흔들림이나 출혈 여부 등을 다시 한번 세밀하게 평가합니다. 엑스레이와 종합하여 최종 치료 계획을 확정해요. 📋"
+                "description": "깨끗해진 치아를 바탕으로, 치주 탐침(프로브)라는 전문 기구를 사용해 각 치아의 잇몸 주머니 깊이를 측정하고, 흔들림이나 출혈 여부 등을 다시 한번 세밀하게 평가합니다. 엑스레이와 종합하여 최종 치료 계획을 확정해요. 📋"
             },
             {
                 "icon": "💪",
@@ -275,7 +275,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setupPageNavigation(hospitalData);
-    // initCalculator는 setupPageNavigation 내부에서 특정 탭이 활성화될 때 호출됩니다.
 });
 
 const formatPrice = (price, prefix = '💸 ') => {
@@ -428,20 +427,27 @@ function populateAllTabs(data) {
     
     // 공통 카드 생성 함수
     const createCostCard = (d, content) => {
-        document.getElementById(`${content}-header-title`).innerHTML = d.headerTitle;
-        document.getElementById(`${content}-header-subtitle`).innerHTML = d.headerSubtitle;
+        const headerTitle = document.getElementById(`${content}-header-title`);
+        const headerSubtitle = document.getElementById(`${content}-header-subtitle`);
         const costsContainer = document.getElementById(`${content}-costs`);
-        costsContainer.innerHTML = d.costs.map(card => `
-            <div class="cost-card" style="border-top-color: ${card.borderColor};">
-                <h3 style="color: ${card.titleColor};">${card.title}</h3>
-                <p style="flex-grow:1; text-align: left; line-height:1.6;">${card.description}</p>
-                <div class="price-wrapper" style="padding-top: 15px; margin-top: 15px;">
-                    ${card.prices.map(p => `<div class="price-item"><span class="price-label">${p.label}</span><span class="price-value">${formatPrice(p.value, ' ')}</span></div>`).join('')}
+        const explanationTitle = document.getElementById(`${content}-explanation-title`);
+        const explanationContent = document.getElementById(`${content}-explanation-content`);
+
+        if(headerTitle) headerTitle.innerHTML = d.headerTitle;
+        if(headerSubtitle) headerSubtitle.innerHTML = d.headerSubtitle;
+        if(costsContainer) {
+            costsContainer.innerHTML = d.costs.map(card => `
+                <div class="cost-card" style="border-top-color: ${card.borderColor};">
+                    <h3 style="color: ${card.titleColor};">${card.title}</h3>
+                    <p style="flex-grow:1; text-align: left; line-height:1.6;">${card.description}</p>
+                    <div class="price-wrapper" style="padding-top: 15px; margin-top: 15px;">
+                        ${card.prices.map(p => `<div class="price-item"><span class="price-label">${p.label}</span><span class="price-value">${formatPrice(p.value, ' ')}</span></div>`).join('')}
+                    </div>
                 </div>
-            </div>
-        `).join('');
-        document.getElementById(`${content}-explanation-title`).innerHTML = d.explanation.title;
-        document.getElementById(`${content}-explanation-content`).innerHTML = d.explanation.content.map(p => `<p>${p}</p>`).join('');
+            `).join('');
+        }
+        if(explanationTitle) explanationTitle.innerHTML = d.explanation.title;
+        if(explanationContent) explanationContent.innerHTML = d.explanation.content.map(p => `<p>${p}</p>`).join('');
     };
     
     // 5. 수술비용 탭
@@ -463,11 +469,6 @@ function setupPageNavigation(hospitalData) {
         contentPanels.forEach(panel => panel.classList.remove('active'));
         navTabs.forEach(tab => tab.classList.remove('active'));
         
-        // Change tab names based on data
-        document.getElementById('tab-surgery').textContent = '😿 ' + (hospitalData.surgery?.headerTitle.split(' ')[2] || '수술비용');
-        document.getElementById('tab-nerve').textContent = '❤️‍🩹 ' + (hospitalData.nerve?.headerTitle.split(' ')[0] || '신경치료');
-
-
         const targetContent = document.getElementById(targetId);
         if (targetContent) {
             targetContent.classList.add('active');
@@ -489,13 +490,6 @@ function setupPageNavigation(hospitalData) {
             event.preventDefault();
             const targetId = tab.dataset.target;
             
-            // Rename extraction tab to surgery
-            if(tab.id === 'tab-extraction') {
-                tab.id = 'tab-surgery';
-                tab.dataset.target = 'content-surgery';
-                targetId = 'content-surgery';
-            }
-
             if (targetId === 'content-estimate' || targetId === 'content-guardian-report') {
                 copyCalculatorDataTo(targetId);
             }
@@ -503,37 +497,22 @@ function setupPageNavigation(hospitalData) {
         });
     });
 
-    // Initial content display
     const initialTarget = window.location.hash.substring(1) || 'content-main';
     showContent(initialTarget);
-    
-    // Handle tab name change for 발치비용 -> 수술비용
-    const extractionTab = document.getElementById('tab-extraction');
-    if (extractionTab) {
-        extractionTab.id = 'tab-surgery';
-        extractionTab.dataset.target = 'content-surgery';
-        extractionTab.textContent = '😿 수술비용';
-        const extractionContent = document.getElementById('content-extraction');
-        if(extractionContent) extractionContent.id = 'content-surgery';
-    }
 }
 
 // ===================================================================================
-// ============================= 치료비 계산기 로직 =============================
+// ============================= 치료비 계산기 로직 (수정됨) ========================
 // ===================================================================================
 function initCalculator() {
     const page = document.querySelector('#Calculator-Page');
     if (!page) return;
-    
-    const toothData = {
-        'upper-right': [ { id: '101', type: '앞니', roots: 1 }, { id: '102', type: '', roots: 1 }, { id: '103', type: '', roots: 1 }, { id: '104', type: '송곳니', roots: 1, special: 'canineUpper' }, { id: '106', type: '작은<br>어금니', roots: 1 }, { id: '107', type: '', roots: 2 }, { id: '108', type: '', roots: 3, special: 'carnassialUpper' }, { id: '109', type: '큰<br>어금니', roots: 1 } ],
-        'lower-right': [ { id: '401', type: '앞니', roots: 1 }, { id: '402', type: '', roots: 1 }, { id: '403', type: '', roots: 1 }, { id: '404', type: '송곳니', roots: 1, special: 'canineLower' }, { id: '407', type: '작은<br>어금니', roots: 2 }, { id: '408', type: '', roots: 2 }, { id: '409', type: '큰<br>어금니', roots: 2, special: 'molarLower' } ],
-        'upper-left': [ { id: '201', type: '앞니', roots: 1 }, { id: '202', type: '', roots: 1 }, { id: '203', type: '', roots: 1 }, { id: '204', type: '송곳니', roots: 1, special: 'canineUpper' }, { id: '206', type: '작은<br>어금니', roots: 1 }, { id: '207', type: '', roots: 2 }, { id: '208', type: '', roots: 3, special: 'carnassialUpper' }, { id: '209', type: '큰<br>어금니', roots: 1 } ],
-        'lower-left': [ { id: '301', type: '앞니', roots: 1 }, { id: '302', type: '', roots: 1 }, { id: '303', type: '', roots: 1 }, { id: '304', type: '송곳니', roots: 1, special: 'canineLower' }, { id: '307', type: '작은<br>어금니', roots: 2 }, { id: '308', type: '', roots: 2 }, { id: '309', type: '큰<br>어금니', roots: 2, special: 'molarLower' } ]
-    };
 
-    const costData = {
-        // ... 비용 데이터는 populateProcedureSelect 함수 내부에서 정의됩니다 ...
+    const toothData = {
+        'upper-right': [ { id: '101', type: '앞니', roots: 1 }, { id: '102', type: '앞니', roots: 1 }, { id: '103', type: '앞니', roots: 1 }, { id: '104', type: '송곳니', roots: 1, special: 'canineUpper' }, { id: '106', type: '작은<br>어금니', roots: 1 }, { id: '107', type: '작은<br>어금니', roots: 2 }, { id: '108', type: '작은<br>어금니', roots: 3, special: 'carnassialUpper' }, { id: '109', type: '큰<br>어금니', roots: 1 } ],
+        'lower-right': [ { id: '401', type: '앞니', roots: 1 }, { id: '402', type: '앞니', roots: 1 }, { id: '403', type: '앞니', roots: 1 }, { id: '404', type: '송곳니', roots: 1, special: 'canineLower' }, { id: '407', type: '작은<br>어금니', roots: 2 }, { id: '408', type: '작은<br>어금니', roots: 2 }, { id: '409', type: '큰<br>어금니', roots: 2, special: 'molarLower' } ],
+        'upper-left': [ { id: '201', type: '앞니', roots: 1 }, { id: '202', type: '앞니', roots: 1 }, { id: '203', type: '앞니', roots: 1 }, { id: '204', type: '송곳니', roots: 1, special: 'canineUpper' }, { id: '206', type: '작은<br>어금니', roots: 1 }, { id: '207', type: '작은<br>어금니', roots: 2 }, { id: '208', type: '작은<br>어금니', roots: 3, special: 'carnassialUpper' }, { id: '209', type: '큰<br>어금니', roots: 1 } ],
+        'lower-left': [ { id: '301', type: '앞니', roots: 1 }, { id: '302', type: '앞니', roots: 1 }, { id: '303', type: '앞니', roots: 1 }, { id: '304', type: '송곳니', roots: 1, special: 'canineLower' }, { id: '307', type: '작은<br>어금니', roots: 2 }, { id: '308', type: '작은<br>어금니', roots: 2 }, { id: '309', type: '큰<br>어금니', roots: 2, special: 'molarLower' } ]
     };
 
     const getWeight = () => parseFloat(document.getElementById('patient-weight-calc').value) || 0;
@@ -542,47 +521,39 @@ function initCalculator() {
         select.innerHTML = '';
         const weight = getWeight();
         
-        // 시술 목록 (엑셀 기반)
         const procedures = [
             { category: '기본', text: '--- 시술 선택 ---', value: '0' },
             { category: '모니터링', text: '모니터링 (집중관리)', value: 'monitoring', cost: 0 },
-            
             { category: '구분선', text: '▼ 기본/수술 발치' },
             { category: '발치', text: '기본 발치', value: 'basic_extraction_1', cost: 22000, roots: [1] },
             { category: '발치', text: '기본 발치 (뿌리 2개)', value: 'basic_extraction_2', cost: 66000, roots: [2,3] },
             { category: '발치', text: '수술 발치', value: 'surgical_extraction_1', cost: 44000, roots: [1] },
             { category: '발치', text: '수술 발치 (뿌리 2개)', value: 'surgical_extraction_2', cost: 120000, roots: [2] },
             { category: '발치', text: '수술 발치 (뿌리 3개)', value: 'surgical_extraction_3', cost: 220000, roots: [3], exclude_special: ['molarLower'] },
-            
             { category: '구분선', text: '▼ 특수 발치' },
             { category: '발치', text: '고양이 대구치(M1) 기본', value: 'molar_basic', cost: 88000, special: ['molarLower'] },
             { category: '발치', text: '고양이 대구치(M1) 수술', value: 'molar_surgical', cost: 165000, special: ['molarLower'] },
             { category: '발치', text: '열육치(PM4) 수술', value: 'carnassial_surgical', cost: 220000, special: ['carnassialUpper'] },
             { category: '발치', text: '상악 송곳니 수술', value: 'canine_upper_surgical', cost: 220000, special: ['canineUpper'] },
             { category: '발치', text: '하악 송곳니 수술', value: 'canine_lower_surgical', cost: 270000, special: ['canineLower'] },
-
             { category: '구분선', text: '▼ 유치 발치' },
             { category: '발치', text: '유치 발치', value: 'deciduous_basic', cost: 22000 },
             { category: '발치', text: '유치 송곳니 (X-ray)', value: 'deciduous_canine_xray', cost: 33000, special: ['canineUpper', 'canineLower'] },
             { category: '발치', text: '유치 송곳니 (수술)', value: 'deciduous_canine_surgical', cost: 66000, special: ['canineUpper', 'canineLower'] },
-            
             { category: '구분선', text: '▼ 치아흡수병변(FORL)' },
             { category: '흡수병변', text: 'FORL 치관절제술', value: 'forl_crown_amputation', cost: 44000 },
             { category: '흡수병변', text: 'FORL 흡수치근 제거 (1개)', value: 'forl_root_extraction_1', cost: 88000, roots: [1] },
             { category: '흡수병변', text: 'FORL 흡수치근 제거 (2개)', value: 'forl_root_extraction_2', cost: 140000, roots: [2,3] },
-
             { category: '구분선', text: '▼ 잔존치근/기타' },
             { category: '기타수술', text: '잔존치근 제거 (1개)', value: 'residual_root_1', cost: 77000 },
             { category: '기타수술', text: '잔존치근 제거 (2개)', value: 'residual_root_2', cost: 120000 },
             { category: '기타수술', text: '잇몸 종양 제거 (<1cm)', value: 'gingival_tumor_small', cost: 110000 },
             { category: '기타수술', text: '함치성 치낭 제거', value: 'dentigerous_cyst', cost: 280000 },
-
             { category: '구분선', text: '▼ 신경/보존 치료' },
             { category: '보존', text: 'VPT (신경살리기)', value: 'vpt', cost: 450000, special: ['canineUpper', 'canineLower'] },
             { category: '보존', text: '신경치료', value: 'root_canal', cost: 770000, special: ['canineUpper', 'canineLower'] },
             { category: '보존', text: '레진 (작은 손상)', value: 'resin_small', cost: 55000 },
             { category: '보존', text: '레진 (송곳니)', value: 'resin_canine', cost: 110000, special: ['canineUpper', 'canineLower'] },
-
             { category: '구분선', text: '▼ 치주 치료' },
             { category: '치주', text: '미노클린 연고', value: 'minocline_ointment', cost: 22000 },
             { category: '치주', text: '치근 활택술', value: 'root_planing', cost: 45000 },
@@ -594,10 +565,10 @@ function initCalculator() {
             if (p.category === '기본' || p.category === '구분선' || p.category === '모니터링') {
                 shouldAdd = true;
             } else if (p.special) {
-                if (p.special.includes(tooth.special)) shouldAdd = true;
+                if (Array.isArray(p.special) && p.special.includes(tooth.special)) shouldAdd = true;
             } else if (p.roots) {
-                if (p.roots.includes(tooth.roots) && (!p.exclude_special || !p.exclude_special.includes(tooth.special))) shouldAdd = true;
-            } else { // No specific tooth requirement
+                if (Array.isArray(p.roots) && p.roots.includes(tooth.roots) && (!p.exclude_special || !p.exclude_special.includes(tooth.special))) shouldAdd = true;
+            } else { 
                 shouldAdd = true;
             }
 
@@ -613,92 +584,94 @@ function initCalculator() {
             }
         });
     }
+    
+    function addSubRow(parentRow) {
+        const tableBody = parentRow.parentNode;
+        const newSubRow = parentRow.cloneNode(true); 
+        
+        newSubRow.querySelector('.notes').value = '';
+        const newSelect = newSubRow.querySelector('.procedure-select');
+        newSelect.selectedIndex = 0;
+        newSubRow.querySelector('.cost').textContent = formatPrice(0, '₩');
+        newSubRow.classList.remove('row-highlight');
+        
+        const actionCell = newSubRow.querySelector('td:last-child');
+        actionCell.innerHTML = ''; 
+        const removeButton = document.createElement('button');
+        removeButton.textContent = '–';
+        removeButton.style.cssText = 'background-color: #dc3545; color: white; border: none; width: 22px; height: 22px; border-radius: 50%; cursor: pointer;';
+        removeButton.onclick = () => {
+            newSubRow.remove();
+            updateAllCalculations();
+        };
+        actionCell.appendChild(removeButton);
+
+        const typeCell = newSubRow.querySelector('.tooth-type');
+        if(typeCell) typeCell.remove();
+        const idCell = newSubRow.querySelector('.tooth-id-cell');
+        if(idCell) idCell.remove();
+        
+        parentRow.parentNode.insertBefore(newSubRow, parentRow.nextSibling);
+
+        newSelect.addEventListener('change', () => {
+            const selected = newSelect.options[newSelect.selectedIndex];
+            newSubRow.querySelector('.cost').textContent = formatPrice(selected.dataset.cost || 0, '₩');
+            updateAllCalculations();
+        });
+        newSubRow.querySelector('.notes').addEventListener('input', () => updateAllCalculations());
+        updateRowHighlight(newSubRow);
+    }
 
     function createMainRow(tooth) {
         const row = document.createElement('tr');
         row.dataset.toothId = tooth.id;
         
-        const typeCell = document.createElement('td');
-        typeCell.innerHTML = tooth.type;
-        typeCell.classList.add('tooth-type');
-        if (tooth.type) {
-            const group = Object.values(toothData).flat().filter(t => t.type === tooth.type);
-            if (group.length > 1) {
-                 typeCell.rowSpan = group.length;
-            }
-        }
+        row.innerHTML = `
+            <td class="tooth-id-cell">${tooth.id}</td>
+            <td><input type="text" class="notes"></td>
+            <td><select class="procedure-select"></select></td>
+            <td class="cost">${formatPrice(0, '₩')}</td>
+            <td><button class="add-sub-row-btn" style="width: 22px; height: 22px; border-radius: 50%; border: 1px solid #ccc; cursor: pointer;">+</button></td>
+        `;
 
-        const idCell = document.createElement('td');
-        idCell.textContent = tooth.id;
-        idCell.classList.add('tooth-id-cell');
+        const procedureSelect = row.querySelector('.procedure-select');
+        const notesInput = row.querySelector('.notes');
+        const costCell = row.querySelector('.cost');
         
-        const notesCell = document.createElement('td');
-        const notesInput = document.createElement('input');
-        notesInput.type = 'text';
-        notesInput.classList.add('notes');
-        notesCell.appendChild(notesInput);
-        
-        const procedureCell = document.createElement('td');
-        const procedureSelect = document.createElement('select');
-        procedureSelect.classList.add('procedure-select');
         populateProcedureSelect(procedureSelect, tooth);
-        procedureCell.appendChild(procedureSelect);
-        
-        const costCell = document.createElement('td');
-        costCell.classList.add('cost');
-        costCell.textContent = formatPrice(0, '₩');
 
-        const addCell = document.createElement('td');
-        const addButton = document.createElement('button');
-        addButton.textContent = '+';
-        addButton.onclick = () => addSubRow(row);
-        addCell.appendChild(addButton);
-        
-        if(tooth.type) row.appendChild(typeCell);
-        row.appendChild(idCell);
-        row.appendChild(notesCell);
-        row.appendChild(procedureCell);
-        row.appendChild(costCell);
-        row.appendChild(addCell);
-        
         procedureSelect.addEventListener('change', () => {
             const selected = procedureSelect.options[procedureSelect.selectedIndex];
             costCell.textContent = formatPrice(selected.dataset.cost || 0, '₩');
             updateAllCalculations();
         });
         
-        notesInput.addEventListener('input', () => updateAllCalculations());
+        notesInput.addEventListener('input', updateAllCalculations);
+        row.querySelector('.add-sub-row-btn').addEventListener('click', () => addSubRow(row));
 
         return row;
     }
-    
-    // 이 함수는 + 버튼 클릭 시 호출됩니다. (구현은 생략, 기존 로직 유지)
-    function addSubRow(parentRow) { /* ... */ }
 
     function updateRowHighlight(row) {
         if (!row) return;
         const notes = row.querySelector('.notes');
         const select = row.querySelector('.procedure-select');
-        const idCell = row.closest('tr').querySelector('.tooth-id-cell');
+        const idCell = row.querySelector('.tooth-id-cell');
         
         const selectedOption = select ? select.options[select.selectedIndex] : null;
         let isHighlighted = (notes && notes.value.trim() !== '') || (select && select.value !== '0');
         row.classList.toggle('row-highlight', isHighlighted);
 
-        if (idCell) {
+        if (idCell) { 
             idCell.style.backgroundColor = '';
             idCell.style.color = '';
             idCell.style.fontWeight = '';
             
-            if (isHighlighted && selectedOption) {
+            if (isHighlighted && selectedOption && selectedOption.value !== '0') {
                  const category = selectedOption.dataset.category;
                  const colorMap = {
-                    '발치': '#ffcdd2',
-                    '흡수병변': '#ffe0b2',
-                    '기타수술': '#d1c4e9',
-                    '보존': '#b2dfdb',
-                    '치주': '#c8e6c9',
-                    '모니터링': '#f50057'
+                    '발치': '#ffcdd2', '흡수병변': '#ffe0b2', '기타수술': '#d1c4e9',
+                    '보존': '#b2dfdb', '치주': '#c8e6c9', '모니터링': '#f50057'
                  };
                  idCell.style.backgroundColor = colorMap[category] || '';
                  if (category === '모니터링') {
@@ -718,22 +691,21 @@ function initCalculator() {
         const getCostByWeight = (costs, weight) => {
             if (weight < 5) return costs[0];
             if (weight < 10) return costs[1];
-            if (weight < 15) return costs[2];
-            return costs[2]; // Default to max if over
+            if (weight < 15) return costs[2] || costs[costs.length - 1];
+            return costs[costs.length - 1];
         };
 
         const treatments = [
-            // Left Table Data
             { side: 'left', group: '😴 마취 관련', items: [
                 { name: '마취 시간 연장', options: [
                     { text: '30분', value: 'ext_30', cost: w => getCostByWeight([45000, 55000, 66000], w) },
                     { text: '60분', value: 'ext_60', cost: w => getCostByWeight([45000, 55000, 66000], w) * 2 },
                 ]},
                 { name: '국소 마취', options: [
-                    { text: '1 부위', value: 'local_1', cost: w => getCostByWeight([10000, 12000, 12000], w) },
-                    { text: '2 부위', value: 'local_2', cost: w => getCostByWeight([15000, 17000, 17000], w) },
-                    { text: '3 부위', value: 'local_3', cost: w => getCostByWeight([18000, 20000, 20000], w) },
-                    { text: '4 부위', value: 'local_4', cost: w => getCostByWeight([20000, 22000, 22000], w) },
+                    { text: '1 부위', value: 'local_1', cost: w => getCostByWeight([10000, 12000], w) },
+                    { text: '2 부위', value: 'local_2', cost: w => getCostByWeight([15000, 17000], w) },
+                    { text: '3 부위', value: 'local_3', cost: w => getCostByWeight([18000, 20000], w) },
+                    { text: '4 부위', value: 'local_4', cost: w => getCostByWeight([20000, 22000], w) },
                 ]},
                 { name: '도입마취 변경(알팍산)', options: [{ text: '선택', value: 'alfaxan', cost: w => getCostByWeight([33000, 44000, 55000], w) }]},
             ]},
@@ -746,22 +718,21 @@ function initCalculator() {
                     { text: '20ug', value: 'patch_20', cost: () => 60000 },
                 ]},
             ]},
-            // Right Table Data
             { side: 'right', group: '🚀 회복 부스터', items: [
-                { name: '항생/소염 주사 (일반)', options: [{ text: '선택', value: 'abx_basic', cost: w => getCostByWeight([11000, 13000, 13000], w) }]},
-                { name: '항생 주사 (1주 지속)', options: [{ text: '선택', value: 'abx_1w', cost: w => getCostByWeight([15000, 18000, 18000], w) }]},
+                { name: '항생/소염 주사 (일반)', options: [{ text: '선택', value: 'abx_basic', cost: w => getCostByWeight([11000, 13000], w) }]},
+                { name: '항생 주사 (1주 지속)', options: [{ text: '선택', value: 'abx_1w', cost: w => getCostByWeight([15000, 18000], w) }]},
                 { name: '레이저 치료', options: [
-                    { text: '국소', value: 'laser_local', cost: w => getCostByWeight([20000, 23000, 23000], w) },
-                    { text: '전체', value: 'laser_full', cost: w => getCostByWeight([25000, 28000, 28000], w) },
+                    { text: '국소', value: 'laser_local', cost: w => getCostByWeight([20000, 23000], w) },
+                    { text: '전체', value: 'laser_full', cost: w => getCostByWeight([25000, 28000], w) },
                 ]},
-                { name: '불소 도포', options: [{ text: '선택', value: 'fluoride', cost: w => getCostByWeight([35000, 44000, 44000], w) }]},
+                { name: '불소 도포', options: [{ text: '선택', value: 'fluoride', cost: w => getCostByWeight([35000, 44000], w) }]},
                 { name: '수액 첨가제 (간회복)', options: [{ text: '선택', value: 'iv_liver', cost: () => 11000 }]},
             ]},
             { side: 'right', group: '🏡 홈케어 용품', items: [
                 { name: '내복약 (1일분)', options: [
-                    { text: '1일', value: 'med_1', cost: w => getCostByWeight([3300, 3800, 3800], w) * 1 },
-                    { text: '3일', value: 'med_3', cost: w => getCostByWeight([3300, 3800, 3800], w) * 3 },
-                    { text: '7일', value: 'med_7', cost: w => getCostByWeight([3300, 3800, 3800], w) * 7 },
+                    { text: '1일', value: 'med_1', cost: w => getCostByWeight([3300, 3800], w) * 1 },
+                    { text: '3일', value: 'med_3', cost: w => getCostByWeight([3300, 3800], w) * 3 },
+                    { text: '7일', value: 'med_7', cost: w => getCostByWeight([3300, 3800], w) * 7 },
                 ]},
                 { name: '헥시딘 스프레이', options: [{ text: '구매', value: 'hexidine_spray', cost: () => 10000 }]},
                 { name: '항생/소염 연고', options: [{ text: '구매', value: 'abx_oint', cost: () => 15000 }]},
@@ -793,31 +764,24 @@ function initCalculator() {
             section.items.forEach(item => {
                 const row = document.createElement('tr');
                 row.dataset.itemName = item.name;
-
-                const nameCell = document.createElement('td');
-                nameCell.textContent = item.name;
-                
-                const selectCell = document.createElement('td');
-                const select = document.createElement('select');
-                select.innerHTML = `<option value="0">-- 선택 --</option>`;
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td><select><option value="0">-- 선택 --</option></select></td>
+                    <td class="cost">${formatPrice(0, '₩')}</td>
+                `;
+                const select = row.querySelector('select');
                 item.options.forEach(opt => {
                     select.add(new Option(opt.text, opt.value));
                 });
-                selectCell.appendChild(select);
                 
-                const costCell = document.createElement('td');
-                costCell.classList.add('cost');
-                costCell.textContent = formatPrice(0, '₩');
-
-                row.appendChild(nameCell);
-                row.appendChild(selectCell);
-                row.appendChild(costCell);
                 targetTbody.appendChild(row);
 
                 select.addEventListener('change', () => {
                     const weight = getWeight();
                     const selectedValue = select.value;
                     row.classList.toggle('selected-row', selectedValue !== '0');
+                    const costCell = row.querySelector('.cost');
+
                     if (selectedValue === '0') {
                         costCell.textContent = formatPrice(0, '₩');
                         costCell.dataset.cost = 0;
@@ -836,29 +800,32 @@ function initCalculator() {
     }
 
     function updateAllCalculations() {
-        // 모든 치과 시술 비용 계산
         let dentalCost = 0;
-        page.querySelectorAll('.main-container .procedure-select').forEach(select => {
-            const selected = select.options[select.selectedIndex];
-            if (selected && selected.dataset.cost) {
-                dentalCost += Number(selected.dataset.cost);
+        page.querySelectorAll('.main-container tbody tr').forEach(row => {
+            const select = row.querySelector('.procedure-select');
+            if(select) {
+                const selected = select.options[select.selectedIndex];
+                 if (selected && selected.dataset.cost) {
+                    dentalCost += Number(selected.dataset.cost);
+                }
             }
         });
         
-        // 모든 추가 처치 비용 계산
         let additionalCost = 0;
         page.querySelectorAll('.additional-treatments-section .cost').forEach(costCell => {
             additionalCost += Number(costCell.dataset.cost || 0);
         });
 
-        // 하이라이트 업데이트
         page.querySelectorAll('.main-container tbody tr').forEach(row => updateRowHighlight(row));
 
-        // 총계 업데이트
         const totalCost = dentalCost + additionalCost;
-        page.querySelector('.dental-surgery-cost-display').textContent = formatPrice(dentalCost, '₩');
-        page.querySelector('.additional-treatment-cost-display').textContent = formatPrice(additionalCost, '₩');
-        page.querySelector('.total-cost-display').textContent = formatPrice(totalCost, '₩');
+        const dentalCostDisplay = page.querySelector('.dental-surgery-cost-display');
+        const additionalCostDisplay = page.querySelector('.additional-treatment-cost-display');
+        const totalCostDisplay = page.querySelector('.total-cost-display');
+
+        if(dentalCostDisplay) dentalCostDisplay.textContent = formatPrice(dentalCost, '₩');
+        if(additionalCostDisplay) additionalCostDisplay.textContent = formatPrice(additionalCost, '₩');
+        if(totalCostDisplay) totalCostDisplay.textContent = formatPrice(totalCost, '₩');
         
         updateSummary();
     }
@@ -867,46 +834,40 @@ function initCalculator() {
       // 요약 테이블 업데이트 로직 (생략, 기존 로직 유지)
     }
 
-    // 초기화
     Object.entries(toothData).forEach(([tableKey, teeth]) => {
         const tableBody = page.querySelector(`.table-${tableKey} tbody`);
-        tableBody.innerHTML = ''; // Clear previous
-        let currentType = null;
-        const typeCells = {};
+        if (!tableBody) return;
+        tableBody.innerHTML = '';
         
-        // First pass to create rows and store type cells
+        const addedTypes = new Set();
         teeth.forEach(tooth => {
-            if(tooth.type && tooth.type !== currentType) {
-                currentType = tooth.type;
-                const row = createMainRow(tooth);
-                tableBody.appendChild(row);
-                const typeCell = row.querySelector('.tooth-type');
-                if(typeCell) {
-                    typeCells[currentType] = typeCell;
+            const row = createMainRow(tooth);
+            
+            if (tooth.type) {
+                const typeCell = document.createElement('td');
+                typeCell.classList.add('tooth-type');
+                typeCell.innerHTML = tooth.type;
+
+                if (!addedTypes.has(tooth.type)) {
+                    const rowSpanCount = teeth.filter(t => t.type === tooth.type).length;
+                    if (rowSpanCount > 1) {
+                        typeCell.rowSpan = rowSpanCount;
+                    }
+                    row.insertBefore(typeCell, row.firstChild);
+                    addedTypes.add(tooth.type);
                 }
-            } else {
-                 const row = createMainRow(tooth);
-                 tableBody.appendChild(row);
             }
-        });
-        
-        // Second pass to adjust rowspans
-        Object.entries(typeCells).forEach(([type, cell]) => {
-            const count = teeth.filter(t => t.type === type).length;
-            if(count > 1) {
-                cell.rowSpan = count;
-            }
+            tableBody.appendChild(row);
         });
     });
     
     populateAdditionalTreatments();
     
     document.getElementById('patient-weight-calc').addEventListener('input', () => {
-        populateAdditionalTreatments(); // Re-populate with new weight-based costs
+        populateAdditionalTreatments();
         updateAllCalculations();
     });
 
-    // 기타 이벤트 리스너 (PNG/PDF 저장 등) 연결 (생략, 기존 로직 유지)
     addExportListeners('#Calculator-Page');
 }
 
@@ -924,36 +885,42 @@ function copyCalculatorDataTo(targetId) {
     
     const clonedArea = sourceArea.cloneNode(true);
     
-    // 복사본에서 불필요한 입력 필드 제거
     clonedArea.querySelectorAll('input, select, button').forEach(el => {
+        const parent = el.parentNode;
         if (el.tagName.toLowerCase() === 'select') {
             const selectedText = el.options[el.selectedIndex].text;
-            const parent = el.parentNode;
-            if(el.value !== "0") {
-                parent.textContent = selectedText;
+            if (el.value !== "0" && el.value !== 'disabled') {
+                parent.innerHTML = selectedText;
             } else {
-                 parent.textContent = '-';
+                 parent.innerHTML = '-';
             }
-        } else if (el.type === 'text' || el.type === 'number') {
+        } else if (el.tagName.toLowerCase() === 'input' && (el.type === 'text' || el.type === 'number' || el.type === 'date')) {
             const value = el.value || '-';
-            const parent = el.parentNode;
-            parent.textContent = value;
-        } else {
-            el.remove(); // 버튼 제거
+            parent.innerHTML = value;
+        } else if(el.tagName.toLowerCase() === 'button') {
+            el.remove();
         }
     });
     
-    // 추가 처치에서 선택되지 않은 항목 숨기기
     clonedArea.querySelectorAll('.additional-treatments-section tr').forEach(row => {
         if (!row.classList.contains('selected-row') && !row.querySelector('td[colspan="3"]')) {
             row.style.display = 'none';
         }
     });
+    
+    clonedArea.querySelectorAll('tbody tr').forEach(row => {
+        const select = row.querySelector('.procedure-select');
+        const notes = row.querySelector('.notes');
+        if (select && select.value === '0' && notes && notes.textContent === '-') {
+             // 비어있는 서브 행 제거
+             if (!row.querySelector('.tooth-id-cell')) row.style.display = 'none';
+        }
+    });
+
 
     targetArea.innerHTML = '';
     targetArea.appendChild(clonedArea);
     
-    // Add export listeners to the new buttons
     addExportListeners(`#${targetId}`);
 }
 
@@ -963,9 +930,10 @@ function addExportListeners(pageSelector) {
 
     const captureArea = page.querySelector('.capture-area');
     const patientNameInput = document.querySelector('#patient-name-calc');
+    if (!captureArea) return;
 
     const getFilename = () => {
-        const patientName = patientNameInput.value || '환자';
+        const patientName = (patientNameInput ? patientNameInput.value : '환자') || '환자';
         const date = new Date().toISOString().slice(0, 10);
         return `${patientName}_치과치료내역_${date}`;
     };
@@ -980,25 +948,37 @@ function addExportListeners(pageSelector) {
     });
 
     page.querySelector('.export-pdf-btn')?.addEventListener('click', () => {
-        html2canvas(captureArea, { scale: 2 }).then(canvas => {
+        const { jsPDF } = window.jspdf;
+        html2canvas(captureArea, { scale: 2, windowWidth: captureArea.scrollWidth, windowHeight: captureArea.scrollHeight }).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
-            const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+            const pdf = new jsPDF('p', 'mm', 'a4');
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = pdf.internal.pageSize.getHeight();
             const canvasWidth = canvas.width;
             const canvasHeight = canvas.height;
             const ratio = canvasWidth / canvasHeight;
             const imgHeight = pdfWidth / ratio;
-            
-            let height = imgHeight;
+            let heightLeft = imgHeight;
             let position = 0;
-            
-            if (height > pdfHeight) {
-                 height = pdfHeight;
+
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
+            heightLeft -= pdfHeight;
+
+            while (heightLeft > 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                heightLeft -= pdfHeight;
             }
-            
-            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, height);
             pdf.save(`${getFilename()}.pdf`);
         });
     });
+    
+    const saveDataBtn = page.querySelector('.save-data-btn');
+    const loadDataBtn = page.querySelector('.load-data-btn');
+    const loadDataInput = page.querySelector('.load-data-input');
+
+    if(saveDataBtn) {
+        // 데이터 저장/불러오기 로직 (생략, 필요시 추가)
+    }
 }
