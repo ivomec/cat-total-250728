@@ -1,9 +1,8 @@
 /*
-  [v2.3 최종 업데이트 내역]
-  - 버그 수정: 전체 스크립트 실행을 막던 구문 오류(SyntaxError) 완벽 해결
-  - 계산기 UI 강조: '모니터링' 선택 시 해당 치아 번호 배경을 선명한 붉은색(#FF0000)으로 강조
-  - 계산기 UI 개선: '+' 버튼으로 추가된 행에 연한 노란색(#FFFFE0) 배경 적용
-  - 이전 업데이트 내역 모두 포함 (기능 생략 없음)
+  [v2.4 수정 내역]
+  - 버그 수정: 예상비용/보호자용내역 탭에서 내용이 없는 행을 제거할 때 rowspan을 고려하지 않아 테이블 레이아웃이 깨지던 문제를 해결했습니다. 이제 빈 그룹 전체를 안전하게 제거하여 레이아웃을 유지합니다.
+  - 기능 확인: '모니터링' 선택 시 해당 치아 번호 배경을 선명한 붉은색(#FF0000)으로 강조하는 기능이 정상적으로 적용되어 있음을 확인했습니다.
+  - 이전 업데이트 내역 모두 포함
 */
 document.addEventListener('DOMContentLoaded', () => {
     const hospitalData = {
@@ -534,26 +533,54 @@ function copyCalculatorDataTo(targetId) {
         }
     });
 
-    // 3. 내용이 없는 행 숨기기
-    clonedArea.querySelectorAll('.main-container tr').forEach(row => {
-        const cells = Array.from(row.cells);
-        let notesCell, procedureCell;
+    // 3. 내용이 없는 행 제거 (레이아웃 깨짐 방지)
+    clonedArea.querySelectorAll('.main-container table').forEach(table => {
+        const rows = Array.from(table.querySelectorAll('tbody > tr'));
+        const rowsToRemove = [];
+        
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            const typeCell = row.querySelector('td.tooth-type'); // rowspan을 가진 '타입' 셀을 찾음
+            
+            if (typeCell) { // 이 행이 그룹의 시작(master) 행인 경우
+                const span = parseInt(typeCell.getAttribute('rowspan') || 1, 10);
+                let groupHasContent = false;
 
-        if (row.querySelector('.tooth-type')) {
-            notesCell = cells[2];
-            procedureCell = cells[3];
-        } else if (cells.length >= 4) { // rowspan이 없는 행
-            notesCell = cells[1];
-            procedureCell = cells[2];
+                // 그룹 내 모든 행(master + sub)에 내용이 있는지 확인
+                for (let j = 0; j < span; j++) {
+                    const groupRow = rows[i + j];
+                    if (!groupRow) continue;
+
+                    // 행의 종류(master/sub)에 따라 셀 인덱스 결정
+                    const hasTypeCellInGroup = groupRow.querySelector('td.tooth-type') !== null;
+                    const notesCellIndex = hasTypeCellInGroup ? 2 : 1;
+                    const procedureCellIndex = hasTypeCellInGroup ? 3 : 2;
+                    
+                    const notesText = groupRow.cells[notesCellIndex]?.textContent.trim();
+                    const procedureText = groupRow.cells[procedureCellIndex]?.textContent.trim();
+
+                    if (notesText || procedureText) {
+                        groupHasContent = true;
+                        break; // 내용이 있으면 더 이상 확인할 필요 없음
+                    }
+                }
+
+                // 그룹 전체에 내용이 없으면 그룹 내 모든 행을 제거 목록에 추가
+                if (!groupHasContent) {
+                    for (let j = 0; j < span; j++) {
+                        if (rows[i + j]) {
+                            rowsToRemove.push(rows[i + j]);
+                        }
+                    }
+                }
+                i += span - 1; // 이 그룹의 다른 행들은 이미 처리했으므로 건너뜀
+            }
         }
-
-        const hasNotes = notesCell ? notesCell.textContent.trim() !== '' : false;
-        const hasProcedure = procedureCell ? procedureCell.textContent.trim() !== '' : false;
-
-        if (!hasNotes && !hasProcedure) {
-            row.style.display = 'none';
-        }
+        
+        // 식별된 행들을 DOM에서 실제로 제거
+        rowsToRemove.forEach(row => row.remove());
     });
+
 
     // 4. 최종적으로 정리된 내용을 대상 탭에 삽입
     targetCaptureArea.innerHTML = '';
@@ -597,7 +624,8 @@ function generateGuardianComments(clonedArea) {
     
     clonedArea.querySelectorAll('.main-container tr').forEach(row => {
         if (row.style.display === 'none') return; // 숨겨진 행은 건너뜀
-        const procedureText = row.cells[row.cells.length - 3]?.textContent || '';
+        const procedureTextCell = row.cells.length === 6 ? row.cells[3] : (row.cells.length === 5 ? row.cells[2] : null);
+        const procedureText = procedureTextCell?.textContent || '';
         if (procedureText.includes('발치') || procedureText.includes('제거') || procedureText.includes('절제')) {
             careAdviceCategories.add('EXTRACTION');
         }
