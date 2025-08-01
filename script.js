@@ -6,7 +6,6 @@
   - 이전 업데이트 내역 모두 포함 (기능 생략 없음)
 */
 document.addEventListener('DOMContentLoaded', () => {
-    // 병원 기본 정보
     const hospitalData = {
       "main": {
         "headerTitle": "💖 치과 특화 금호동물병원 💖",
