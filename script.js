@@ -491,17 +491,71 @@ function copyCalculatorDataTo(targetId) {
     const targetCaptureArea = targetPanel.querySelector('.capture-area');
     if (!targetCaptureArea) return;
 
+    // 1. 계산기 영역 전체를 복제
     const clonedArea = calculatorCaptureArea.cloneNode(true);
-    const sourceElements = calculatorCaptureArea.querySelectorAll('input, select');
-    const clonedElements = clonedArea.querySelectorAll('input, select');
-    sourceElements.forEach((sourceEl, index) => {
-        const clonedEl = clonedElements[index];
-        if (clonedEl && sourceEl.tagName === 'SELECT') clonedEl.selectedIndex = sourceEl.selectedIndex;
+
+    // 2. 복제된 내용에서 상호작용 요소를 텍스트로 변환 (레이아웃 깨짐 방지)
+    // 메인 치과 테이블 처리
+    clonedArea.querySelectorAll('.main-container tr').forEach(row => {
+        // '특이사항' 입력창을 텍스트로 변환
+        const notesInput = row.querySelector('input.notes');
+        if (notesInput) {
+            const textNode = document.createTextNode(notesInput.value);
+            notesInput.parentNode.replaceChild(textNode, notesInput);
+        }
+
+        // '시술 선택' 드롭다운을 텍스트로 변환
+        const procSelect = row.querySelector('select.procedure-select');
+        if (procSelect) {
+            let selectedText = '';
+            if (procSelect.value !== '0' && !procSelect.options[procSelect.selectedIndex].disabled) {
+                selectedText = procSelect.options[procSelect.selectedIndex].text;
+            }
+            const textNode = document.createTextNode(selectedText);
+            procSelect.parentNode.replaceChild(textNode, procSelect);
+        }
+
+        // '+' 와 '-' 버튼 제거
+        row.querySelector('.add-btn')?.remove();
+        row.querySelector('.remove-btn')?.remove();
     });
 
-    clonedArea.querySelectorAll('.additional-treatments-container tr.additional-row').forEach(row => { if (row.querySelector('select')?.value === '선택안함|0') row.style.display = 'none'; });
-    clonedArea.querySelectorAll('.main-container tr').forEach(row => { if (row.querySelector('.procedure-select')?.value === '0' && (row.querySelector('.notes')?.value || '').trim() === '') row.style.display = 'none'; });
-    
+    // 추가 처치 테이블 처리
+    clonedArea.querySelectorAll('.additional-treatments-container tr.additional-row').forEach(row => {
+        const select = row.querySelector('select');
+        if (select) {
+            const [label, value] = select.value.split('|');
+            if (value === '0') {
+                row.style.display = 'none'; // 선택 안 된 항목은 숨김
+            } else {
+                const selectCell = select.parentNode;
+                selectCell.textContent = label; // 선택된 항목의 텍스트만 표시
+            }
+        }
+    });
+
+    // 3. 내용이 없는 행 숨기기
+    clonedArea.querySelectorAll('.main-container tr').forEach(row => {
+        const cells = Array.from(row.cells);
+        let notesCell, procedureCell;
+
+        if (row.querySelector('.tooth-type')) {
+            notesCell = cells[2];
+            procedureCell = cells[3];
+        } else if (cells.length >= 4) { // rowspan이 없는 행
+            notesCell = cells[1];
+            procedureCell = cells[2];
+        }
+
+        const hasNotes = notesCell ? notesCell.textContent.trim() !== '' : false;
+        const hasProcedure = procedureCell ? procedureCell.textContent.trim() !== '' : false;
+
+        if (!hasNotes && !hasProcedure) {
+            row.style.display = 'none';
+        }
+    });
+
+    // 4. 최종적으로 정리된 내용을 대상 탭에 삽입
     targetCaptureArea.innerHTML = '';
     const toothFormulaImage = document.createElement('img');
     toothFormulaImage.src = "https://raw.githubusercontent.com/ivomec/image/main/%EC%B9%98%EC%8B%9D1.jpg?raw=true";
@@ -530,6 +584,7 @@ function copyCalculatorDataTo(targetId) {
     }
 }
 
+
 function generateGuardianComments(clonedArea) {
     const careAdviceCategories = new Set();
     const careAdviceMap = {
@@ -540,22 +595,25 @@ function generateGuardianComments(clonedArea) {
         'RECHECK': '양치질 시작 시점과 다음 검진(리첵) 일정은 병원에서 별도로 안내해 드릴 예정입니다. 아이의 빠른 회복과 구강 건강 유지를 위해 꼭 지켜주시길 바랍니다.'
     };
     
-    clonedArea.querySelectorAll('.main-container .procedure-select').forEach(select => {
-        const selectedOption = select.options[select.selectedIndex];
-        if (selectedOption && selectedOption.value !== '0' && !selectedOption.disabled) {
-            const category = selectedOption.dataset.category;
-            if (category === '발치/제거') careAdviceCategories.add('EXTRACTION');
-            if (category === '신경/보존 치료') careAdviceCategories.add('RESIN');
+    clonedArea.querySelectorAll('.main-container tr').forEach(row => {
+        if (row.style.display === 'none') return; // 숨겨진 행은 건너뜀
+        const procedureText = row.cells[row.cells.length - 3]?.textContent || '';
+        if (procedureText.includes('발치') || procedureText.includes('제거') || procedureText.includes('절제')) {
+            careAdviceCategories.add('EXTRACTION');
+        }
+        if (procedureText.includes('VPT') || procedureText.includes('신경치료') || procedureText.includes('레진')) {
+            careAdviceCategories.add('RESIN');
         }
     });
     
-    const medicationSelect = clonedArea.querySelector('[data-item-id="medication"]');
-    const nsaidSelect = clonedArea.querySelector('[data-item-id="liquid_analgesic_nsaid"]');
+    clonedArea.querySelectorAll('.additional-treatments-container tr').forEach(row => {
+        if (row.style.display === 'none') return;
+        const itemText = row.cells[0]?.textContent || '';
+        if (itemText.includes('내복약') || itemText.includes('액상 진통제')) {
+            careAdviceCategories.add('MEDICATION');
+        }
+    });
 
-    if ((medicationSelect && medicationSelect.closest('tr').style.display !== 'none') || (nsaidSelect && nsaidSelect.closest('tr').style.display !== 'none')) {
-        careAdviceCategories.add('MEDICATION');
-    }
-    
     let careAdviceHTML = `<li>${careAdviceMap['GENERAL']}</li>`;
     if (careAdviceCategories.has('EXTRACTION')) careAdviceHTML += `<li>${careAdviceMap['EXTRACTION']}</li>`;
     if (careAdviceCategories.has('RESIN')) careAdviceHTML += `<li>${careAdviceMap['RESIN']}</li>`;
