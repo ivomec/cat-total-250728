@@ -602,6 +602,31 @@ function copyCalculatorDataTo(targetId) {
         }
     });
 
+    // ================== BUG FIX START ==================
+    // 테이블 레이아웃이 깨지는 것을 방지하기 위해, 행을 숨기기 전에 rowspan 속성을 제거하고 테이블 구조를 평탄화합니다.
+    clonedArea.querySelectorAll('.main-container table').forEach(table => {
+        const typeCells = Array.from(table.querySelectorAll('td.tooth-type[rowspan]'));
+
+        typeCells.forEach(cell => {
+            const spanCount = parseInt(cell.getAttribute('rowspan'), 10);
+            if (isNaN(spanCount) || spanCount <= 1) return;
+
+            // rowspan으로 묶인 다음 행들에 빈 셀(<td>)을 추가하여 열 개수를 맞춥니다.
+            let currentRow = cell.parentElement;
+            for (let i = 1; i < spanCount; i++) {
+                currentRow = currentRow.nextElementSibling;
+                if (currentRow) {
+                    const newCell = document.createElement('td');
+                    newCell.className = 'tooth-type';
+                    currentRow.insertBefore(newCell, currentRow.firstChild);
+                }
+            }
+            // 구조가 평탄화되었으므로 rowspan 속성을 제거합니다.
+            cell.removeAttribute('rowspan');
+        });
+    });
+    // =================== BUG FIX END ===================
+
     clonedArea.querySelectorAll('.additional-treatments-container tr.additional-row').forEach(row => {
         const select = row.querySelector('select');
         if (select && select.value === '선택안함|0') {
