@@ -1,5 +1,6 @@
 /*
   [v2.6 최종 업데이트 내역 - 고양이]
+  - 버그 수정: 예상비용/보호자용 탭으로 내용 복사 시 테이블 구조가 깨지는 문제 해결 (강아지 차트 로직 적용)
   - UI 추가: 수술과정, 건강검진 탭에 유튜브 영상 링크 버튼 추가
   - UI 개선: 계산기에서 '+'로 추가된 행에 노란색 배경을 적용하여 시인성 향상
   - UI 개선: 수술비용, 추가처치, 신경보존치료 탭의 모든 항목에 이모티콘을 추가하고 디자인을 세련되게 변경
@@ -64,6 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setupPageNavigation();
+    addExportListeners('#Calculator-Page');
+    addExportListeners('#Estimate-Page');
+    addExportListeners('#GuardianReport-Page');
 });
 
 // ===================================================================================
