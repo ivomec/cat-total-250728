@@ -1,8 +1,12 @@
 /*
-  [v2.4 수정 내역]
-  - 버그 수정: 예상비용/보호자용내역 탭에서 내용이 없는 행을 제거할 때 rowspan을 고려하지 않아 테이블 레이아웃이 깨지던 문제를 해결했습니다. 이제 빈 그룹 전체를 안전하게 제거하여 레이아웃을 유지합니다.
-  - 기능 확인: '모니터링' 선택 시 해당 치아 번호 배경을 선명한 붉은색(#FF0000)으로 강조하는 기능이 정상적으로 적용되어 있음을 확인했습니다.
-  - 이전 업데이트 내역 모두 포함
+  [v2.5 최종 업데이트 내역 - 고양이]
+  - 기능 추가: 내복약 캡슐 옵션(3일/7일) 및 비용 계산 로직 추가
+  - 데이터 수정: 계산기 내 건강검진 항목에 '아깽이 기본 플랜' 추가
+  - UI 개선: 전체 비용 내역에 건강검진, 스케일링 비용을 별도 항목으로 분리 표시
+  - 버그 수정: '모니터링' 선택 시 형광색 배경 및 붉은색 텍스트 강조 기능 정상화
+  - 기능 개선: 강아지 차트 로직을 적용하여 예상비용/보호자용 탭 기능 안정화
+  - 기능 추가: 저장되지 않은 변경사항이 있을 시 페이지 이탈 방지 경고 기능 추가
+  - UI 개선: 추가처치, 신경 및 보존 치료 탭에 이모티콘을 추가하여 시인성 강화
 */
 document.addEventListener('DOMContentLoaded', () => {
     const hospitalData = {
@@ -51,8 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
       "healthCheck": { "headerTitle": "🩺✨ 우리 냥이 맞춤! 안심 건강검진 ✨🩺", "headerSubtitle": "💖 안전한 마취를 위한 첫걸음! 🌈 연령별 맞춤 플랜을 확인하세요! 💖", "preNotice": { "title": "병원 방문 전, 보호자님 필독! 📢", "content": "혹시 우리 아이가 많이 예민하거나 긴장을 많이 하나요? 😿 그렇다면 내원하시기 전에 미리 병원에 연락주셔서 **안정제(가바펜틴 등)를 처방**받아 방문 2~3시간 전에 복용하고 오시는 것을 강력히 추천드려요! 아이의 스트레스를 크게 줄여줄 수 있어, 아이와 의료진 모두에게 훨씬 편안하고 안전한 검사 환경이 만들어진답니다. **특히 예민하거나 사나운 성격의 고양이라면 선택이 아닌 필수**라는 점, 꼭 기억해주세요! 🙏" }, "packages": [ { "borderColor": "#4db6ac", "titleColor": "#00796b", "title": "🍼 아깽이 기본 플랜 🍼", "items": [ "🩸 혈구검사 <small>빈혈, 염증, 혈소판</small>", "🧪 혈액 화학 검사 (7종) <small>간, 콩팥, 혈당 등</small>", "⚡️ 전해질 검사 <small>몸 속 수분 밸런스</small>", "🩻 흉부 X-RAY (3컷) <small>심장, 폐 모양</small>", "🩺 혈압 체크 <small>기본 순환기 상태</small>" ], "originalPrice": 244600, "discountPrice": 160000 }, { "borderColor": "#ffd54f", "titleColor": "#f9a825", "title": "💖 아깽이 안심+ 플랜 💖", "items": [ "🩸 혈구검사", "🧪 혈액 화학 검사 (7종)", "⚡️ 전해질 검사", "🩻 흉부 X-RAY (3컷)", "🩺 혈압 체크", "❤️ proBNP 키트 <small>숨어있는 심장병 조기 진단!</small>" ], "originalPrice": 299600, "discountPrice": 199000 }, { "borderColor": "#ff8a65", "titleColor": "#d84315", "title": "💪 7세 미만 으른냥 플랜 💪", "items": [ "🩸 혈구 & 화학검사 (12종)", "🔥 SAA <small>몸 속 급성 염증 정밀 체크</small>", "🩻 X-RAY (흉부3+복부2)", "🩺 혈압 체크", "❤️ proBNP 키트", "🦠 전염병 키트 <small>사상충+백혈병+면역결핍</small>" ], "originalPrice": 428600, "discountPrice": 299000 }, { "borderColor": "#ba68c8", "titleColor": "#7b1fa2", "title": "👑 7세+ 어르신냥 VIP 플랜 👑", "items": [ "🩸 혈구 & 화학검사 (12종)", "🔥 SAA", "🩺 혈압 체크", "❤️ proBNP 키트", "🦠 전염병 키트", "🦋 SDMA & T4 <small>신장/갑상선 정밀 평가</small>", "🐾 fPL 키트 <small>췌장염 수치 체크</small>", "🩻 X-RAY (흉부3+복부2)" ], "originalPrice": 583600, "discountPrice": 449000 } ], "explanation": { "title": "💡 마취 전 건강검진, 왜 꼭 필요할까요? 💡", "content": [ "전신 마취는 마치 <strong>'비행기 여행 ✈️'</strong>과 같아요. 여행 전에 <strong>날씨를 꼭! 체크 🌤️</strong>하는 것처럼, 마취 전 건강검진은 우리 아이의 몸 상태를 미리 확인해서 가장 안전한 여행(마취) 계획을 세우는 과정이랍니다.", "겉으로는 보이지 않는 장기의 이상이나 숨겨진 질병을 미리 발견해서, 마취 중 발생할 수 있는 위험을 최소화하고 <strong>우리 냥이에게 가장 안전한 방법을 찾기 위한 💖사랑의 과정💖</strong>이에요.", "<br>🚨 <strong>심장 관련 추가 검사 안내</strong><br>만약 검사 중 proBNP 키트에서 양성 반응이 나오거나, 심잡음이 들리거나, 엑스레이에서 심장 크기가 커 보이는 등 심장병이 의심되는 소견이 있을 경우, 보다 정밀한 심근 손상 수치 확인을 위해 <strong>TNI 검사(비용: 55,000원)</strong>가 추가될 수 있습니다. 이는 더 안전한 마취를 위한 필수 과정이오니 보호자님의 깊은 양해를 부탁드립니다." ] } },
       "scaling": { "headerTitle": "🦷✨ 우리 냥냥이 반짝반짝 스케일링 ✨🦷", "headerSubtitle": "💖 사랑과 정성을 담아! 🌈 화려한 혜택가로 안내합니다! 💖", "preNotice": { "title": "더 안전한 마취를 위한 꿀팁! 🍯", "content": "수술 당일, 아이가 병원으로 이동하고 낯선 환경에 적응하는 동안 불안감을 느끼면 스트레스 호르몬이 분비될 수 있어요. 😥 이 스트레스는 마취에 영향을 줄 수 있답니다. 만약 내원 전에 미리 **안정제를 처방받아 먹이고 오시면, 아이의 긴장이 완화되어 더 적은 용량의 마취제로도 안정적인 마취가 가능**해져요. 이는 곧 우리 아이의 마취가 한층 더 안전해진다는 의미! ✨ 더 편안하고 안전한 치료를 위한 작은 배려, 함께해요! 🥰" }, "packages": [ { "borderColor": "#ff7eb9", "titleColor": "#ff7eb9", "title": "🐱 5kg 미만 냥이 🐱", "items": [ "💧 술 전 산소 처치", "💧 술 전 수액 처치", "💉 도입 마취(프로포폴)", "😴 호흡 마취 Isoflurane <small>(마무리까지)</small>", "📸 전체 치과 X-ray <small>(10장 이상 꼼꼼 촬영!)</small>", "🧼 스케일링", "💎 폴리싱 – Airflow 시술 <small>(반짝반짝 광택 마무리!)" ], "originalPrice": 512000, "discountPrice": 239000 }, { "borderColor": "#ffc107", "titleColor": "#ffc107", "title": "🐈 5kg ~ 10kg 미만 냥이 🐈", "items": [ "💧 술 전 산소 처치", "💧 술 전 수액 처치", "💉 도입 마취(프로포폴)", "😴 호흡 마취 Isoflurane <small>(마무리까지)</small>", "📸 전체 치과 X-ray <small>(10장 이상 꼼꼼 촬영!)</small>", "🧼 스케일링", "💎 폴리싱 – Airflow 시술 <small>(반짝반짝 광택 마무리!)" ], "originalPrice": 603000, "discountPrice": 299000 }, { "borderColor": "#20c997", "titleColor": "#20c997", "title": "🐈‍⬛ 10kg ~ 15kg 미만 냥이 🐈‍⬛", "items": [ "💧 술 전 산소 처치", "💧 술 전 수액 처치", "💉 도입 마취(프로포폴)", "😴 호흡 마취 Isoflurane <small>(마무리까지)</small>", "📸 전체 치과 X-ray <small>(10장 이상 꼼꼼 촬영!)</small>", "🧼 스케일링", "💎 폴리싱 – Airflow 시술 <small>(반짝반짝 광택 마무리!)" ], "originalPrice": 704000, "discountPrice": 389000 } ], "explanation": { "title": "💡 필독! 혜택 적용 비용 안내 💡", "content": [ "저희 금호동물병원에서는 아이의 <strong>안전을 💖최우선💖</strong>으로 생각해요. 그래서 최근 <strong>✅ 저희 병원에서 직접 마취 전 혈액검사</strong>를 진행해서, 아이의 건강 상태를 저희 의료진이 완벽하게 파악하고 있는 경우! 감사의 마음을 담아 <strong>👑혜택가👑</strong>를 적용해 드리고 있답니다.", "다른 병원에서 검사를 받으셨거나 사정상 검사를 못 하셨어도 괜찮아요! 물론 안전한 치과 치료가 가능합니다. 다만, 외부 데이터를 다시 검토하고 저희 시스템에 맞게 적용하는 과정이 필요해서 정상 비용으로 진행되는 점(타병원 검사 시 10만원 추가), 보호자님의 너른 양해를 부탁드려요. 🙏", "<strong>🚨 잠깐!</strong> 안내된 비용은 스케일링과 기본 처치 비용이에요. 아이의 구강 상태에 따라 발치, 신경치료, 약 처방 등 추가 치료가 필요할 수 있어요. 이 경우, 꼭! <strong>보호자님과 충분히 상의 후 진행</strong>하니 걱정 마세요! 😉" ] } },
       "surgery": { "headerTitle": "🦷😿 우리 냥이 아픈 치아 수술 비용 😿🦷", "headerSubtitle": "❤️ 아이의 고통을 덜어주는 치료 비용을 투명하게 안내해요 ❤️", "costs": [ { "id": "card-basic-extraction", "borderColor": "#a5d8ff", "titleColor": "#1971c2", "title": "🦷 기본 발치", "description": "잇몸병으로 인해 이미 많이 흔들리는 치아를 잇몸 절개 없이 제거합니다.", "prices": [{ "label": "뿌리 1개", "value": 22000 }, { "label": "뿌리 2개", "value": 66000 }, { "label": "고양이 대구치(M1)", "value": 88000 }] }, { "id": "card-surgical-extraction", "borderColor": "#ffc078", "titleColor": "#d9480f", "title": "💪 수술 발치", "description": "아직 단단히 박혀있는 치아를 잇몸 절개 및 봉합을 통해 안전하게 제거하는 전문적인 수술입니다.", "prices": [{ "label": "뿌리 1개", "value": 44000 }, { "label": "뿌리 2개", "value": 120000 }, { "label": "고양이 대구치(M1)", "value": 165000 }, { "label": "열육치(PM4)", "value": 220000 }] }, { "id": "card-canine-extraction", "borderColor": "#4dd0e1", "titleColor": "#00838f", "title": "😼 송곳니 수술 발치", "description": "길고 튼튼한 송곳니는 정교한 수술적 접근이 필요합니다. 턱 구조에 따라 난이도가 달라집니다.", "prices": [{ "label": "상악 (위턱) 송곳니", "value": 220000 }, { "label": "하악 (아래턱) 송곳니", "value": 270000 }] }, { "id": "card-deciduous-extraction", "borderColor": "#b39ddb", "titleColor": "#512da8", "title": "🍼 유치 발치", "description": "제때 빠지지 않고 남아 문제를 일으키는 유치를 제거합니다.", "prices": [{ "label": "일반 유치", "value": 22000 }, { "label": "유치 송곳니 (X-ray 포함)", "value": 33000 }, { "label": "유치 송곳니 (수술 발치)", "value": 66000 }] }, { "id": "card-forl-extraction", "borderColor": "#f06292", "titleColor": "#c2185b", "title": "💔 치아흡수병변(FORL) 발치", "description": "치아가 녹아내리는 병변으로, 상태에 따라 치관만 제거하거나 뿌리까지 모두 제거합니다.", "prices": [{ "label": "치관 절제술 (1-2개 뿌리)", "value": 44000 }, { "label": "흡수치근 제거 (1개 뿌리)", "value": 88000 }, { "label": "흡수치근 제거 (2개 뿌리)", "value": 140000 }] }, { "id": "card-root-remains-extraction", "borderColor": "#9ccc65", "titleColor": "#558b2f", "title": "🔍 잔존치근 제거", "description": "과거 발치 후 남겨졌거나 부러진 치아의 뿌리를 찾아 제거하는 정밀한 수술입니다.", "prices": [{ "label": "뿌리 1개", "value": 77000 }, { "label": "뿌리 2개", "value": 120000 }, { "label": "송곳니 잔존치근", "value": "25~30만원" }] }, { "id": "card-etc-surgery", "borderColor": "#78909c", "titleColor": "#37474f", "title": "🛠️ 기타 수술 및 처치", "description": "잇몸 종양이나 낭종 제거, 조직검사 등 추가적인 외과적 처치입니다.", "prices": [{ "label": "잇몸 종양 제거 (1cm 이하)", "value": 110000 }, { "label": "함치성 치낭 제거술", "value": 280000 }, { "label": "조직검사 (1 site)", "value": 170000 }] } ], "explanation": { "title": "💡 꼭! 확인해주세요! '기본' vs '수술' 발치 💡", "content": [ "<strong>기본 발치 (쏙!) 😿</strong><br>잇몸병으로 치아가 이미 <strong>많이많이 흔들릴 때!</strong> 잇몸 절개 없이 쏙~ 뽑아요. (봉합이 필요하면 비용이 추가될 수 있어요!)", "<strong>수술 발치 (샥!) 💪</strong><br>치아 뿌리가 아직 <strong>잇몸뼈에 단단히 박혀있을 때!</strong> 잇몸을 열고 안전하게 조각내어 제거한 뒤, 꼼꼼하게 봉합까지 하는 전문적인 과정이에요." ] } },
-      "addons": { "headerTitle": "💊 우리 냥이 회복을 돕는 케어 비용 💊", "headerSubtitle": "💖 아프지 않게, 더 빨리 나을 수 있도록! 사랑의 추가 처치 안내 💖", "costs": [ { "borderColor": "#ffa726", "titleColor": "#f57c00", "title": "😴 마취 관련 처치", "description": "수술이 길어지거나, 아이 상태에 따라 더 안전한 마취를 유지하기 위한 추가적인 관리 비용입니다.", "prices": [{ "label": "마취 시간 연장 (30분당)", "value": "45,000원~" }, { "label": "국소 마취 (부위당)", "value": "10,000원~" }, { "label": "알팍산 도입마취 변경", "value": "33,000원~" }] }, { "borderColor": "#ef5350", "titleColor": "#c62828", "title": "🪄 통증 관리 처치", "description": "수술 직후부터 집에 가서까지, 우리 냥이가 아프지 않도록 통증을 효과적으로 관리해주는 마법 같은 처치들이에요.", "prices": [{ "label": "마약성 진통 주사", "value": "20,000원~" }, { "label": "24시간 지속 진통 주사", "value": "15,000원~" }, { "label": "마약성 진통 패치", "value": "40,000원~" }] }, { "borderColor": "#66bb6a", "titleColor": "#2e7d32", "title": "🚀 빠른 회복 부스터", "description": "감염 예방, 염증 완화, 세포 재생 촉진! 우리 냥이가 에너지를 되찾고 빨리 일상으로 돌아가도록 돕는 부스터 처치예요.", "prices": [{ "label": "항생/소염 주사 (일반)", "value": "11,000원~" }, { "label": "항생 주사 (1주 지속)", "value": "15,000원~" }, { "label": "레이저 치료 (부위당)", "value": "20,000원~" }, { "label": "불소 도포", "value": "35,000원~" }] }, { "borderColor": "#26c6da", "titleColor": "#00838f", "title": "🏡 홈케어 용품", "description": "집에 가서도 집사님의 사랑로 케어할 수 있도록! 안전과 회복을 위한 필수 아이템들이에요.", "prices": [{ "label": "내복약 (1일분)", "value": "3,300원~" }, { "label": "액상 진통제(1ml 당)", "value": "8,000원~" }, { "label": "구강 소독 스프레이", "value": 10000 }, { "label": "구강 항생/소염 연고", "value": 15000 }, {"label": "파라돈 겔", "value": 25000}, { "label": "구강 유산균", "value": 50000 }, { "label": "넥카라", "value": "8,000원~" }] } ], "explanation": { "title": "💡 추가 처치는 왜 필요할까요? 🤔", "content": [ "우리 냥이들은 <strong>\"나 아파요😿\" 라고 말을 못하고 꾹~ 참는 습성</strong>이 있어요. 그래서 미리 통증을 관리해주는 건 아이의 고통을 덜어주는 <strong>가장 큰 사랑이자 배려</strong>랍니다.💖", "또, 항생제나 레이저, 소독 용품들은 수술 후 생길 수 있는 <strong>나쁜 균들을 막아주고 🦠 회복 속도를 높여서⚡️</strong> 아이가 빨리 캣타워로 점프! 할 수 있게 도와줘요!", "저희 병원은 아이의 상태를 꼼꼼히 살펴, <strong>정말 꼭! 필요한 처치만 골라서 보호자님과 상의</strong>드릴 것을 약속해요.🤙" ] } },
-      "nerve": { "headerTitle": "❤️‍🩹 신경 및 보존 치료 ❤️‍🩹", "headerSubtitle": "무조건 뽑지 않아요! 💪 소중한 치아를 지켜주는 다양한 치료 안내", "costs": [ { "borderColor": "#ffc078", "titleColor": "#f76707", "title": "✨ 살아있는 신경 살리기! (VPT)", "description": "<strong>⏳ 48시간 골든타임! ⏳</strong><br>치아가 부러진 직후, 아직 신경이 살아있을 때만 가능해요! 오염된 신경만 살짝 걷어내고 🩹 특수 보호 약품으로 코팅해서 치아의 생명력을 지켜준답니다.<span style=\"display:block;font-size:.9em;color:#e64980;font-weight:700;margin-top:10px;text-align:center\">🚨 레진 충전 비용은 별도예요!</span>", "prices": [{ "label": "송곳니 기준", "value": 450000 }] }, { "borderColor": "#ff87c2", "titleColor": "#c2255c", "title": "💔 아픈 신경 치료하기 (신경치료)", "description": "이미 신경이 죽었거나 🦠 세균에 감염되어 아야! 할 때 필요해요. 감염된 신경을 싹~ 제거하고 깨끗하게 소독한 뒤, 특수 재료로 채워서 통증의 원인을 없애고 치아는 보존해요.<span style=\"display:block;font-size:.9em;color:#e64980;font-weight:700;margin-top:10px;text-align:center\">🚨 레진 충전 비용은 별도예요!</span>", "prices": [{ "label": "송곳니 기준", "value": 770000 }] }, { "borderColor": "#4dabf7", "titleColor": "#1c7ed6", "title": "🎨 예쁘게 때워주기 (레진 치료)", "description": "충치나 마모, 살짝 깨진 부위를 치아 색과 비슷한 예쁜 재료로 메워서, 원래 모양과 기능을 되찾아주는 치료예요! 손상 범위와 치아에 따라 비용이 달라져요.", "prices": [ { "label": "쪼꼬만 손상", "value": 55000 }, { "label": "송곳니", "value": 110000 } ] }, { "borderColor": "#8ce99a", "titleColor": "#2f9e44", "title": "🌿 튼튼한 잇몸 만들기 (치주 치료)", "description": "잇몸병의 원인이 되는 세균막과 치석을 잇몸 속 깊은 곳까지 깨끗하게 제거하고, 잇몸 재생을 유도하는 전문적인 잇몸 관리입니다. (치아당 비용)", "prices": [{ "label": "미노클린 연고", "value": 22000 }, { "label": "치근활택술", "value": 45000 }, { "label": "인공뼈 이식 등", "value": "별도문의" }] } ], "explanation": { "title": "💡 '신경치료' vs '치주치료', 뭐가 다른가요? 🧐", "content": [ "보호자님들께서 가장 헷갈려하시는 두 가지 치료! 알기 쉽게 설명해 드릴게요. 😉", "<br><strong>❤️‍🩹 신경치료 (Endodontics)</strong><br>이것은 **'치아 🦷 내부'**의 문제예요. 치아가 부러지거나 깊은 충치가 생겨 치아 속 신경(치수)이 감염되고 죽었을 때, 이 감염된 신경을 제거하고 그 공간을 생체 친화적인 재료로 채워넣는 치료랍니다. 즉, **'치아 자체를 살리는'** 치료라고 할 수 있죠. 나무의 썩은 속을 파내고 튼튼하게 보강하는 것과 비슷해요! 💪", "<br><strong>🌿 치주치료 (Periodontics)</strong><br>이것은 **'치아 주변 🌳'**의 문제예요. 치아를 지지하는 잇몸과 잇몸뼈에 염증이 생긴 것(치주염)을 치료하는 거예요. 치아와 잇몸 사이 깊숙한 곳의 치석을 제거하고(치근활택술), 염증 조직을 긁어내고, 심한 경우 뼈이식을 통해 무너진 잇몸뼈를 재건하기도 합니다. **'치아의 기반을 튼튼하게 다지는'** 치료라고 생각하시면 돼요. 집의 약해진 땅을 단단하게 보강하는 공사와 같답니다! 🏠" ] } }
+      "addons": { "headerTitle": "💊 우리 냥이 회복을 돕는 케어 비용 💊", "headerSubtitle": "💖 아프지 않게, 더 빨리 나을 수 있도록! 사랑의 추가 처치 안내 💖", "costs": [ { "borderColor": "#ffa726", "titleColor": "#f57c00", "title": "😴 마취 관련 처치", "description": "수술이 길어지거나, 아이 상태에 따라 더 안전한 마취를 유지하기 위한 추가적인 관리 비용입니다.", "prices": [{ "label": "⏰ 마취 시간 연장 (30분당)", "value": "45,000원~" }, { "label": "📍 국소 마취 (부위당)", "value": "10,000원~" }, { "label": "💉 알팍산 도입마취 변경", "value": "33,000원~" }] }, { "borderColor": "#ef5350", "titleColor": "#c62828", "title": "🪄 통증 관리 처치", "description": "수술 직후부터 집에 가서까지, 우리 냥이가 아프지 않도록 통증을 효과적으로 관리해주는 마법 같은 처치들이에요.", "prices": [{ "label": "❤️‍🩹 마약성 진통 주사", "value": "20,000원~" }, { "label": "🕒 24시간 지속 진통 주사", "value": "15,000원~" }, { "label": "🩹 마약성 진통 패치", "value": "40,000원~" }] }, { "borderColor": "#66bb6a", "titleColor": "#2e7d32", "title": "🚀 빠른 회복 부스터", "description": "감염 예방, 염증 완화, 세포 재생 촉진! 우리 냥이가 에너지를 되찾고 빨리 일상으로 돌아가도록 돕는 부스터 처치예요.", "prices": [{ "label": "💉 항생/소염 주사 (일반)", "value": "11,000원~" }, { "label": "🗓️ 항생 주사 (1주 지속)", "value": "15,000원~" }, { "label": "⚡️ 레이저 치료 (부위당)", "value": "20,000원~" }, { "label": "✨ 불소 도포", "value": "35,000원~" }] }, { "borderColor": "#26c6da", "titleColor": "#00838f", "title": "🏡 홈케어 용품", "description": "집에 가서도 집사님의 사랑으로 케어할 수 있도록! 안전과 회복을 위한 필수 아이템들이에요.", "prices": [{ "label": "💊 내복약 (3일분)", "value": 9900 }, { "label": "💊 내복약 (3일분/캡슐)", "value": 13200 }, { "label": "💊 내복약 (7일분)", "value": 23100 }, { "label": "💊 내복약 (7일분/캡슐)", "value": 28600 }, { "label": "💧 액상 진통제(1ml 당)", "value": "8,000원~" }, { "label": "칙- 구강 소독 스프레이", "value": 10000 }, { "label": "🧴 구강 항생/소염 연고", "value": 15000 }, {"label": "🌿 파라돈 겔", "value": 25000}, { "label": "🦠 구강 유산균", "value": 50000 }, { "label": "👑 넥카라", "value": "8,000원~" }] } ], "explanation": { "title": "💡 추가 처치는 왜 필요할까요? 🤔", "content": [ "우리 냥이들은 <strong>\"나 아파요😿\" 라고 말을 못하고 꾹~ 참는 습성</strong>이 있어요. 그래서 미리 통증을 관리해주는 건 아이의 고통을 덜어주는 <strong>가장 큰 사랑이자 배려</strong>랍니다.💖", "또, 항생제나 레이저, 소독 용품들은 수술 후 생길 수 있는 <strong>나쁜 균들을 막아주고 🦠 회복 속도를 높여서⚡️</strong> 아이가 빨리 캣타워로 점프! 할 수 있게 도와줘요!", "저희 병원은 아이의 상태를 꼼꼼히 살펴, <strong>정말 꼭! 필요한 처치만 골라서 보호자님과 상의</strong>드릴 것을 약속해요.🤙" ] } },
+      "nerve": { "headerTitle": "❤️‍🩹 신경 및 보존 치료 ❤️‍🩹", "headerSubtitle": "무조건 뽑지 않아요! 💪 소중한 치아를 지켜주는 다양한 치료 안내", "costs": [ { "borderColor": "#ffc078", "titleColor": "#f76707", "title": "✨ 살아있는 신경 살리기! (VPT)", "description": "<strong>⏳ 48시간 골든타임! ⏳</strong><br>치아가 부러진 직후, 아직 신경이 살아있을 때만 가능해요! 오염된 신경만 살짝 걷어내고 🩹 특수 보호 약품으로 코팅해서 치아의 생명력을 지켜준답니다.<span style=\"display:block;font-size:.9em;color:#e64980;font-weight:700;margin-top:10px;text-align:center\">🚨 레진 충전 비용은 별도예요!</span>", "prices": [{ "label": "🦷 송곳니 기준", "value": 450000 }] }, { "borderColor": "#ff87c2", "titleColor": "#c2255c", "title": "💔 아픈 신경 치료하기 (신경치료)", "description": "이미 신경이 죽었거나 🦠 세균에 감염되어 아야! 할 때 필요해요. 감염된 신경을 싹~ 제거하고 깨끗하게 소독한 뒤, 특수 재료로 채워서 통증의 원인을 없애고 치아는 보존해요.<span style=\"display:block;font-size:.9em;color:#e64980;font-weight:700;margin-top:10px;text-align:center\">🚨 레진 충전 비용은 별도예요!</span>", "prices": [{ "label": "🦷 송곳니 기준", "value": 770000 }] }, { "borderColor": "#4dabf7", "titleColor": "#1c7ed6", "title": "🎨 예쁘게 때워주기 (레진 치료)", "description": "충치나 마모, 살짝 깨진 부위를 치아 색과 비슷한 예쁜 재료로 메워서, 원래 모양과 기능을 되찾아주는 치료예요! 손상 범위와 치아에 따라 비용이 달라져요.", "prices": [ { "label": "✨ 쪼꼬만 손상", "value": 55000 }, { "label": "🦷 송곳니", "value": 110000 } ] }, { "borderColor": "#8ce99a", "titleColor": "#2f9e44", "title": "🌿 튼튼한 잇몸 만들기 (치주 치료)", "description": "잇몸병의 원인이 되는 세균막과 치석을 잇몸 속 깊은 곳까지 깨끗하게 제거하고, 잇몸 재생을 유도하는 전문적인 잇몸 관리입니다. (치아당 비용)", "prices": [{ "label": "💊 미노클린 연고", "value": 22000 }, { "label": "🛠️ 치근활택술", "value": 45000 }, { "label": "뼈이식 등", "value": "별도문의" }] } ], "explanation": { "title": "💡 '신경치료' vs '치주치료', 뭐가 다른가요? 🧐", "content": [ "보호자님들께서 가장 헷갈려하시는 두 가지 치료! 알기 쉽게 설명해 드릴게요. 😉", "<br><strong>❤️‍🩹 신경치료 (Endodontics)</strong><br>이것은 **'치아 🦷 내부'**의 문제예요. 치아가 부러지거나 깊은 충치가 생겨 치아 속 신경(치수)이 감염되고 죽었을 때, 이 감염된 신경을 제거하고 그 공간을 생체 친화적인 재료로 채워넣는 치료랍니다. 즉, **'치아 자체를 살리는'** 치료라고 할 수 있죠. 나무의 썩은 속을 파내고 튼튼하게 보강하는 것과 비슷해요! 💪", "<br><strong>🌿 치주치료 (Periodontics)</strong><br>이것은 **'치아 주변 🌳'**의 문제예요. 치아를 지지하는 잇몸과 잇몸뼈에 염증이 생긴 것(치주염)을 치료하는 거예요. 치아와 잇몸 사이 깊숙한 곳의 치석을 제거하고(치근활택술), 염증 조직을 긁어내고, 심한 경우 뼈이식을 통해 무너진 잇몸뼈를 재건하기도 합니다. **'치아의 기반을 튼튼하게 다지는'** 치료라고 생각하시면 돼요. 집의 약해진 땅을 단단하게 보강하는 공사와 같답니다! 🏠" ] } }
     };
 
     try {
@@ -63,6 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setupPageNavigation();
+    addExportListeners('#Calculator-Page');
+    addExportListeners('#Estimate-Page');
+    addExportListeners('#GuardianReport-Page');
 });
 
 // ===================================================================================
@@ -187,7 +194,7 @@ function setupPageNavigation() {
 function initCalculator() {
     const page = document.querySelector('#Calculator-Page');
     if (!page) return;
-    const CURRENT_VERSION = "2.2-cat";
+    const CURRENT_VERSION = "2.5-cat";
     let isChartDirty = false;
 
     const toothData = {
@@ -255,7 +262,6 @@ function initCalculator() {
         const newRow = document.createElement('tr');
         newRow.className = 'procedure-sub-row';
         newRow.dataset.permanentId = mainRowId;
-        newRow.style.backgroundColor = '#FFFFE0'; // 연한 노란색 배경 적용
         newRow.innerHTML = `<td class="tooth-id-cell"></td><td><input type="text" class="notes" placeholder="특이사항 입력"></td><td><select class="procedure-select"></select></td><td class="cost" data-cost="0">₩0</td><td><button class="remove-btn">-</button></td>`;
         const subSelect = newRow.querySelector('.procedure-select');
         populateProcedureSelect(subSelect, mainRowId);
@@ -282,8 +288,8 @@ function initCalculator() {
                     case '발치/제거': idCell.style.backgroundColor = '#ffcdd2'; break;
                     case '신경/보존 치료': idCell.style.backgroundColor = '#b2dfdb'; break;
                     case '모니터링': 
-                        idCell.style.backgroundColor = '#FF0000';
-                        idCell.style.color = 'white';
+                        idCell.style.backgroundColor = '#faff00';
+                        idCell.style.color = '#333';
                         break;
                 }
             }
@@ -301,6 +307,13 @@ function initCalculator() {
             const value = target.value;
             cost = parseInt(value.split('|').pop(), 10) || 0;
             selectedOption = target.options[target.selectedIndex];
+
+            target.style.color = '';
+            target.style.fontWeight = '';
+            if (selectedOption && selectedOption.dataset.category === '모니터링') {
+                target.style.color = 'red';
+                target.style.fontWeight = 'bold';
+            }
         }
     
         if (row.classList.contains('additional-row')) {
@@ -351,11 +364,11 @@ function initCalculator() {
         leftContainer.innerHTML = ''; rightContainer.innerHTML = '';
 
         const treatmentsByCategory = [
-             { category: '🩺 기본/수액', items: [ { id: 'health-check', name: '건강검진' }, { id: 'scaling-package', name: '스케일링' }, { id: 'iv_additives', name: '수액첨가제' } ], side: 'left' },
-             { category: '💉 마취', items: [ { id: 'anesthesia_pre', name: '도입마취 변경' }, { id: 'anesthesia_ext', name: '마취 시간 연장' }, { id: 'local_anesthesia', name: '국소마취' } ], side: 'left' },
-             { category: '🩹 통증 관리', items: [ { id: 'pain_opioid_iv', name: '마약성 진통 혈관주사' }, { id: 'pain_24hr_injection', name: '24시간 지속 진통 주사' }, { id: 'pain_cri', name: '무통 주사' }, { id: 'pain_patch', name: '마약성 진통패치' } ], side: 'left' },
-             { category: '🚀 회복 촉진', items: [ { id: 'recovery_injection', name: '항생/소염 주사' }, { id: 'laser_therapy', name: '레이저 치료' }, { id: 'fluoride', name: '불소 도포' } ], side: 'right' },
-             { category: '🏡 홈케어', items: [ { id: 'medication', name: '내복약 (1일2회)' }, { id: 'liquid_analgesic_nsaid', name: '액상 진통제(NSID)'}, { id: 'hexidine_spray', name: '헥시딘 스프레이'}, { id: 'steroid_ointment', name: '구강항생 스테로이드연고'}, { id: 'coating_spray', name: '구강점막코팅스프레이'}, { id: 'paradont_gel', name: '파라돈 겔'}, { id: 'probiotics', name: '구강 유산균'}, { id: 'neck_collar', name: '넥카라' } ], side: 'right' }
+             { category: '🩺 기본/수액', items: [ { id: 'health-check', name: '🩺 건강검진' }, { id: 'scaling-package', name: '🦷 스케일링' }, { id: 'iv_additives', name: '💧 수액첨가제' } ], side: 'left' },
+             { category: '💉 마취', items: [ { id: 'anesthesia_pre', name: '💉 도입마취 변경' }, { id: 'anesthesia_ext', name: '⏰ 마취 시간 연장' }, { id: 'local_anesthesia', name: '📍 국소마취' } ], side: 'left' },
+             { category: '🩹 통증 관리', items: [ { id: 'pain_opioid_iv', name: '❤️‍🩹 마약성 진통 혈관주사' }, { id: 'pain_24hr_injection', name: '🕒 24시간 지속 진통 주사' }, { id: 'pain_cri', name: '😊 무통 주사' }, { id: 'pain_patch', name: '🩹 마약성 진통패치' } ], side: 'left' },
+             { category: '🚀 회복 촉진', items: [ { id: 'recovery_injection', name: '💉 항생/소염 주사' }, { id: 'laser_therapy', name: '⚡️ 레이저 치료' }, { id: 'fluoride', name: '✨ 불소 도포' } ], side: 'right' },
+             { category: '🏡 홈케어', items: [ { id: 'medication', name: '💊 내복약' }, { id: 'liquid_analgesic_nsaid', name: '💧 액상 진통제(NSID)'}, { id: 'hexidine_spray', name: '칙- 헥시딘 스프레이'}, { id: 'steroid_ointment', name: '🧴 구강항생 스테로이드연고'}, { id: 'coating_spray', name: '🛡️ 구강점막코팅스프레이'}, { id: 'paradont_gel', name: '🌿 파라돈 겔'}, { id: 'probiotics', name: '🦠 구강 유산균'}, { id: 'neck_collar', name: '👑 넥카라' } ], side: 'right' }
         ];
 
         const createTableForSide = (container) => {
@@ -390,7 +403,7 @@ function initCalculator() {
             addOption(control, '선택안함', '선택안함|0');
             const add = (label, value) => control.add(new Option(label, `${label}|${value}`));
 
-            if (itemId === 'health-check' && weight > 0) { add('고양이 안심+ 플랜', 199000); add('7세미만 으른냥 플랜', 299000); add('7세이상 어르신냥 VIP', 449000); }
+            if (itemId === 'health-check' && weight > 0) { add('아깽이 기본 플랜', 160000); add('아깽이 안심+ 플랜', 199000); add('7세미만 으른냥 플랜', 299000); add('7세이상 어르신냥 VIP', 449000); }
             if (itemId === 'scaling-package' && weight > 0) { let price = (weight < 5) ? 239000 : (weight < 10) ? 299000 : 389000; add(`스케일링 패키지`, price); add(`스케일링(타병원검사)`, price + 100000); }
             if(itemId === 'iv_additives'){ add('수액첨가제(간기능 회복제)', 11000); }
             if (itemId === 'anesthesia_pre' && weight > 0) { let p = (weight<5)?33000:44000; add('도입마취 변경(알팍산)', p); }
@@ -403,7 +416,7 @@ function initCalculator() {
             if (itemId === 'recovery_injection' && weight > 0) { add('항생/소염 주사', 11000); add('1주 지속 항생 주사', 15000); }
             if (itemId === 'laser_therapy' && weight > 0) { add('레이저(국소)', 20000); add('레이저(전체)', 25000); }
             if(itemId === 'fluoride' && weight > 0) { add('불소 도포', 35000); }
-            if (itemId === 'medication' && weight > 0) { let p=3300; for(let d=1; d<=7; d++) add(`${d}일분`, p * d); }
+            if (itemId === 'medication' && weight > 0) { let p=3300; add('3일분', p*3); add('3일분(캡슐)', p*3 + 3300); add('7일분', p*7); add('7일분(캡슐)', p*7 + 5500); }
             if(itemId === 'liquid_analgesic_nsaid' && weight > 0) { const pricePerMl = 8000; for(let d=1; d<=7; d++) { let totalMl = (weight * 0.2) + (d > 1 ? (d - 1) * weight * 0.1 : 0); let roundedMl = Math.ceil(totalMl * 10) / 10; let cost = roundedMl * pricePerMl; let roundedCost = Math.ceil(cost / 100) * 100; add(`${d}일 (${roundedMl}ml)`, roundedCost); } }
             if (itemId === 'hexidine_spray') add('헥시딘 스프레이', 10000);
             if (itemId === 'steroid_ointment') add('스테로이드 연고', 15000);
@@ -421,16 +434,67 @@ function initCalculator() {
     function updateTotalCost() {
         let dentalSurgeryCost = 0;
         page.querySelectorAll('.main-container .cost').forEach(cell => dentalSurgeryCost += parseInt(cell.dataset.cost, 10) || 0);
+        
+        let healthCheckCost = 0;
+        let scalingCost = 0;
         let additionalTreatmentCost = 0;
+
         page.querySelectorAll('.additional-treatments-container .cost').forEach(cell => {
-            if (cell.closest('tr').classList.contains('selected-row')) {
-                additionalTreatmentCost += parseInt(cell.dataset.cost, 10) || 0;
+            const row = cell.closest('tr');
+            if (row && row.classList.contains('selected-row')) {
+                const cost = parseInt(cell.dataset.cost, 10) || 0;
+                const select = row.querySelector('select[data-item-id]');
+                const itemId = select ? select.dataset.itemId : null;
+
+                if (itemId === 'health-check') {
+                    healthCheckCost += cost;
+                } else if (itemId === 'scaling-package') {
+                    scalingCost += cost;
+                } else {
+                    additionalTreatmentCost += cost;
+                }
             }
         });
 
+        const summaryTableBody = page.querySelector('.cost-summary-table tbody');
+        const additionalCostRow = summaryTableBody.querySelector('tr:has(.additional-treatment-cost-display)');
+
+        // 건강검진 비용 행 처리
+        let healthCheckRow = summaryTableBody.querySelector('#health-check-cost-row');
+        if (healthCheckCost > 0) {
+            if (!healthCheckRow) {
+                healthCheckRow = document.createElement('tr');
+                healthCheckRow.id = 'health-check-cost-row';
+                healthCheckRow.innerHTML = `<td>🩺 건강검진 비용</td><td class="health-check-cost-display"></td>`;
+                summaryTableBody.insertBefore(healthCheckRow, additionalCostRow);
+            }
+            healthCheckRow.style.display = '';
+            healthCheckRow.querySelector('.health-check-cost-display').textContent = '₩' + healthCheckCost.toLocaleString('ko-KR');
+        } else if (healthCheckRow) {
+            healthCheckRow.style.display = 'none';
+        }
+
+        // 스케일링 비용 행 처리
+        let scalingRow = summaryTableBody.querySelector('#scaling-cost-row');
+        if (scalingCost > 0) {
+            if (!scalingRow) {
+                scalingRow = document.createElement('tr');
+                scalingRow.id = 'scaling-cost-row';
+                scalingRow.innerHTML = `<td>🦷 스케일링 비용</td><td class="scaling-cost-display"></td>`;
+                summaryTableBody.insertBefore(scalingRow, additionalCostRow);
+            }
+            scalingRow.style.display = '';
+            scalingRow.querySelector('.scaling-cost-display').textContent = '₩' + scalingCost.toLocaleString('ko-KR');
+        } else if (scalingRow) {
+            scalingRow.style.display = 'none';
+        }
+
         page.querySelector('.dental-surgery-cost-display').textContent = '₩' + dentalSurgeryCost.toLocaleString('ko-KR');
         page.querySelector('.additional-treatment-cost-display').textContent = '₩' + additionalTreatmentCost.toLocaleString('ko-KR');
-        page.querySelector('.total-cost-display').textContent = '₩' + (dentalSurgeryCost + additionalTreatmentCost).toLocaleString('ko-KR');
+        
+        const totalCost = dentalSurgeryCost + healthCheckCost + scalingCost + additionalTreatmentCost;
+        page.querySelector('.total-cost-display').textContent = '₩' + totalCost.toLocaleString('ko-KR');
+
         updateTreatmentSummary();
     }
     
@@ -476,11 +540,41 @@ function initCalculator() {
     updateTotalCost();
 
     page.addEventListener('change', (e) => { if (e.target.matches('.procedure-select, .additional-treatments-container select')) handleSelectionChange(e.target); });
-    page.addEventListener('input', (e) => { isChartDirty = true; if (e.target.matches('.notes')) updateRowHighlight(e.target.closest('tr')); if (e.target.matches('#patient-weight-calc')) { updateTotalCost(); populateAdditionalTreatments(); } if (e.target.matches('#patient-name-calc, #visit-date-calc')) page.querySelector('.dynamic-chart-title').textContent = `${page.querySelector('#visit-date-calc').value} ${page.querySelector('#patient-name-calc').value || '환자'}의 치과 차트`; });
-    page.addEventListener('click', (e) => { if (e.target.matches('.add-btn')) { isChartDirty = true; const mainRow = e.target.closest('tr'); const typeCell = findGoverningTypeCell(mainRow); if (typeCell) typeCell.rowSpan += 1; const newSubRow = createSubRow(mainRow.dataset.permanentId); mainRow.after(newSubRow); } if (e.target.matches('.remove-btn')) { isChartDirty = true; const rowToRemove = e.target.closest('tr'); const typeCell = findGoverningTypeCell(rowToRemove); if (typeCell && typeCell.rowSpan > 1) typeCell.rowSpan -= 1; rowToRemove.remove(); updateTotalCost(); } });
+    page.addEventListener('input', (e) => { isChartDirty = true; if (e.target.matches('.notes')) updateRowHighlight(e.target.closest('tr')); if (e.target.matches('#patient-weight-calc')) { updateAdditionalOptions(); updateTotalCost(); } if (e.target.matches('#patient-name-calc, #visit-date-calc')) page.querySelector('.dynamic-chart-title').textContent = `${page.querySelector('#visit-date-calc').value} ${page.querySelector('#patient-name-calc').value || '환자'}의 치과 차트`; });
+    page.addEventListener('click', (e) => { 
+        if (e.target.matches('.add-btn')) { 
+            isChartDirty = true; 
+            const mainRow = e.target.closest('tr');
+            if(!mainRow) return;
+            let insertAfterRow = mainRow;
+            while(insertAfterRow.nextElementSibling && insertAfterRow.nextElementSibling.classList.contains('procedure-sub-row') && insertAfterRow.nextElementSibling.dataset.permanentId === mainRow.dataset.permanentId) {
+                insertAfterRow = insertAfterRow.nextElementSibling;
+            }
+            const typeCell = findGoverningTypeCell(insertAfterRow); 
+            if (typeCell) typeCell.rowSpan += 1; 
+            const newSubRow = createSubRow(mainRow.dataset.permanentId); 
+            insertAfterRow.insertAdjacentElement('afterend', newSubRow);
+        } 
+        if (e.target.matches('.remove-btn')) { 
+            isChartDirty = true; 
+            const rowToRemove = e.target.closest('tr');
+            if (!rowToRemove) return;
+            const typeCell = findGoverningTypeCell(rowToRemove); 
+            if (typeCell && typeCell.rowSpan > 1) typeCell.rowSpan -= 1; 
+            rowToRemove.remove(); 
+            updateTotalCost(); 
+        } 
+    });
     
     const btnContainer = page.closest('.content-panel').querySelector('.export-container');
     // 이하 저장/불러오기/내보내기 이벤트 리스너는 생략 (기존 로직 유지)
+
+    window.addEventListener('beforeunload', (e) => {
+        if (isChartDirty) { 
+            e.preventDefault(); 
+            e.returnValue = '변경사항이 저장되지 않을 수 있습니다.'; 
+        }
+    });
 }
 
 function copyCalculatorDataTo(targetId) {
@@ -489,103 +583,60 @@ function copyCalculatorDataTo(targetId) {
     if (!targetPanel) return;
     const targetCaptureArea = targetPanel.querySelector('.capture-area');
     if (!targetCaptureArea) return;
-
-    // 1. 계산기 영역 전체를 복제
+    
     const clonedArea = calculatorCaptureArea.cloneNode(true);
 
-    // 2. 복제된 내용에서 상호작용 요소를 텍스트로 변환 (레이아웃 깨짐 방지)
-    // 메인 치과 테이블 처리
-    clonedArea.querySelectorAll('.main-container tr').forEach(row => {
-        // '특이사항' 입력창을 텍스트로 변환
-        const notesInput = row.querySelector('input.notes');
-        if (notesInput) {
-            const textNode = document.createTextNode(notesInput.value);
-            notesInput.parentNode.replaceChild(textNode, notesInput);
-        }
-
-        // '시술 선택' 드롭다운을 텍스트로 변환
-        const procSelect = row.querySelector('select.procedure-select');
-        if (procSelect) {
-            let selectedText = '';
-            if (procSelect.value !== '0' && !procSelect.options[procSelect.selectedIndex].disabled) {
-                selectedText = procSelect.options[procSelect.selectedIndex].text;
+    const sourceElements = calculatorCaptureArea.querySelectorAll('input, select');
+    const clonedElements = clonedArea.querySelectorAll('input, select');
+    sourceElements.forEach((sourceEl, index) => {
+        const clonedEl = clonedElements[index];
+        if (clonedEl) {
+            if (sourceEl.tagName === 'SELECT') {
+                clonedEl.selectedIndex = sourceEl.selectedIndex;
+                if (sourceEl.style.color) {
+                    clonedEl.style.color = sourceEl.style.color;
+                    clonedEl.style.fontWeight = sourceEl.style.fontWeight;
+                }
             }
-            const textNode = document.createTextNode(selectedText);
-            procSelect.parentNode.replaceChild(textNode, procSelect);
+            else if (sourceEl.type === 'checkbox' || sourceEl.type === 'radio') clonedEl.checked = sourceEl.checked;
+            else clonedEl.value = sourceEl.value;
         }
-
-        // '+' 와 '-' 버튼 제거
-        row.querySelector('.add-btn')?.remove();
-        row.querySelector('.remove-btn')?.remove();
     });
 
-    // 추가 처치 테이블 처리
     clonedArea.querySelectorAll('.additional-treatments-container tr.additional-row').forEach(row => {
         const select = row.querySelector('select');
-        if (select) {
-            const [label, value] = select.value.split('|');
-            if (value === '0') {
-                row.style.display = 'none'; // 선택 안 된 항목은 숨김
-            } else {
-                const selectCell = select.parentNode;
-                selectCell.textContent = label; // 선택된 항목의 텍스트만 표시
-            }
+        if (select && select.value === '선택안함|0') {
+            row.style.display = 'none';
         }
     });
-
-    // 3. 내용이 없는 행 제거 (레이아웃 깨짐 방지)
-    clonedArea.querySelectorAll('.main-container table').forEach(table => {
-        const rows = Array.from(table.querySelectorAll('tbody > tr'));
-        const rowsToRemove = [];
+    clonedArea.querySelectorAll('.additional-treatments-container tr.category-header, .additional-treatments-container h3').forEach(header => {
+        let next = header.nextElementSibling;
+        if(header.tagName === 'H3') next = header.closest('div').querySelector('table');
         
-        for (let i = 0; i < rows.length; i++) {
-            const row = rows[i];
-            const typeCell = row.querySelector('td.tooth-type'); // rowspan을 가진 '타입' 셀을 찾음
-            
-            if (typeCell) { // 이 행이 그룹의 시작(master) 행인 경우
-                const span = parseInt(typeCell.getAttribute('rowspan') || 1, 10);
-                let groupHasContent = false;
+        let allHidden = true;
+        let currentElement = header.tagName === 'H3' ? next.querySelector('tbody tr') : next;
 
-                // 그룹 내 모든 행(master + sub)에 내용이 있는지 확인
-                for (let j = 0; j < span; j++) {
-                    const groupRow = rows[i + j];
-                    if (!groupRow) continue;
-
-                    // 행의 종류(master/sub)에 따라 셀 인덱스 결정
-                    const hasTypeCellInGroup = groupRow.querySelector('td.tooth-type') !== null;
-                    const notesCellIndex = hasTypeCellInGroup ? 2 : 1;
-                    const procedureCellIndex = hasTypeCellInGroup ? 3 : 2;
-                    
-                    const notesText = groupRow.cells[notesCellIndex]?.textContent.trim();
-                    const procedureText = groupRow.cells[procedureCellIndex]?.textContent.trim();
-
-                    if (notesText || procedureText) {
-                        groupHasContent = true;
-                        break; // 내용이 있으면 더 이상 확인할 필요 없음
-                    }
-                }
-
-                // 그룹 전체에 내용이 없으면 그룹 내 모든 행을 제거 목록에 추가
-                if (!groupHasContent) {
-                    for (let j = 0; j < span; j++) {
-                        if (rows[i + j]) {
-                            rowsToRemove.push(rows[i + j]);
-                        }
-                    }
-                }
-                i += span - 1; // 이 그룹의 다른 행들은 이미 처리했으므로 건너뜀
+        while(currentElement && !currentElement.classList.contains('category-header') && currentElement.tagName !== 'H3'){
+            if(currentElement.style.display !== 'none') {
+                allHidden = false;
+                break;
             }
+            currentElement = currentElement.nextElementSibling;
         }
-        
-        // 식별된 행들을 DOM에서 실제로 제거
-        rowsToRemove.forEach(row => row.remove());
+        if(allHidden) header.style.display = 'none';
     });
-
-
-    // 4. 최종적으로 정리된 내용을 대상 탭에 삽입
+    
+    clonedArea.querySelectorAll('.main-container tr').forEach(row => {
+        const select = row.querySelector('.procedure-select');
+        const notes = row.querySelector('.notes');
+        if (select && select.value === '0' && notes && notes.value.trim() === '') {
+            row.style.display = 'none';
+        }
+    });
+    
     targetCaptureArea.innerHTML = '';
     const toothFormulaImage = document.createElement('img');
-    toothFormulaImage.src = "https://raw.githubusercontent.com/ivomec/image/main/%EC%B9%98%EC%8B%9D1.jpg?raw=true";
+    toothFormulaImage.src = "https://github.com/ivomec/image/blob/main/%EC%B9%98%EC%8B%9D.jpg?raw=true";
     toothFormulaImage.alt = "고양이 치아 모식도";
     toothFormulaImage.style.cssText = "width: 100%; max-width: 800px; margin: 0 auto 25px; display: block; border-radius: 15px;";
     targetCaptureArea.appendChild(toothFormulaImage);
@@ -622,22 +673,18 @@ function generateGuardianComments(clonedArea) {
         'RECHECK': '양치질 시작 시점과 다음 검진(리첵) 일정은 병원에서 별도로 안내해 드릴 예정입니다. 아이의 빠른 회복과 구강 건강 유지를 위해 꼭 지켜주시길 바랍니다.'
     };
     
-    clonedArea.querySelectorAll('.main-container tr').forEach(row => {
-        if (row.style.display === 'none') return; // 숨겨진 행은 건너뜀
-        const procedureTextCell = row.cells.length === 6 ? row.cells[3] : (row.cells.length === 5 ? row.cells[2] : null);
-        const procedureText = procedureTextCell?.textContent || '';
-        if (procedureText.includes('발치') || procedureText.includes('제거') || procedureText.includes('절제')) {
-            careAdviceCategories.add('EXTRACTION');
-        }
-        if (procedureText.includes('VPT') || procedureText.includes('신경치료') || procedureText.includes('레진')) {
-            careAdviceCategories.add('RESIN');
-        }
+    clonedArea.querySelectorAll('.procedure-select').forEach(select => {
+        if(!select || select.value === '0' || select.value === 'disabled') return;
+        const selectedOption = select.options[select.selectedIndex];
+        const category = selectedOption?.dataset.category;
+        
+        if (category === '발치/제거') careAdviceCategories.add('EXTRACTION');
+        if (category === '신경/보존 치료') careAdviceCategories.add('RESIN');
     });
     
-    clonedArea.querySelectorAll('.additional-treatments-container tr').forEach(row => {
-        if (row.style.display === 'none') return;
-        const itemText = row.cells[0]?.textContent || '';
-        if (itemText.includes('내복약') || itemText.includes('액상 진통제')) {
+    clonedArea.querySelectorAll('.additional-treatments-container select').forEach(select => {
+        const itemId = select.dataset.itemId;
+        if(select.value !== '선택안함|0' && (itemId === 'medication' || itemId === 'liquid_analgesic_nsaid')) {
             careAdviceCategories.add('MEDICATION');
         }
     });
@@ -659,17 +706,12 @@ function addExportListeners(pageSelector) {
 
     const exportHandler = (exportFunc, type) => {
         const captureArea = page.querySelector('.capture-area');
-        const patientInfoInputs = document.querySelector('#Calculator-Page .patient-info-inputs');
-        const originalDisplay = patientInfoInputs ? patientInfoInputs.style.display : '';
-        if (patientInfoInputs) patientInfoInputs.style.display = 'none';
-
+        
         html2canvas(captureArea, { scale: 2, windowWidth: captureArea.scrollWidth, windowHeight: captureArea.scrollHeight, useCORS: true }).then(canvas => {
             const patientName = document.querySelector('#patient-name-calc').value || '환자';
             const date = document.querySelector('#visit-date-calc').value || new Date().toISOString().split('T')[0];
             const fileName = `${patientName}_${date}_${type}`;
             exportFunc(canvas, fileName);
-        }).finally(() => {
-            if (patientInfoInputs) patientInfoInputs.style.display = originalDisplay;
         });
     };
 
