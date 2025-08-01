@@ -59,6 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
         populateAllTabs(hospitalData);
+        // [수정] 페이지가 로드될 때 계산기 로직을 즉시 실행합니다.
+        initCalculator();
     } catch (error) {
         console.error('전체 탭 콘텐츠 처리 중 오류 발생:', error);
         alert('콘텐츠를 처리하는 데 실패했습니다. 코드에 문제가 없는지 확인해주세요.');
@@ -156,7 +158,6 @@ function populateAllTabs(data) {
 function setupPageNavigation() {
     const navTabs = document.querySelectorAll('.nav-tab');
     const contentPanels = document.querySelectorAll('.content-panel');
-    let calculatorInitialized = false;
 
     function showContent(targetId) {
         contentPanels.forEach(panel => panel.classList.remove('active'));
@@ -165,24 +166,21 @@ function setupPageNavigation() {
         if (targetContent) targetContent.classList.add('active');
         const activeTab = document.querySelector(`.nav-tab[data-target="${targetId}"]`);
         if (activeTab) activeTab.classList.add('active');
-
-        if (targetId === 'content-calculator' && !calculatorInitialized) {
-            initCalculator();
-            calculatorInitialized = true;
-        }
     }
 
     navTabs.forEach(tab => {
         tab.addEventListener('click', (event) => {
             event.preventDefault();
             const targetId = tab.dataset.target;
+            // [수정] '예상비용' 또는 '보호자용' 탭을 클릭하면 계산기 데이터를 복사합니다.
             if (targetId === 'content-estimate' || targetId === 'content-guardian-report') {
-                if (!calculatorInitialized) { initCalculator(); calculatorInitialized = true; }
                 copyCalculatorDataTo(targetId);
             }
             showContent(targetId);
         });
     });
+    
+    // 초기 페이지를 '병원소개'로 설정합니다.
     showContent('content-main');
 }
 
@@ -192,6 +190,9 @@ function setupPageNavigation() {
 function initCalculator() {
     const page = document.querySelector('#Calculator-Page');
     if (!page) return;
+    // 계산기 로직이 이미 초기화되었다면 중복 실행을 방지합니다.
+    if (page.dataset.initialized === 'true') return;
+
     const CURRENT_VERSION = "2.6-cat";
     let isChartDirty = false;
 
@@ -503,7 +504,7 @@ function initCalculator() {
         const categories = { '발치/제거': 0, '신경/보존 치료': 0, '모니터링': 0 };
         page.querySelectorAll('.main-container .procedure-select').forEach(select => {
             const selectedOption = select.options[select.selectedIndex];
-            if (!selectedOption || selectedOption.value === '0' || selectedOption.disabled) return;
+            if (!selectedOption || select.value === '0' || selectedOption.disabled) return;
             const category = selectedOption.dataset.category;
             if (category && categories.hasOwnProperty(category)) categories[category]++;
         });
@@ -564,9 +565,9 @@ function initCalculator() {
     });
     
     const btnContainer = page.closest('.content-panel').querySelector('.export-container');
-    btnContainer.querySelector('.save-data-btn')?.addEventListener('click', saveData);
-    btnContainer.querySelector('.load-data-btn')?.addEventListener('click', () => btnContainer.querySelector('.load-data-input').click());
-    btnContainer.querySelector('.load-data-input')?.addEventListener('change', loadData);
+    // btnContainer.querySelector('.save-data-btn')?.addEventListener('click', saveData);
+    // btnContainer.querySelector('.load-data-btn')?.addEventListener('click', () => btnContainer.querySelector('.load-data-input').click());
+    // btnContainer.querySelector('.load-data-input')?.addEventListener('change', loadData);
 
     window.addEventListener('beforeunload', (e) => {
         if (isChartDirty) { 
@@ -574,6 +575,9 @@ function initCalculator() {
             e.returnValue = '변경사항이 저장되지 않을 수 있습니다.'; 
         }
     });
+
+    // 계산기 초기화 완료 플래그 설정
+    page.dataset.initialized = 'true';
 }
 
 function copyCalculatorDataTo(targetId) {
@@ -601,31 +605,6 @@ function copyCalculatorDataTo(targetId) {
             else clonedEl.value = sourceEl.value;
         }
     });
-
-    // ================== BUG FIX START ==================
-    // 테이블 레이아웃이 깨지는 것을 방지하기 위해, 행을 숨기기 전에 rowspan 속성을 제거하고 테이블 구조를 평탄화합니다.
-    clonedArea.querySelectorAll('.main-container table').forEach(table => {
-        const typeCells = Array.from(table.querySelectorAll('td.tooth-type[rowspan]'));
-
-        typeCells.forEach(cell => {
-            const spanCount = parseInt(cell.getAttribute('rowspan'), 10);
-            if (isNaN(spanCount) || spanCount <= 1) return;
-
-            // rowspan으로 묶인 다음 행들에 빈 셀(<td>)을 추가하여 열 개수를 맞춥니다.
-            let currentRow = cell.parentElement;
-            for (let i = 1; i < spanCount; i++) {
-                currentRow = currentRow.nextElementSibling;
-                if (currentRow) {
-                    const newCell = document.createElement('td');
-                    newCell.className = 'tooth-type';
-                    currentRow.insertBefore(newCell, currentRow.firstChild);
-                }
-            }
-            // 구조가 평탄화되었으므로 rowspan 속성을 제거합니다.
-            cell.removeAttribute('rowspan');
-        });
-    });
-    // =================== BUG FIX END ===================
 
     clonedArea.querySelectorAll('.additional-treatments-container tr.additional-row').forEach(row => {
         const select = row.querySelector('select');
