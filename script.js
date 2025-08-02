@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           "explanation": { "title": "💡 필독! 혜택 적용 비용 안내 💡", "content": [ "저희 금호동물병원에서는 아이의 <strong>안전을 💖최우선💖</strong>으로 생각해요. 그래서 최근 <strong>✅ 저희 병원에서 직접 마취 전 혈액검사</strong>를 진행해서, 아이의 건강 상태를 저희 의료진이 완벽하게 파악하고 있는 경우! 감사의 마음을 담아 <strong>👑혜택가👑</strong>를 적용해 드리고 있답니다.", "다른 병원에서 검사를 받으셨거나 사정상 검사를 못 하셨어도 괜찮아요! 물론 안전한 치과 치료가 가능합니다. 다만, 외부 데이터를 다시 검토하고 저희 시스템에 맞게 적용하는 과정이 필요해서 정상 비용으로 진행되는 점(타병원 검사 시 10만원 추가), 보호자님의 너른 양해를 부탁드려요. 🙏", "<strong>🚨 잠깐!</strong> 안내된 비용은 스케일링과 기본 처치 비용이에요. 아이의 구강 상태에 따라 발치, 신경치료, 약 처방 등 추가 치료가 필요할 수 있어요. 이 경우, 꼭! <strong>보호자님과 충분히 상의 후 진행</strong>하니 걱정 마세요! 😉" ] } 
       },
-      "surgery": { "headerTitle": "🦷😿 우리 냥이 아픈 치아 수술 비용 😿🦷", "headerSubtitle": "❤️ 아이의 고통을 덜어주는 치료 비용을 투명하게 안내해요 ❤️", "costs": [ { "id": "card-basic-extraction", "borderColor": "#a5d8ff", "titleColor": "#1971c2", "title": "🦷 기본 발치", "description": "잇몸병으로 인해 이미 많이 흔들리는 치아를 잇몸 절개 없이 제거합니다.", "prices": [{ "label": "🦷 뿌리 1개", "value": 22000 }, { "label": "🦷 뿌리 2개", "value": 66000 }, { "label": "🦷 고양이 대구치(M1)", "value": 88000 }] }, { "id": "card-surgical-extraction", "borderColor": "#ffc078", "titleColor": "#d9480f", "title": "💪 수술 발치", "description": "아직 단단히 박혀있는 치아를 잇몸 절개 및 봉합을 통해 안전하게 제거하는 전문적인 수술입니다.", "prices": [{ "label": "🔪 뿌리 1개", "value": 44000 }, { "label": "🔪 뿌리 2개", "value": 120000 }, { "label": "🔪 고양이 대구치(M1)", "value": 165000 }, { "label": "🔪 열육치(PM4)", "value": 220000 }] }, { "id": "card-canine-extraction", "borderColor": "#4dd0e1", "titleColor": "#00838f", "title": "😼 송곳니 수술 발치", "description": "길고 튼튼한 송곳니는 정교한 수술적 접근이 필요합니다. 턱 구조에 따라 난이도가 달라집니다.", "prices": [{ "label": "😼 상악 (위턱) 송곳니", "value": 220000 }, { "label": "😼 하악 (아래턱) 송곳니", "value": 270000 }] }, { "id": "card-deciduous-extraction", "borderColor": "#b39ddb", "titleColor": "#512da8", "title": "🍼 유치 발치", "description": "제때 빠지지 않고 남아 문제를 일으키는 유치를 제거합니다.", "prices": [{ "label": "🍼 일반 유치", "value": 22000 }, { "label": "🍼 유치 송곳니 (X-ray 포함)", "value": 33000 }, { "label": "🍼 유치 송곳니 (수술 발치)", "value": 66000 }] }, { "id": "card-forl-extraction", "borderColor": "#f06292", "titleColor": "#c2185b", "title": "💔 치아흡수병변(FORL) 발치", "description": "치아가 녹아내리는 병변으로, 상태에 따라 치관만 제거하거나 뿌리까지 모두 제거합니다.", "prices": [{ "label": "💔 치관 절제술", "value": 44000 }, { "label": "💔 흡수치근 제거 (1개)", "value": 88000 }, { "label": "💔 흡수치근 제거 (2개)", "value": 140000 }] }, { "id": "card-root-remains-extraction", "borderColor": "#9ccc65", "titleColor": "#558b2f", "title": "🔍 잔존치근 제거", "description": "과거 발치 후 남겨졌거나 부러진 치아의 뿌리를 찾아 제거하는 정밀한 수술입니다.", "prices": [{ "label": "🔍 뿌리 1개", "value": 77000 }, { "label": "🔍 뿌리 2개", "value": 120000 }, { "label": "🔍 송곳니 잔존치근", "value": "25~30만원" }] }, { "id": "card-etc-surgery", "borderColor": "#78909c", "titleColor": "#37474f", "title": "🛠️ 기타 수술 및 처치", "description": "잇몸 종양이나 낭종 제거, 조직검사 등 추가적인 외과적 처치입니다.", "prices": [{ "label": "🍑 잇몸 종양 제거 (<1cm)", "value": 110000 }, { "label": " cysts 제거술", "value": 280000 }, { "label": "🔬 조직검사 (1 site)", "value": 170000 }] } ], "explanation": { "title": "💡 꼭! 확인해주세요! '기본' vs '수술' 발치 💡", "content": [ "<strong>기본 발치 (쏙!) 😿</strong><br>잇몸병으로 치아가 이미 <strong>많이많이 흔들릴 때!</strong> 잇몸 절개 없이 쏙~ 뽑아요. (봉합이 필요하면 비용이 추가될 수 있어요!)", "<strong>수술 발치 (샥!) 💪</strong><br>치아 뿌리가 아직 <strong>잇몸뼈에 단단히 박혀있을 때!</strong> 잇몸을 열고 안전하게 조각내어 제거한 뒤, 꼼꼼하게 봉합까지 하는 전문적인 과정이에요." ] } },
+      "surgery": { "headerTitle": "🦷😿 우리 냥이 아픈 치아 수술 비용 😿🦷", "headerSubtitle": "❤️ 아이의 고통을 덜어주는 치료 비용을 투명하게 안내해요 ❤️", "costs": [ { "id": "card-basic-extraction", "borderColor": "#a5d8ff", "titleColor": "#1971c2", "title": "🦷 기본 발치", "description": "잇몸병으로 인해 이미 많이 흔들리는 치아를 잇몸 절개 없이 제거합니다.", "prices": [{ "label": "🦷 뿌리 1개", "value": 22000 }, { "label": "🦷 뿌리 2개", "value": 66000 }, { "label": "🦷 고양이 대구치(M1)", "value": 88000 }] }, { "id": "card-surgical-extraction", "borderColor": "#ffc078", "titleColor": "#d9480f", "title": "💪 수술 발치", "description": "아직 단단히 박혀있는 치아를 잇몸 절개 및 봉합을 통해 안전하게 제거하는 전문적인 수술입니다.", "prices": [{ "label": "🔪 뿌리 1개", "value": 44000 }, { "label": "🔪 뿌리 2개", "value": 120000 }, { "label": "🔪 고양이 대구치(M1)", "value": 165000 }, { "label": "🔪 열육치(PM4)", "value": 220000 }] }, { "id": "card-canine-extraction", "borderColor": "#4dd0e1", "titleColor": "#00838f", "title": "😼 송곳니 수술 발치", "description": "길고 튼튼한 송곳니는 정교한 수술적 접근이 필요합니다. 턱 구조에 따라 난이도가 달라집니다.", "prices": [{ "label": "😼 상악 (위턱) 송곳니", "value": 220000 }, { "label": "😼 하악 (아래턱) 송곳니", "value": 270000 }] }, { "id": "card-deciduous-extraction", "borderColor": "#b39ddb", "titleColor": "#512da8", "title": "🍼 유치 발치", "description": "제때 빠지지 않고 남아 문제를 일으키는 유치를 제거합니다.", "prices": [{ "label": "🍼 일반 유치", "value": 22000 }, { "label": "🍼 유치 송곳니 (X-ray 포함)", "value": 33000 }, { "label": "🍼 유치 송곳니 (수술 발치)", "value": 66000 }] }, { "id": "card-forl-extraction", "borderColor": "#f06292", "titleColor": "#c2185b", "title": "💔 치아흡수병변(FORL) 발치", "description": "치아가 녹아내리는 병변으로, 상태에 따라 치관만 제거하거나 뿌리까지 모두 제거합니다.", "prices": [{ "label": "💔 치관 절제술", "value": 44000 }, { "label": "💔 흡수치근 제거 (1개)", "value": 88000 }, { "label": "💔 흡수치근 제거 (2개)", "value": 140000 }] }, { "id": "card-root-remains-extraction", "borderColor": "#9ccc65", "titleColor": "#558b2f", "title": "🔍 잔존치근 제거", "description": "과거 발치 후 남겨졌거나 부러진 치아의 뿌리를 찾아 제거하는 정밀한 수술입니다.", "prices": [{ "label": "🔍 뿌리 1개", "value": 77000 }, { "label": "🔍 뿌리 2개", "value": 120000 }, { "label": "🔍 송곳니 잔존치근", "value": "25~30만원" }] }, { "id": "card-etc-surgery", "borderColor": "#78909c", "titleColor": "#37474f", "title": "🛠️ 기타 수술 및 처치", "description": "잇몸 종양이나 낭종 제거, 조직검사 등 추가적인 외과적 처치입니다.", "prices": [{ "label": "🍑 잇몸 종양 제거 (<1cm)", "value": 110000 }, { "label": " cysts 제거술", "value": 280000 }, { "label": "🔬 조직검사 (1 site)", "value": 170000 }] } ], "explanation": { "title": "💡 꼭! 확인해주세요! '기본' vs '수술' 발치 💡", "content": [ "<strong>기본 발치 (쏙!) 😿</strong><br>잇몸병으로 치아가 이미 <strong>많이많이 흔들릴 때!</strong> 잇몸 절개 없이 쏙~ 뽑아요. (봉합이 필요하면 비용가 추가될 수 있어요!)", "<strong>수술 발치 (샥!) 💪</strong><br>치아 뿌리가 아직 <strong>잇몸뼈에 단단히 박혀있을 때!</strong> 잇몸을 열고 안전하게 조각내어 제거한 뒤, 꼼꼼하게 봉합까지 하는 전문적인 과정이에요." ] } },
       "addons": { "headerTitle": "💊 우리 냥이 회복을 돕는 케어 비용 💊", "headerSubtitle": "💖 아프지 않게, 더 빨리 나을 수 있도록! 사랑의 추가 처치 안내 💖", "costs": [ { "borderColor": "#ffa726", "titleColor": "#f57c00", "title": "😴 마취 관련 처치", "description": "수술이 길어지거나, 아이 상태에 따라 더 안전한 마취를 유지하기 위한 추가적인 관리 비용입니다.", "prices": [{ "label": "⏰ 마취 시간 연장 (30분당)", "value": "45,000원~" }, { "label": "📍 국소 마취 (부위당)", "value": "10,000원~" }, { "label": "💉 알팍산 도입마취 변경", "value": "33,000원~" }] }, { "borderColor": "#ef5350", "titleColor": "#c62828", "title": "🪄 통증 관리 처치", "description": "수술 직후부터 집에 가서까지, 우리 냥이가 아프지 않도록 통증을 효과적으로 관리해주는 마법 같은 처치들이에요.", "prices": [{ "label": "❤️‍🩹 마약성 진통 주사", "value": "20,000원~" }, { "label": "🕒 24시간 지속 진통 주사", "value": "15,000원~" }, { "label": "🩹 마약성 진통 패치", "value": "40,000원~" }] }, { "borderColor": "#66bb6a", "titleColor": "#2e7d32", "title": "🚀 빠른 회복 부스터", "description": "감염 예방, 염증 완화, 세포 재생 촉진! 우리 냥이가 에너지를 되찾고 빨리 일상으로 돌아가도록 돕는 부스터 처치예요.", "prices": [{ "label": "💉 항생/소염 주사 (일반)", "value": "11,000원~" }, { "label": "🗓️ 항생 주사 (1주 지속)", "value": "15,000원~" }, { "label": "⚡️ 레이저 치료 (부위당)", "value": "20,000원~" }, { "label": "✨ 불소 도포", "value": "35,000원~" }] }, { "borderColor": "#26c6da", "titleColor": "#00838f", "title": "🏡 홈케어 용품", "description": "집에 가서도 집사님의 사랑으로 케어할 수 있도록! 안전과 회복을 위한 필수 아이템들이에요.", "prices": [{ "label": "💊 내복약 (3일분)", "value": 9900 }, { "label": "💊 내복약 (3일분/캡슐)", "value": 13200 }, { "label": "💊 내복약 (7일분)", "value": 23100 }, { "label": "💊 내복약 (7일분/캡슐)", "value": 28600 }, { "label": "💧 액상 진통제(1ml 당)", "value": "8,000원~" }, { "label": "칙- 구강 소독 스프레이", "value": 10000 }, { "label": "🧴 구강 항생/소염 연고", "value": 15000 }, {"label": "🌿 파라돈 겔", "value": 25000}, { "label": "🦠 구강 유산균", "value": 50000 }, { "label": "👑 넥카라", "value": "8,000원~" }] } ], "explanation": { "title": "💡 추가 처치는 왜 필요할까요? 🤔", "content": [ "우리 냥이들은 <strong>\"나 아파요😿\" 라고 말을 못하고 꾹~ 참는 습성</strong>이 있어요. 그래서 미리 통증을 관리해주는 건 아이의 고통을 덜어주는 <strong>가장 큰 사랑이자 배려</strong>랍니다.💖", "또, 항생제나 레이저, 소독 용품들은 수술 후 생길 수 있는 <strong>나쁜 균들을 막아주고 🦠 회복 속도를 높여서⚡️</strong> 아이가 빨리 캣타워로 점프! 할 수 있게 도와줘요!", "저희 병원은 아이의 상태를 꼼꼼히 살펴, <strong>정말 꼭! 필요한 처치만 골라서 보호자님과 상의</strong>드릴 것을 약속해요.🤙" ] } },
       "nerve": { 
           "headerTitle": "❤️‍🩹 신경 및 보존 치료 ❤️‍🩹", 
@@ -822,15 +822,19 @@ function initCalculator() {
     page.dataset.initialized = 'true';
 }
 
+/**
+ * [수정됨] 계산기 탭의 데이터를 예상비용/보호자용 탭으로 복사합니다.
+ * 중첩된 capture-area 문제를 해결하여 레이아웃 깨짐 현상을 수정했습니다.
+ */
 function copyCalculatorDataTo(targetId) {
     const calculatorCaptureArea = document.querySelector('#Calculator-Page .capture-area');
     const targetPanel = document.getElementById(targetId);
     if (!targetPanel) return;
     const targetCaptureArea = targetPanel.querySelector('.capture-area');
     if (!targetCaptureArea) return;
-    
-    const clonedArea = calculatorCaptureArea.cloneNode(true);
 
+    // Step 1: 소스 영역을 깊게 복제하고 폼 필드 값을 동기화합니다.
+    const clonedArea = calculatorCaptureArea.cloneNode(true);
     const sourceElements = calculatorCaptureArea.querySelectorAll('input, select');
     const clonedElements = clonedArea.querySelectorAll('input, select');
     sourceElements.forEach((sourceEl, index) => {
@@ -842,12 +846,15 @@ function copyCalculatorDataTo(targetId) {
                     clonedEl.style.color = sourceEl.style.color;
                     clonedEl.style.fontWeight = sourceEl.style.fontWeight;
                 }
+            } else if (sourceEl.type === 'checkbox' || sourceEl.type === 'radio') {
+                clonedEl.checked = sourceEl.checked;
+            } else {
+                clonedEl.value = sourceEl.value;
             }
-            else if (sourceEl.type === 'checkbox' || sourceEl.type === 'radio') clonedEl.checked = sourceEl.checked;
-            else clonedEl.value = sourceEl.value;
         }
     });
 
+    // Step 2: 복제된 데이터에서 불필요한 행들을 정리합니다.
     clonedArea.querySelectorAll('.additional-treatments-container tr.additional-row').forEach(row => {
         const select = row.querySelector('select');
         if (select && select.value === '선택안함|0') {
@@ -871,22 +878,21 @@ function copyCalculatorDataTo(targetId) {
     });
     
     clonedArea.querySelectorAll('.main-container tr').forEach(row => {
-        if (row.classList.contains('procedure-sub-row')) {
-             const select = row.querySelector('.procedure-select');
-             const notes = row.querySelector('.notes');
-             if (select && select.value === '0' && notes && notes.value.trim() === '') {
-                 row.remove();
-             }
-        } else {
-             const select = row.querySelector('.procedure-select');
-             const notes = row.querySelector('.notes');
-             let hasSubRows = row.nextElementSibling && row.nextElementSibling.classList.contains('procedure-sub-row');
-             if (select && select.value === '0' && notes && notes.value.trim() === '' && !hasSubRows) {
-                 row.style.display = 'none';
-             }
+        const select = row.querySelector('.procedure-select');
+        const notes = row.querySelector('.notes');
+        const isSubRow = row.classList.contains('procedure-sub-row');
+        const hasSubRows = !isSubRow && row.nextElementSibling && row.nextElementSibling.classList.contains('procedure-sub-row') && row.nextElementSibling.dataset.permanentId === row.dataset.permanentId;
+        
+        const isEffectivelyEmpty = select && select.value === '0' && notes && notes.value.trim() === '';
+
+        if (isSubRow && isEffectivelyEmpty) {
+            row.style.display = 'none'; // 서브 행은 숨김 처리
+        } else if (!isSubRow && isEffectivelyEmpty && !hasSubRows) {
+            row.style.display = 'none'; // 자식 없는 메인 행도 숨김 처리
         }
     });
-    
+
+    // Step 3: 대상 영역을 초기화하고 기본 이미지를 추가합니다.
     targetCaptureArea.innerHTML = '';
     const toothFormulaImage = document.createElement('img');
     toothFormulaImage.src = "https://github.com/ivomec/image/blob/main/%EC%B9%98%EC%8B%9D.jpg?raw=true";
@@ -894,25 +900,36 @@ function copyCalculatorDataTo(targetId) {
     toothFormulaImage.style.cssText = "width: 100%; max-width: 800px; margin: 0 auto 25px; display: block; border-radius: 15px;";
     targetCaptureArea.appendChild(toothFormulaImage);
 
+    // Step 4: 탭에 따라 복제된 콘텐츠를 수정합니다.
     const patientName = document.querySelector('#patient-name-calc').value || '냥이';
     const visitDateRaw = document.querySelector('#visit-date-calc').value;
     const visitDate = new Date(visitDateRaw);
     const formattedDate = !isNaN(visitDate.getTime()) ? `${visitDate.getFullYear()}년 ${visitDate.getMonth() + 1}월 ${visitDate.getDate()}일` : "오늘";
+    let finalHTMLToAdd = '';
 
     if (targetId === 'content-estimate') {
         clonedArea.querySelector('.dynamic-chart-title').textContent = `📄 ${patientName}의 치과수술 예상 비용`;
         const totalCostContainer = clonedArea.querySelector('.total-cost-container');
-        if (totalCostContainer) { totalCostContainer.querySelector('h2').textContent = '💰 전체 예상 비용 내역'; totalCostContainer.querySelector('.total-row td:first-child').textContent = '총 예상 비용'; }
+        if (totalCostContainer) {
+            totalCostContainer.querySelector('h2').textContent = '💰 전체 예상 비용 내역';
+            totalCostContainer.querySelector('.total-row td:first-child').textContent = '총 예상 비용';
+        }
         clonedArea.querySelector('.treatment-summary-section .summary-title').innerHTML = `📊 ${patientName}의 예상 치료 요약 📊`;
         clonedArea.querySelector('.patient-info-inputs')?.remove();
-        targetCaptureArea.appendChild(clonedArea);
-        targetCaptureArea.insertAdjacentHTML('beforeend', `<div class="disclaimer-box"><h3>⚠️ 비용 안내 ⚠️</h3><p>본 예상 비용은 현재 상태를 바탕으로 한 추정치입니다.<br>치과 수술의 특성상, 마취 후 구강 전체에 대한 정밀 검사(치과 X-ray 및 탐침)를 통해 숨겨진 병변이 추가로 발견될 수 있습니다.<br>이 경우, 보호자와의 상담을 통해 치료 계획 및 비용이 조정될 수 있음을 미리 안내해 드립니다. 아이의 건강을 위한 최선의 결정을 함께하겠습니다.</p></div>`);
+        finalHTMLToAdd = `<div class="disclaimer-box"><h3>⚠️ 비용 안내 ⚠️</h3><p>본 예상 비용은 현재 상태를 바탕으로 한 추정치입니다.<br>치과 수술의 특성상, 마취 후 구강 전체에 대한 정밀 검사(치과 X-ray 및 탐침)를 통해 숨겨진 병변이 추가로 발견될 수 있습니다.<br>이 경우, 보호자와의 상담을 통해 치료 계획 및 비용이 조정될 수 있음을 미리 안내해 드립니다. 아이의 건강을 위한 최선의 결정을 함께하겠습니다.</p></div>`;
     } else if (targetId === 'content-guardian-report') {
         clonedArea.querySelector('.dynamic-chart-title').textContent = `❤️ ${formattedDate} 우리 ${patientName}의 치과 치료 기록 ❤️`;
         clonedArea.querySelector('.patient-info-inputs')?.remove();
-        targetCaptureArea.appendChild(clonedArea);
-        targetCaptureArea.insertAdjacentHTML('beforeend', generateGuardianComments(clonedArea));
+        finalHTMLToAdd = generateGuardianComments(clonedArea);
     }
+
+    // Step 5: [FIX] 복제된 노드의 *자식 요소들*을 대상 영역으로 이동시켜 중첩 구조를 방지합니다.
+    while (clonedArea.firstChild) {
+        targetCaptureArea.appendChild(clonedArea.firstChild);
+    }
+    
+    // Step 6: 최종적으로 추가될 HTML(안내문 등)을 삽입합니다.
+    targetCaptureArea.insertAdjacentHTML('beforeend', finalHTMLToAdd);
 }
 
 
@@ -998,4 +1015,3 @@ function addExportListeners(pageSelector) {
         }, pageSelector.includes('Estimate') ? '예상비용' : '치료내역');
     });
 }
-
