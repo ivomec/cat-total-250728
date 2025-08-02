@@ -292,32 +292,6 @@
             padding-bottom: 0;
         }
 
-        /* --- [수정] 모바일 하단 기능 버튼 스타일 --- */
-        #bottom-export-container {
-            display: none; /* JS will manage visibility */
-            position: fixed;
-            bottom: 65px; /* 하단 탭 메뉴 높이에 따라 조정 필요 */
-            left: 0;
-            right: 0;
-            background-color: rgba(248, 249, 250, 0.95);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            padding: 8px 5px;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
-            border-top: 1px solid #e0e0e0;
-            z-index: 999;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        #bottom-export-container button {
-            padding: 10px 14px;
-            font-size: 0.85em;
-            flex-grow: 1;
-            max-width: 150px;
-        }
-
         /* 모바일 (768px 이하) : 상단 탭 숨기기, 하단 탭 보이기 */
         @media (max-width: 768px) {
             .dashboard-nav-top {
@@ -337,21 +311,6 @@
             .dashboard-nav-bottom .nav-tab {
                  font-size: 0.8em; /* 하단 탭 폰트 추가 조정 */
             }
-
-            /* --- [수정] 모바일 화면 추가 스타일 --- */
-            
-            /* 모바일에서 데스크탑용 버튼 컨테이너 숨기기 */
-            .calculator-common .export-container {
-                display: none;
-            }
-            
-            /* 기능 버튼 바가 활성화되었을 때 추가적인 하단 패딩 확보 */
-            #content-calculator.active,
-            #content-estimate.active,
-            #content-guardian-report.active {
-                /* 하단 네비게이션(약 80px) + 하단 기능 버튼 바(약 55px) 공간 확보 */
-                padding-bottom: 140px;
-            }
         }
     </style>
 </head>
@@ -366,8 +325,8 @@
         <a href="#" class="nav-tab" id="tab-surgery" data-target="content-surgery">😿 수술비용</a>
         <a href="#" class="nav-tab" id="tab-addons" data-target="content-addons">💊 추가처치</a>
         <a href="#" class="nav-tab" id="tab-nerve" data-target="content-nerve">❤️‍🩹 신경/보존</a>
-        <a href="#" class="nav-tab" id="tab-calculator" data-target="content-calculator">🧮 계산기</a>
-        <a href="#" class="nav-tab" id="tab-estimate" data-target="content-estimate">📄 예상비용</a>
+        <a href="#" class="nav-tab" id="tab-calculator" data-target="content-calculator">🧮 치료비 계산기</a>
+        <a href="#" class="nav-tab" id="tab-estimate" data-target="content-estimate">📄 예상비용 안내</a>
         <a href="#" class="nav-tab" id="tab-guardian-report" data-target="content-guardian-report">❤️ 보호자용</a>
     </nav>
 
@@ -566,6 +525,13 @@
                         </div>
                     </div>
                  </div>
+                 <div class="export-container" style="margin-top: 20px;">
+                    <button class="save-data-btn">💾 기록 저장</button>
+                    <button class="load-data-btn">📂 기록 불러오기</button>
+                    <input type="file" class="load-data-input" accept=".json" style="display: none;">
+                    <button class="export-png-btn">🖼️ PNG 저장</button>
+                    <button class="export-pdf-btn">📄 PDF 저장</button>
+                </div>
             </div>
         </div>
 
@@ -573,6 +539,7 @@
              <div id="Estimate-Page">
                 <div class="export-container"><button class="export-png-btn">🖼️ PNG 저장</button><button class="export-pdf-btn">📄 PDF 저장</button></div>
                 <div class="capture-area"></div>
+                <div class="export-container" style="margin-top: 20px;"><button class="export-png-btn">🖼️ PNG 저장</button><button class="export-pdf-btn">📄 PDF 저장</button></div>
              </div>
         </div>
         
@@ -580,6 +547,7 @@
             <div id="GuardianReport-Page">
                 <div class="export-container"><button class="export-png-btn">🖼️ PNG 저장</button><button class="export-pdf-btn">📄 PDF 저장</button></div>
                 <div class="capture-area"></div>
+                <div class="export-container" style="margin-top: 20px;"><button class="export-png-btn">🖼️ PNG 저장</button><button class="export-pdf-btn">📄 PDF 저장</button></div>
             </div>
         </div>
 
@@ -598,9 +566,6 @@
         <a href="#" class="nav-tab" data-target="content-estimate">📄 예상비용</a>
         <a href="#" class="nav-tab" data-target="content-guardian-report">❤️ 보호자용</a>
     </nav>
-    
-    <!-- [수정] 모바일용 하단 기능 버튼 컨테이너 -->
-    <div id="bottom-export-container" class="export-container"></div>
     
     <script src="script.js" defer></script>
 
