@@ -82,8 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 "prices": [
                     { "label": "치근활택술", "value": 55000 },
                     { "label": "개방치근활택술(봉합)", "value": 240000 },
-                    { "label": "미노클린(항생연고)", "value": 33000 },
-                    { "label": "엠도게인(재생연고)", "value": 110000 },
+                    { "label": "미노클린(항생연고)", "value": 22000 },
+                    { "label": "엠도게인(재생연고)", "value": 99000 },
                     { "label": "인공뼈 이식", "value": 250000 },
                     { "label": "차폐막", "value": 150000 },
                     { "label": "잇몸 성형", "value": 77000 },
@@ -300,8 +300,8 @@ function initCalculator() {
             { l: '레진(송곳니)', v: 110000, t: ['104', '204', '304', '404'] }, 
             { l: '치근활택술', v: 55000 },
             { l: '개방치근활택술', v: 240000 },
-            { l: '미노클린', v: 33000 },
-            { l: '엠도게인', v: 110000 },
+            { l: '미노클린', v: 22000 },
+            { l: '엠도게인', v: 99000 },
             { l: '인공뼈이식', v: 250000 },
             { l: '차폐막', v: 150000 },
             { l: '잇몸성형', v: 77000 },
@@ -998,3 +998,4 @@ function addExportListeners(pageSelector) {
         }, pageSelector.includes('Estimate') ? '예상비용' : '치료내역');
     });
 }
+
