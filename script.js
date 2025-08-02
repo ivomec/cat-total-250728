@@ -223,15 +223,61 @@ function populateAllTabs(data) {
 }
 
 /**
- * [수정됨] 페이지 네비게이션(탭) 기능을 설정합니다.
- * 데스크톱(상단)과 모바일(하단) 탭 메뉴를 모두 제어하며,
- * 하나의 탭을 클릭하면 다른 쪽 탭도 함께 활성화 상태가 동기화됩니다.
- * 계산기 관련 탭을 클릭했을 때 데이터 복사 로직을 포함합니다.
+ * [수정됨] 페이지 네비게이션 및 모바일 하단 기능 버튼 바 로직을 설정합니다.
  */
 function setupPageNavigation() {
     const navTabs = document.querySelectorAll('.nav-tab');
     const contentPanels = document.querySelectorAll('.content-panel');
+    const bottomActionBar = document.getElementById('bottom-export-container');
 
+    // 모바일 하단 기능 버튼 바의 내용을 현재 활성화된 탭에 맞춰 업데이트하는 함수
+    function updateBottomActionBar(targetId) {
+        // 하단 바가 없거나, 데스크톱 화면(768px 초과)이면 하단 바를 숨기고 종료
+        if (!bottomActionBar || window.innerWidth > 768) {
+            if(bottomActionBar) bottomActionBar.style.display = 'none';
+            return;
+        }
+
+        const actionTabTargets = ['content-calculator', 'content-estimate', 'content-guardian-report'];
+        
+        // 현재 탭이 기능 버튼이 필요한 탭('계산기', '예상비용' 등)인지 확인
+        if (actionTabTargets.includes(targetId)) {
+            // 현재 페이지에 맞는 원래(데스크톱용) 버튼 컨테이너를 찾음
+            const panelId = targetId.replace('content-', '');
+            const pageId = panelId.charAt(0).toUpperCase() + panelId.slice(1) + '-Page';
+            const sourceContainer = document.querySelector(`#${pageId} .export-container`);
+
+            if (sourceContainer) {
+                // 원래 버튼들의 HTML을 그대로 복사해서 하단 바에 넣음
+                bottomActionBar.innerHTML = sourceContainer.innerHTML;
+
+                // 원래 버튼과 복사된 하단 바 버튼들을 모두 가져옴
+                const sourceButtons = sourceContainer.querySelectorAll('button');
+                const bottomButtons = bottomActionBar.querySelectorAll('button');
+
+                // 복사된 하단 바의 각 버튼에 클릭 이벤트를 추가
+                // 이 버튼을 누르면, 눈에 보이지 않는 원래 버튼이 대신 클릭되도록 연결
+                sourceButtons.forEach(sourceBtn => {
+                    const correspondingBottomBtn = Array.from(bottomButtons).find(bb => bb.className === sourceBtn.className);
+                    if (correspondingBottomBtn) {
+                        correspondingBottomBtn.addEventListener('click', (e) => {
+                           e.preventDefault();
+                           sourceBtn.click(); // 원래 버튼 클릭을 실행
+                        });
+                    }
+                });
+                // 설정이 끝나면 하단 바를 보여줌
+                bottomActionBar.style.display = 'flex';
+            } else {
+                bottomActionBar.style.display = 'none';
+            }
+        } else {
+            // 기능 버튼이 필요 없는 탭에서는 하단 바를 숨김
+            bottomActionBar.style.display = 'none';
+        }
+    }
+
+    // 특정 탭의 콘텐츠를 보여주는 함수
     function showContent(targetId) {
         contentPanels.forEach(panel => panel.classList.remove('active'));
         navTabs.forEach(tab => tab.classList.remove('active'));
@@ -243,13 +289,18 @@ function setupPageNavigation() {
 
         const activeTabs = document.querySelectorAll(`.nav-tab[data-target="${targetId}"]`);
         activeTabs.forEach(tab => tab.classList.add('active'));
+        
+        // 탭이 바뀔 때마다 하단 기능 버튼 바를 업데이트
+        updateBottomActionBar(targetId);
     }
 
+    // 모든 탭에 클릭 이벤트 리스너를 추가
     navTabs.forEach(tab => {
         tab.addEventListener('click', (event) => {
             event.preventDefault();
             const targetId = tab.dataset.target;
 
+            // '예상비용'이나 '보호자용' 탭을 누르면 계산기 데이터를 복사
             if (targetId === 'content-estimate' || targetId === 'content-guardian-report') {
                 copyCalculatorDataTo(targetId);
             }
@@ -259,6 +310,15 @@ function setupPageNavigation() {
         });
     });
     
+    // 화면 크기가 변경될 때(예: 모바일 가로/세로 전환)도 하단 바 상태를 업데이트
+    window.addEventListener('resize', () => {
+        const activePanel = document.querySelector('.content-panel.active');
+        if(activePanel) {
+            updateBottomActionBar(activePanel.id);
+        }
+    });
+
+    // 페이지가 처음 로드될 때 '병원소개' 탭을 기본으로 보여줌
     showContent('content-main');
 }
 
@@ -733,9 +793,9 @@ function initCalculator() {
     });
     
     // --- [수정됨] --- 저장 및 불러오기 버튼 리스너 ---
-    const saveBtn = page.querySelector('.save-data-btn');
-    const loadBtn = page.querySelector('.load-data-btn');
-    const loadInput = page.querySelector('.load-data-input');
+    const saveBtn = page.querySelector('.export-container .save-data-btn');
+    const loadBtn = page.querySelector('.export-container .load-data-btn');
+    const loadInput = page.querySelector('.export-container .load-data-input');
     
     if (saveBtn) {
         saveBtn.addEventListener('click', () => {
