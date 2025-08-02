@@ -223,61 +223,15 @@ function populateAllTabs(data) {
 }
 
 /**
- * [수정됨] 페이지 네비게이션 및 모바일 하단 기능 버튼 바 로직을 설정합니다.
+ * [수정됨] 페이지 네비게이션(탭) 기능을 설정합니다.
+ * 데스크톱(상단)과 모바일(하단) 탭 메뉴를 모두 제어하며,
+ * 하나의 탭을 클릭하면 다른 쪽 탭도 함께 활성화 상태가 동기화됩니다.
+ * 계산기 관련 탭을 클릭했을 때 데이터 복사 로직을 포함합니다.
  */
 function setupPageNavigation() {
     const navTabs = document.querySelectorAll('.nav-tab');
     const contentPanels = document.querySelectorAll('.content-panel');
-    const bottomActionBar = document.getElementById('bottom-export-container');
 
-    // 모바일 하단 기능 버튼 바의 내용을 현재 활성화된 탭에 맞춰 업데이트하는 함수
-    function updateBottomActionBar(targetId) {
-        // 하단 바가 없거나, 데스크톱 화면(768px 초과)이면 하단 바를 숨기고 종료
-        if (!bottomActionBar || window.innerWidth > 768) {
-            if(bottomActionBar) bottomActionBar.style.display = 'none';
-            return;
-        }
-
-        const actionTabTargets = ['content-calculator', 'content-estimate', 'content-guardian-report'];
-        
-        // 현재 탭이 기능 버튼이 필요한 탭('계산기', '예상비용' 등)인지 확인
-        if (actionTabTargets.includes(targetId)) {
-            // 현재 페이지에 맞는 원래(데스크톱용) 버튼 컨테이너를 찾음
-            const panelId = targetId.replace('content-', '');
-            const pageId = panelId.charAt(0).toUpperCase() + panelId.slice(1) + '-Page';
-            const sourceContainer = document.querySelector(`#${pageId} .export-container`);
-
-            if (sourceContainer) {
-                // 원래 버튼들의 HTML을 그대로 복사해서 하단 바에 넣음
-                bottomActionBar.innerHTML = sourceContainer.innerHTML;
-
-                // 원래 버튼과 복사된 하단 바 버튼들을 모두 가져옴
-                const sourceButtons = sourceContainer.querySelectorAll('button');
-                const bottomButtons = bottomActionBar.querySelectorAll('button');
-
-                // 복사된 하단 바의 각 버튼에 클릭 이벤트를 추가
-                // 이 버튼을 누르면, 눈에 보이지 않는 원래 버튼이 대신 클릭되도록 연결
-                sourceButtons.forEach(sourceBtn => {
-                    const correspondingBottomBtn = Array.from(bottomButtons).find(bb => bb.className === sourceBtn.className);
-                    if (correspondingBottomBtn) {
-                        correspondingBottomBtn.addEventListener('click', (e) => {
-                           e.preventDefault();
-                           sourceBtn.click(); // 원래 버튼 클릭을 실행
-                        });
-                    }
-                });
-                // 설정이 끝나면 하단 바를 보여줌
-                bottomActionBar.style.display = 'flex';
-            } else {
-                bottomActionBar.style.display = 'none';
-            }
-        } else {
-            // 기능 버튼이 필요 없는 탭에서는 하단 바를 숨김
-            bottomActionBar.style.display = 'none';
-        }
-    }
-
-    // 특정 탭의 콘텐츠를 보여주는 함수
     function showContent(targetId) {
         contentPanels.forEach(panel => panel.classList.remove('active'));
         navTabs.forEach(tab => tab.classList.remove('active'));
@@ -289,18 +243,13 @@ function setupPageNavigation() {
 
         const activeTabs = document.querySelectorAll(`.nav-tab[data-target="${targetId}"]`);
         activeTabs.forEach(tab => tab.classList.add('active'));
-        
-        // 탭이 바뀔 때마다 하단 기능 버튼 바를 업데이트
-        updateBottomActionBar(targetId);
     }
 
-    // 모든 탭에 클릭 이벤트 리스너를 추가
     navTabs.forEach(tab => {
         tab.addEventListener('click', (event) => {
             event.preventDefault();
             const targetId = tab.dataset.target;
 
-            // '예상비용'이나 '보호자용' 탭을 누르면 계산기 데이터를 복사
             if (targetId === 'content-estimate' || targetId === 'content-guardian-report') {
                 copyCalculatorDataTo(targetId);
             }
@@ -310,15 +259,6 @@ function setupPageNavigation() {
         });
     });
     
-    // 화면 크기가 변경될 때(예: 모바일 가로/세로 전환)도 하단 바 상태를 업데이트
-    window.addEventListener('resize', () => {
-        const activePanel = document.querySelector('.content-panel.active');
-        if(activePanel) {
-            updateBottomActionBar(activePanel.id);
-        }
-    });
-
-    // 페이지가 처음 로드될 때 '병원소개' 탭을 기본으로 보여줌
     showContent('content-main');
 }
 
@@ -793,84 +733,85 @@ function initCalculator() {
     });
     
     // --- [수정됨] --- 저장 및 불러오기 버튼 리스너 ---
-    const saveBtn = page.querySelector('.export-container .save-data-btn');
-    const loadBtn = page.querySelector('.export-container .load-data-btn');
-    const loadInput = page.querySelector('.export-container .load-data-input');
-    
-    if (saveBtn) {
-        saveBtn.addEventListener('click', () => {
-            const dataToSave = {
-                version: CURRENT_VERSION,
-                patientInfo: {
-                    name: page.querySelector('#patient-name-calc').value,
-                    date: page.querySelector('#visit-date-calc').value,
-                    weight: page.querySelector('#patient-weight-calc').value,
-                },
-                toothChart: {},
-                additionalTreatments: {}
-            };
-    
-            const allToothRows = page.querySelectorAll('.main-container tr[data-permanent-id]');
-            allToothRows.forEach(row => {
-                const toothId = row.dataset.permanentId;
-                if (!dataToSave.toothChart[toothId]) {
-                    dataToSave.toothChart[toothId] = [];
-                }
-                const notes = row.querySelector('.notes')?.value.trim() || '';
-                const procedure = row.querySelector('.procedure-select')?.value || '0';
-                
-                // 내용이 있는 경우에만 저장
-                if (notes !== '' || procedure !== '0') {
-                    dataToSave.toothChart[toothId].push({ notes, procedure });
-                }
-            });
-    
-            page.querySelectorAll('.additional-treatments-container select[data-item-id]').forEach(select => {
-                const itemId = select.dataset.itemId;
-                const value = select.value;
-                if (value !== '선택안함|0') {
-                    dataToSave.additionalTreatments[itemId] = value;
-                }
-            });
-    
-            const blob = new Blob([JSON.stringify(dataToSave, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            const patientName = dataToSave.patientInfo.name || '환자';
-            const date = dataToSave.patientInfo.date || new Date().toISOString().split('T')[0];
-            a.download = `${patientName}_${date}_치과차트.json`;
-            a.href = url;
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            isChartDirty = false;
-            alert('기록이 파일로 저장되었습니다!');
-        });
-    }
+    page.querySelectorAll('.export-container').forEach(container => {
+        const saveBtn = container.querySelector('.save-data-btn');
+        const loadBtn = container.querySelector('.load-data-btn');
+        const loadInput = container.querySelector('.load-data-input');
 
-    if (loadBtn && loadInput) {
-        loadBtn.addEventListener('click', () => loadInput.click());
-        loadInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                try {
-                    const loadedData = JSON.parse(event.target.result);
-                    populateCalculatorFromData(loadedData);
-                    isChartDirty = false;
-                    alert('기록을 성공적으로 불러왔습니다.');
-                } catch (err) {
-                    console.error("Error parsing JSON file:", err);
-                    alert('파일을 불러오는 데 실패했습니다. 올바른 JSON 파일인지 확인해주세요.');
-                }
-            };
-            reader.readAsText(file);
-            e.target.value = '';
-        });
-    }
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                const dataToSave = {
+                    version: CURRENT_VERSION,
+                    patientInfo: {
+                        name: page.querySelector('#patient-name-calc').value,
+                        date: page.querySelector('#visit-date-calc').value,
+                        weight: page.querySelector('#patient-weight-calc').value,
+                    },
+                    toothChart: {},
+                    additionalTreatments: {}
+                };
+        
+                const allToothRows = page.querySelectorAll('.main-container tr[data-permanent-id]');
+                allToothRows.forEach(row => {
+                    const toothId = row.dataset.permanentId;
+                    if (!dataToSave.toothChart[toothId]) {
+                        dataToSave.toothChart[toothId] = [];
+                    }
+                    const notes = row.querySelector('.notes')?.value.trim() || '';
+                    const procedure = row.querySelector('.procedure-select')?.value || '0';
+                    
+                    if (notes !== '' || procedure !== '0') {
+                        dataToSave.toothChart[toothId].push({ notes, procedure });
+                    }
+                });
+        
+                page.querySelectorAll('.additional-treatments-container select[data-item-id]').forEach(select => {
+                    const itemId = select.dataset.itemId;
+                    const value = select.value;
+                    if (value !== '선택안함|0') {
+                        dataToSave.additionalTreatments[itemId] = value;
+                    }
+                });
+        
+                const blob = new Blob([JSON.stringify(dataToSave, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                const patientName = dataToSave.patientInfo.name || '환자';
+                const date = dataToSave.patientInfo.date || new Date().toISOString().split('T')[0];
+                a.download = `${patientName}_${date}_치과차트.json`;
+                a.href = url;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                isChartDirty = false;
+                alert('기록이 파일로 저장되었습니다!');
+            });
+        }
+
+        if (loadBtn && loadInput) {
+            loadBtn.addEventListener('click', () => loadInput.click());
+            loadInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const loadedData = JSON.parse(event.target.result);
+                        populateCalculatorFromData(loadedData);
+                        isChartDirty = false;
+                        alert('기록을 성공적으로 불러왔습니다.');
+                    } catch (err) {
+                        console.error("Error parsing JSON file:", err);
+                        alert('파일을 불러오는 데 실패했습니다. 올바른 JSON 파일인지 확인해주세요.');
+                    }
+                };
+                reader.readAsText(file);
+                e.target.value = '';
+            });
+        }
+    });
 
     window.addEventListener('beforeunload', (e) => {
         if (isChartDirty) { 
@@ -1014,47 +955,47 @@ function generateGuardianComments(clonedArea) {
 function addExportListeners(pageSelector) {
     const page = document.querySelector(pageSelector);
     if (!page) return;
-    const btnContainer = page.querySelector('.export-container');
-    if (!btnContainer) return;
 
-    const exportHandler = (exportFunc, type) => {
-        const captureArea = page.querySelector('.capture-area');
-        
-        html2canvas(captureArea, { scale: 2, windowWidth: captureArea.scrollWidth, windowHeight: captureArea.scrollHeight, useCORS: true }).then(canvas => {
-            const patientName = document.querySelector('#patient-name-calc').value || '환자';
-            const date = document.querySelector('#visit-date-calc').value || new Date().toISOString().split('T')[0];
-            const fileName = `${patientName}_${date}_${type}`;
-            exportFunc(canvas, fileName);
+    page.querySelectorAll('.export-container').forEach(container => {
+        const exportHandler = (exportFunc, type) => {
+            const captureArea = page.querySelector('.capture-area');
+            
+            html2canvas(captureArea, { scale: 2, windowWidth: captureArea.scrollWidth, windowHeight: captureArea.scrollHeight, useCORS: true }).then(canvas => {
+                const patientName = document.querySelector('#patient-name-calc').value || '환자';
+                const date = document.querySelector('#visit-date-calc').value || new Date().toISOString().split('T')[0];
+                const fileName = `${patientName}_${date}_${type}`;
+                exportFunc(canvas, fileName);
+            });
+        };
+
+        container.querySelector('.export-png-btn')?.addEventListener('click', () => {
+            exportHandler((canvas, fileName) => {
+                const link = document.createElement('a');
+                link.download = fileName + '.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }, pageSelector.includes('Estimate') ? '예상비용' : '치료내역');
         });
-    };
 
-    btnContainer.querySelector('.export-png-btn')?.addEventListener('click', () => {
-        exportHandler((canvas, fileName) => {
-            const link = document.createElement('a');
-            link.download = fileName + '.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        }, pageSelector.includes('Estimate') ? '예상비용' : '치료내역');
-    });
-
-    btnContainer.querySelector('.export-pdf-btn')?.addEventListener('click', () => {
-        exportHandler((canvas, fileName) => {
-            const { jsPDF } = window.jspdf;
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const canvasAspectRatio = canvas.width / canvas.height;
-            const renderHeight = pdfWidth / canvasAspectRatio;
-            let position = 0;
-            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, renderHeight);
-            let heightLeft = renderHeight - pdf.internal.pageSize.getHeight();
-            while (heightLeft > 0) {
-                position -= pdf.internal.pageSize.getHeight();
-                pdf.addPage();
+        container.querySelector('.export-pdf-btn')?.addEventListener('click', () => {
+            exportHandler((canvas, fileName) => {
+                const { jsPDF } = window.jspdf;
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const canvasAspectRatio = canvas.width / canvas.height;
+                const renderHeight = pdfWidth / canvasAspectRatio;
+                let position = 0;
                 pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, renderHeight);
-                heightLeft -= pdf.internal.pageSize.getHeight();
-            }
-            pdf.save(fileName + '.pdf');
-        }, pageSelector.includes('Estimate') ? '예상비용' : '치료내역');
+                let heightLeft = renderHeight - pdf.internal.pageSize.getHeight();
+                while (heightLeft > 0) {
+                    position -= pdf.internal.pageSize.getHeight();
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, renderHeight);
+                    heightLeft -= pdf.internal.pageSize.getHeight();
+                }
+                pdf.save(fileName + '.pdf');
+            }, pageSelector.includes('Estimate') ? '예상비용' : '치료내역');
+        });
     });
 }
