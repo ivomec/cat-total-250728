@@ -254,8 +254,8 @@
         .calculator-common .disclaimer-box { margin-top: 40px; padding: 25px; background-color: #fff9e6; border: 2px solid #ffc107; border-radius: 10px; text-align: center; box-shadow: 0 4px 15px rgba(255,193,7,0.2); }
         .calculator-common .disclaimer-box h3 { color: #b95000; font-size: 1.4em; margin: 0 0 15px 0; }
         .calculator-common .disclaimer-box p { line-height: 1.8; font-size: 1em; color: #555; margin: 0; }
-        .calculator-common .export-container { text-align:center; margin-top:20px; padding:20px; background-color:#f8f9fa; border-radius:8px; }
-        .calculator-common .export-container button { background-color: #007bff; color: white; border: none; padding: 12px 25px; border-radius: 6px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin: 0 10px; transition: background-color 0.3s, transform 0.2s; }
+        .calculator-common .export-container { text-align:center; padding: 20px 10px 10px 10px; background-color:#f8f9fa; border-radius:8px; margin-bottom: 20px; border: 1px solid #dee2e6;}
+        .calculator-common .export-container button { background-color: #007bff; color: white; border: none; padding: 12px 25px; border-radius: 6px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin: 5px; transition: background-color 0.3s, transform 0.2s; }
         .calculator-common .export-container button:hover { background-color: #0056b3; transform: translateY(-2px); }
         .calculator-common .export-container button.save-data-btn { background-color: #28a745; }
         .calculator-common .export-container button.save-data-btn:hover { background-color: #218838; }
@@ -443,6 +443,13 @@
 
         <div id="content-calculator" class="content-panel calculator-common">
              <div id="Calculator-Page">
+                <div class="export-container">
+                    <button class="save-data-btn">💾 기록 저장</button>
+                    <button class="load-data-btn">📂 기록 불러오기</button>
+                    <input type="file" class="load-data-input" accept=".json" style="display: none;">
+                    <button class="export-png-btn">🖼️ PNG 저장</button>
+                    <button class="export-pdf-btn">📄 PDF 저장</button>
+                </div>
                  <div class="capture-area">
                     <div class="patient-info-inputs">
                         <label for="patient-name-calc">환자 이름:</label><input type="text" id="patient-name-calc" placeholder="이름 입력">
@@ -518,21 +525,20 @@
                         </div>
                     </div>
                  </div>
-                <div class="export-container"><button class="save-data-btn">💾 기록 저장</button><button class="load-data-btn">📂 기록 불러오기</button><input type="file" class="load-data-input" accept=".json" style="display: none;"><button class="export-png-btn">🖼️ PNG 저장</button><button class="export-pdf-btn">📄 PDF 저장</button></div>
             </div>
         </div>
 
         <div id="content-estimate" class="content-panel calculator-common">
              <div id="Estimate-Page">
-                <div class="capture-area"></div>
                 <div class="export-container"><button class="export-png-btn">🖼️ PNG 저장</button><button class="export-pdf-btn">📄 PDF 저장</button></div>
+                <div class="capture-area"></div>
              </div>
         </div>
         
         <div id="content-guardian-report" class="content-panel calculator-common">
             <div id="GuardianReport-Page">
-                <div class="capture-area"></div>
                 <div class="export-container"><button class="export-png-btn">🖼️ PNG 저장</button><button class="export-pdf-btn">📄 PDF 저장</button></div>
+                <div class="capture-area"></div>
             </div>
         </div>
 
