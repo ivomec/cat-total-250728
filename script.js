@@ -270,8 +270,64 @@ function initCalculator() {
     if (!page) return;
     if (page.dataset.initialized === 'true') return;
 
-    const CURRENT_VERSION = "3.4-cat-final";
+    const CURRENT_VERSION = "3.5-cat-final";
     let isChartDirty = false;
+
+    // --- [신규] 타이머 로직 ---
+    const timerDisplay = page.querySelector('#timer-display');
+    const startPauseBtn = page.querySelector('#timer-start-pause');
+    const resetBtn = page.querySelector('#timer-reset');
+    let timerInterval = null;
+    let elapsedTime = 0; // ms
+    let startTime = 0;
+    let isRunning = false;
+
+    function formatTime(ms) {
+        const totalSeconds = Math.floor(ms / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        return [hours, minutes, seconds].map(val => val.toString().padStart(2, '0')).join(':');
+    }
+
+    function updateTimerDisplay() {
+        const currentTotalTime = elapsedTime + (isRunning ? Date.now() - startTime : 0);
+        timerDisplay.textContent = formatTime(currentTotalTime);
+    }
+
+    function startTimer() {
+        if (isRunning) return;
+        isRunning = true;
+        startTime = Date.now();
+        timerInterval = setInterval(updateTimerDisplay, 1000);
+        startPauseBtn.textContent = '⏸️ 일시정지';
+        startPauseBtn.classList.add('running');
+    }
+
+    function pauseTimer() {
+        if (!isRunning) return;
+        isRunning = false;
+        clearInterval(timerInterval);
+        elapsedTime += Date.now() - startTime;
+        startPauseBtn.textContent = '▶️ 시작';
+        startPauseBtn.classList.remove('running');
+    }
+
+    function resetTimer() {
+        pauseTimer();
+        elapsedTime = 0;
+        updateTimerDisplay();
+    }
+
+    startPauseBtn.addEventListener('click', () => {
+        if (isRunning) {
+            pauseTimer();
+        } else {
+            startTimer();
+        }
+    });
+    resetBtn.addEventListener('click', resetTimer);
+    // --- 타이머 로직 종료 ---
 
     const toothData = {
         'table-upper-right': [ { id: '101', type: '앞니', group: 3 }, { id: '102', type: '' }, { id: '103', type: '' }, { id: '104', type: '송곳니', group: 1 }, { id: '106', type: '작은<br>어금니', group: 3 }, { id: '107', type: '' }, { id: '108', type: '열육치' }, { id: '109', type: '큰<br>어금니', group: 1 } ],
@@ -654,15 +710,22 @@ function initCalculator() {
             return;
         }
 
-        // 1. 차트 초기화
+        // 1. 타이머 초기화 및 데이터 로드
+        resetTimer();
+        if (data.patientInfo && data.patientInfo.anesthesiaTime) {
+            elapsedTime = data.patientInfo.anesthesiaTime;
+            updateTimerDisplay();
+        }
+
+        // 2. 차트 초기화
         page.querySelectorAll('.main-container tbody').forEach(tbody => tbody.innerHTML = '');
         
-        // 2. 환자 정보 입력
+        // 3. 환자 정보 입력
         page.querySelector('#patient-name-calc').value = data.patientInfo.name || '';
         page.querySelector('#visit-date-calc').value = data.patientInfo.date || new Date().toISOString().split('T')[0];
         page.querySelector('#patient-weight-calc').value = data.patientInfo.weight || '';
         
-        // 3. 치아 차트 재구성
+        // 4. 치아 차트 재구성
         for (const [tableId, teeth] of Object.entries(toothData)) {
             const tableBody = page.querySelector(`.${tableId} tbody`);
             teeth.forEach(tooth => {
@@ -694,7 +757,7 @@ function initCalculator() {
             });
         }
         
-        // 4. 추가 처치 입력 및 모든 UI 업데이트 강제 실행
+        // 5. 추가 처치 입력 및 모든 UI 업데이트 강제 실행
         page.querySelector('#patient-weight-calc').dispatchEvent(new Event('input', { bubbles: true }));
         page.querySelector('#patient-name-calc').dispatchEvent(new Event('input', { bubbles: true }));
 
@@ -758,12 +821,14 @@ function initCalculator() {
 
         if (saveBtn) {
             saveBtn.addEventListener('click', () => {
+                const currentTotalTime = elapsedTime + (isRunning ? Date.now() - startTime : 0);
                 const dataToSave = {
                     version: CURRENT_VERSION,
                     patientInfo: {
                         name: page.querySelector('#patient-name-calc').value,
                         date: page.querySelector('#visit-date-calc').value,
                         weight: page.querySelector('#patient-weight-calc').value,
+                        anesthesiaTime: currentTotalTime // 타이머 시간 저장
                     },
                     toothChart: {},
                     additionalTreatments: {}
@@ -844,6 +909,7 @@ function initCalculator() {
 /**
  * [수정됨] 계산기 탭의 데이터를 예상비용/보호자용 탭으로 복사합니다.
  * 항상 전체 치아 차트가 표시되도록 빈 행을 숨기는 로직을 제거했습니다.
+ * 타이머 컨트롤은 제거하고 시간 값만 표시합니다.
  */
 function copyCalculatorDataTo(targetId) {
     const calculatorCaptureArea = document.querySelector('#Calculator-Page .capture-area');
@@ -912,16 +978,25 @@ function copyCalculatorDataTo(targetId) {
     const formattedDate = !isNaN(visitDate.getTime()) ? `${visitDate.getFullYear()}년 ${visitDate.getMonth() + 1}월 ${visitDate.getDate()}일` : "오늘";
     let finalHTMLToAdd = '';
 
+    // [신규] 타이머 컨트롤 제거 로직
+    const clonedTimer = clonedArea.querySelector('.anesthesia-timer');
+    if (clonedTimer) {
+        clonedTimer.querySelector('#timer-start-pause')?.remove();
+        clonedTimer.querySelector('#timer-reset')?.remove();
+        clonedTimer.style.justifyContent = 'flex-start'; // 레이아웃 조정
+    }
+
+
     if (targetId === 'content-estimate') {
         clonedArea.querySelector('.dynamic-chart-title').textContent = `📄 ${patientName}의 치과수술 예상 비용`;
         const totalCostContainer = clonedArea.querySelector('.total-cost-container');
         if (totalCostContainer) { totalCostContainer.querySelector('h2').textContent = '💰 전체 예상 비용 내역'; totalCostContainer.querySelector('.total-row td:first-child').textContent = '총 예상 비용'; }
         clonedArea.querySelector('.treatment-summary-section .summary-title').innerHTML = `📊 ${patientName}의 예상 치료 요약 📊`;
-        clonedArea.querySelector('.patient-info-inputs')?.remove();
+        clonedArea.querySelector('.patient-info-inputs .patient-info-group')?.remove();
         finalHTMLToAdd = `<div class="disclaimer-box"><h3>⚠️ 비용 안내 ⚠️</h3><p>본 예상 비용은 현재 상태를 바탕으로 한 추정치입니다.<br>치과 수술의 특성상, 마취 후 구강 전체에 대한 정밀 검사(치과 X-ray 및 탐침)를 통해 숨겨진 병변이 추가로 발견될 수 있습니다.<br>이 경우, 보호자와의 상담을 통해 치료 계획 및 비용이 조정될 수 있음을 미리 안내해 드립니다. 아이의 건강을 위한 최선의 결정을 함께하겠습니다.</p></div>`;
     } else if (targetId === 'content-guardian-report') {
         clonedArea.querySelector('.dynamic-chart-title').textContent = `❤️ ${formattedDate} 우리 ${patientName}의 치과 치료 기록 ❤️`;
-        clonedArea.querySelector('.patient-info-inputs')?.remove();
+        clonedArea.querySelector('.patient-info-inputs .patient-info-group')?.remove();
         finalHTMLToAdd = generateGuardianComments(clonedArea);
     }
 
