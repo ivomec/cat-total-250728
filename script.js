@@ -602,30 +602,48 @@ function initCalculator() {
         if (!summarySection) return;
         const patientName = page.querySelector('#patient-name-calc').value || '냥이';
         summarySection.querySelector('.summary-patient-name').textContent = patientName;
-        const categories = { '발치/제거': 0, '신경/보존 치료': 0, '모니터링': 0 };
+    
+        const extractionSummary = new Map();
+        const treatmentSummary = new Map();
+    
         page.querySelectorAll('.main-container .procedure-select').forEach(select => {
             const selectedOption = select.options[select.selectedIndex];
             if (!selectedOption || select.value === '0' || selectedOption.disabled) return;
+            
             const category = selectedOption.dataset.category;
-            if (category && categories.hasOwnProperty(category)) categories[category]++;
+            const procedureText = selectedOption.text;
+    
+            if (category === '발치/제거') {
+                extractionSummary.set(procedureText, (extractionSummary.get(procedureText) || 0) + 1);
+            } else if (['신경/보존 치료', '모니터링'].includes(category)) {
+                treatmentSummary.set(procedureText, (treatmentSummary.get(procedureText) || 0) + 1);
+            }
         });
-
+    
         const extractionTbody = summarySection.querySelector('.extraction-summary-table tbody');
-        extractionTbody.innerHTML = '<tr><td colspan="2" style="text-align:center;">해당 내역 없음</td></tr>';
-        if (categories['발치/제거'] > 0) {
-            extractionTbody.innerHTML = `<tr><td class="summary-item">발치/수술</td><td class="summary-count">${categories['발치/제거']} 개</td></tr>
-                                         <tr class="summary-total"><td>총 개수</td><td class="summary-count">${categories['발치/제거']} 개</td></tr>`;
+        extractionTbody.innerHTML = '';
+        let totalExtractions = 0;
+        if (extractionSummary.size > 0) {
+            for (const [procedure, count] of extractionSummary.entries()) {
+                extractionTbody.innerHTML += `<tr><td class="summary-item">${procedure}</td><td class="summary-count">${count} 개</td></tr>`;
+                totalExtractions += count;
+            }
+            extractionTbody.innerHTML += `<tr class="summary-total"><td>총 발치/수술 개수</td><td class="summary-count">${totalExtractions} 개</td></tr>`;
+        } else {
+            extractionTbody.innerHTML = '<tr><td colspan="2" style="text-align:center;">해당 내역 없음</td></tr>';
         }
-        
+    
         const treatmentTbody = summarySection.querySelector('.treatment-summary-table tbody');
-        treatmentTbody.innerHTML = '<tr><td colspan="2" style="text-align:center;">해당 내역 없음</td></tr>';
-        let totalTreatments = categories['신경/보존 치료'] + categories['모니터링'];
-        if (totalTreatments > 0) {
-            let treatmentHTML = '';
-            if(categories['신경/보존 치료'] > 0) treatmentHTML += `<tr><td class="summary-item">보존/치주</td><td class="summary-count">${categories['신경/보존 치료']} 개</td></tr>`;
-            if(categories['모니터링'] > 0) treatmentHTML += `<tr><td class="summary-item">모니터링</td><td class="summary-count">${categories['모니터링']} 개</td></tr>`;
-            treatmentHTML += `<tr class="summary-total"><td>총 치료 개수</td><td class="summary-count">${totalTreatments} 개</td></tr>`;
-            treatmentTbody.innerHTML = treatmentHTML;
+        treatmentTbody.innerHTML = '';
+        let totalTreatments = 0;
+        if (treatmentSummary.size > 0) {
+            for (const [procedure, count] of treatmentSummary.entries()) {
+                treatmentTbody.innerHTML += `<tr><td class="summary-item">${procedure}</td><td class="summary-count">${count} 개</td></tr>`;
+                totalTreatments += count;
+            }
+            treatmentTbody.innerHTML += `<tr class="summary-total"><td>총 치료 개수</td><td class="summary-count">${totalTreatments} 개</td></tr>`;
+        } else {
+            treatmentTbody.innerHTML = '<tr><td colspan="2" style="text-align:center;">해당 내역 없음</td></tr>';
         }
     }
     
