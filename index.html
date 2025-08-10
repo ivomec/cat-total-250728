@@ -207,7 +207,58 @@
         
         /* --- 계산기 페이지 스타일 --- */
         .calculator-common .capture-area { background-color: #fff; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6;}
-        .calculator-common .patient-info-inputs { padding-bottom: 20px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; border-bottom: 1px dashed #ccc; margin-bottom: 20px; }
+        .calculator-common .patient-info-inputs {
+            padding-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            border-bottom: 1px dashed #ccc;
+            margin-bottom: 20px;
+            justify-content: space-between;
+        }
+        .calculator-common .patient-info-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .anesthesia-timer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #e9f5ff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #b3d7ff;
+            margin-top: 10px;
+            flex-shrink: 0;
+        }
+        .anesthesia-timer label { font-weight: bold; color: #333; margin: 0; }
+        #timer-display {
+            font-family: 'monospace', 'Courier New', Courier;
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #0056b3;
+            letter-spacing: 1px;
+            min-width: 100px;
+            text-align: center;
+        }
+        .timer-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            color: white;
+        }
+        .timer-btn:hover { transform: translateY(-1px); box-shadow: 0 3px 6px rgba(0,0,0,0.15); }
+        #timer-start-pause { background-color: #28a745; }
+        #timer-start-pause.running { background-color: #ffc107; color: #212529; }
+        #timer-reset { background-color: #dc3545; }
+
         .calculator-common .dynamic-chart-title { font-size: 1.8em; color: #0056b3; text-align: center; margin: -10px 0 20px 0; padding: 15px; border-radius: 8px; background: linear-gradient(135deg, #e9ecef, #f8f9fa); font-weight: bold; }
         .calculator-common .main-container { display: flex; justify-content: space-between; width: 100%; gap: 20px; flex-wrap: wrap;}
         .calculator-common .table-section { width: 100%; }
@@ -452,9 +503,17 @@
                 </div>
                  <div class="capture-area">
                     <div class="patient-info-inputs">
-                        <label for="patient-name-calc">환자 이름:</label><input type="text" id="patient-name-calc" placeholder="이름 입력">
-                        <label for="visit-date-calc">진료 날짜:</label><input type="date" id="visit-date-calc">
-                        <label for="patient-weight-calc">몸무게(kg):</label><input type="number" id="patient-weight-calc" placeholder="kg" step="0.1" style="width: 80px;">
+                        <div class="patient-info-group">
+                            <label for="patient-name-calc">환자 이름:</label><input type="text" id="patient-name-calc" placeholder="이름 입력">
+                            <label for="visit-date-calc">진료 날짜:</label><input type="date" id="visit-date-calc">
+                            <label for="patient-weight-calc">몸무게(kg):</label><input type="number" id="patient-weight-calc" placeholder="kg" step="0.1" style="width: 80px;">
+                        </div>
+                        <div class="anesthesia-timer">
+                            <label>총 마취 시간:</label>
+                            <span id="timer-display">00:00:00</span>
+                            <button id="timer-start-pause" class="timer-btn">▶️ 시작</button>
+                            <button id="timer-reset" class="timer-btn">🔄 리셋</button>
+                        </div>
                     </div>
                     <h2 class="dynamic-chart-title"></h2>
                     <div class="main-container">
