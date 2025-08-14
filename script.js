@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ===================================================================================
 const formatPrice = (price, prefix = '💸 ') => {
     if (typeof price === 'number') { return `${prefix}${price.toLocaleString('ko-KR')}원`; }
-    return `${price}`;
+    return `${prefix}${price}`;
 };
 
 function populateAllTabs(data) {
@@ -537,6 +537,7 @@ function initCalculator() {
         updateAdditionalOptions();
     }
     
+    // [수정됨] 가격표 이미지에 맞춰 모든 추가 처치 항목의 몸무게 연동 로직을 수정합니다.
     function updateAdditionalOptions() {
          const weight = parseFloat(page.querySelector('#patient-weight-calc').value) || 0;
          page.querySelectorAll('.additional-treatments-container select').forEach(control => {
@@ -563,24 +564,109 @@ function initCalculator() {
                 }
             }
             if(itemId === 'iv_additives'){ add('수액첨가제(간기능 회복제)', 11000); }
-            if (itemId === 'anesthesia_pre' && weight > 0) { let p = (weight<5)?33000:44000; add('도입마취 변경(알팍산)', p); }
-            if (itemId === 'anesthesia_ext' && weight > 0) { let p = (weight<5)?45000:55000; for(let i=1; i<=8; i++) add(`마취연장(${i*30}분)`, p*i); }
-            if(itemId === 'local_anesthesia' && weight > 0) { let p = [10000, 15000, 18000, 20000]; for(let i=1; i<=4; i++) add(`국소마취(${i}부위)`, p[i-1]); }
-            if (itemId === 'pain_opioid_iv' && weight > 0) { add('마약성 진통 혈관주사', (weight<5)?20000:25000); }
-            if (itemId === 'pain_24hr_injection' && weight > 0) { add('24시간 지속 진통 주사', (weight<5)?15000:20000); }
-            if (itemId === 'pain_cri' && weight > 0) { add('무통 주사(CRI)', (weight<5)?40000:45000); }
+            if (itemId === 'anesthesia_pre' && weight > 0) {
+                let price;
+                if (weight < 5) price = 33000;
+                else if (weight < 10) price = 44000;
+                else if (weight < 15) price = 55000;
+                else if (weight < 20) price = 66000;
+                else price = 77000;
+                add('도입마취 변경(알팍산)', price);
+            }
+            if (itemId === 'anesthesia_ext' && weight > 0) {
+                let basePrice;
+                if (weight < 5) basePrice = 45000;
+                else if (weight < 10) basePrice = 55000;
+                else if (weight < 15) basePrice = 66000;
+                else if (weight < 20) basePrice = 77000;
+                else basePrice = 88000;
+                for(let i = 1; i <= 8; i++) add(`마취연장(${i * 30}분)`, basePrice * i);
+            }
+            if(itemId === 'local_anesthesia' && weight > 0) {
+                let prices;
+                if (weight < 5) prices = [10000, 15000, 18000, 20000];
+                else if (weight < 10) prices = [12000, 17000, 20000, 22000];
+                else if (weight < 15) prices = [12000, 17000, 20000, 22000];
+                else if (weight < 20) prices = [12000, 17000, 20000, 22000];
+                else prices = [13000, 18000, 21000, 23000];
+                for(let i = 1; i <= 4; i++) add(`국소마취(${i}부위)`, prices[i-1]);
+            }
+            if (itemId === 'pain_opioid_iv' && weight > 0) {
+                let price;
+                if (weight < 5) price = 20000;
+                else if (weight < 10) price = 25000;
+                else if (weight < 15) price = 26000;
+                else if (weight < 20) price = 27000;
+                else price = 28000;
+                add('마약성 진통 혈관주사', price);
+            }
+            if (itemId === 'pain_24hr_injection' && weight > 0) {
+                let price;
+                if (weight < 5) price = 15000;
+                else if (weight < 10) price = 20000;
+                else if (weight < 15) price = 25000;
+                else if (weight < 20) price = 28000;
+                else price = 30000;
+                add('24시간 지속 진통 주사', price);
+            }
+            if (itemId === 'pain_cri' && weight > 0) {
+                let price;
+                if (weight < 5) price = 40000;
+                else if (weight < 10) price = 45000;
+                else if (weight < 15) price = 50000;
+                else if (weight < 20) price = 55000;
+                else price = 60000;
+                add('무통 주사(CRI)', price);
+            }
             if(itemId === 'pain_patch'){ add('진통패치(5ug)', 40000); add('진통패치(10ug)', 50000); add('진통패치(20ug)', 60000); }
-            if (itemId === 'recovery_injection' && weight > 0) { add('항생/소염 주사', 11000); add('1주 지속 항생 주사', 15000); }
-            if (itemId === 'laser_therapy' && weight > 0) { add('레이저(국소)', 20000); add('레이저(전체)', 25000); }
-            if(itemId === 'fluoride' && weight > 0) { add('불소 도포', 35000); }
-            if (itemId === 'medication' && weight > 0) { let p=3300; add('3일분', p*3); add('3일분(캡슐)', p*3 + 3300); add('7일분', p*7); add('7일분(캡슐)', p*7 + 5500); }
+            if (itemId === 'recovery_injection' && weight > 0) {
+                let priceNormal, price1Week;
+                if (weight < 5) { priceNormal = 11000; price1Week = 15000; }
+                else if (weight < 10) { priceNormal = 13000; price1Week = 18000; }
+                else if (weight < 15) { priceNormal = 15000; price1Week = 20000; }
+                else if (weight < 20) { priceNormal = 17000; price1Week = 25000; }
+                else { priceNormal = 20000; price1Week = 30000; }
+                add('항생/소염 주사(일반)', priceNormal);
+                add('1주 지속 항생/소염 주사', price1Week);
+            }
+            if (itemId === 'laser_therapy' && weight > 0) {
+                let priceLocal, priceFull;
+                if (weight < 5) { priceLocal = 20000; priceFull = 25000; }
+                else if (weight < 10) { priceLocal = 23000; priceFull = 28000; }
+                else if (weight < 15) { priceLocal = 26000; priceFull = 31000; }
+                else if (weight < 20) { priceLocal = 29000; priceFull = 34000; }
+                else { priceLocal = 32000; priceFull = 37000; }
+                add('레이저(국소)', priceLocal);
+                add('레이저(전체)', priceFull);
+            }
+            if (itemId === 'fluoride' && weight > 0) {
+                let price;
+                if (weight < 5) price = 35000;
+                else if (weight < 10) price = 40000;
+                else if (weight < 15) price = 45000;
+                else if (weight < 20) price = 48000;
+                else price = 50000;
+                add('불소 도포', price);
+            }
+            if (itemId === 'medication' && weight > 0) {
+                let pricePerDose;
+                if (weight < 5) pricePerDose = 3300;
+                else if (weight < 10) pricePerDose = 3800;
+                else if (weight < 15) pricePerDose = 4400;
+                else if (weight < 20) pricePerDose = 4900;
+                else pricePerDose = 5500;
+                add('3일분', pricePerDose * 3);
+                add('3일분(캡슐)', pricePerDose * 3 + 3300);
+                add('7일분', pricePerDose * 7);
+                add('7일분(캡슐)', pricePerDose * 7 + 5500);
+            }
             if(itemId === 'liquid_analgesic_nsaid' && weight > 0) { const pricePerMl = 8000; for(let d=1; d<=7; d++) { let totalMl = (weight * 0.2) + (d > 1 ? (d - 1) * weight * 0.1 : 0); let roundedMl = Math.ceil(totalMl * 10) / 10; let cost = roundedMl * pricePerMl; let roundedCost = Math.ceil(cost / 100) * 100; add(`${d}일 (${roundedMl}ml)`, roundedCost); } }
             if (itemId === 'hexidine_spray') add('헥시딘 스프레이', 10000);
-            if (itemId === 'steroid_ointment') add('스테로이드 연고', 15000);
+            if (itemId === 'steroid_ointment') add('구강항생 스테로이드연고', 15000);
             if (itemId === 'coating_spray') add('구강점막코팅 스프레이', 33000);
             if (itemId === 'paradont_gel') add('파라돈 겔', 25000);
             if (itemId === 'probiotics') add('구강 유산균', 50000);
-            if (itemId === 'neck_collar') { const collars = [ {s:8,p:8000}, {s:10,p:10000}, {s:13,p:12000}, {s:15,p:15000}, {s:17,p:17000}]; collars.forEach(c => add(`넥카라 ${c.s}cm`, c.p)); }
+            if (itemId === 'neck_collar') { const collars = [ {s:8,p:8000}, {s:10,p:10000}, {s:13,p:12000}, {s:15,p:15000}, {s:17,p:17000}, {s:20,p:20000}, {s:25,p:25000}, {s:35,p:30000}]; collars.forEach(c => add(`넥카라 ${c.s}cm`, c.p)); }
             
             if (Array.from(control.options).some(opt => opt.value === savedValue)) { control.value = savedValue; } 
             else { control.value = '선택안함|0'; }
