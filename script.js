@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
               { "borderColor": "#4dabf7", "titleColor": "#1c7ed6", "title": "🎨 예쁘게 때워주기 (레진 치료)", "description": "충치나 마모, 살짝 깨진 부위를 치아 색과 비슷한 예쁜 재료로 메워서, 원래 모양과 기능을 되찾아주는 치료예요! 손상 범위와 치아에 따라 비용이 달라져요.", "prices": [ { "label": "✨ 쪼꼬만 손상", "value": 55000 }, { "label": "🦷 송곳니", "value": 110000 } ] }, 
               { "borderColor": "#8ce99a", "titleColor": "#2f9e44", "title": "🌿 튼튼한 잇몸 만들기 (치주 치료)", "description": "잇몸병의 원인이 되는 세균막과 치석을 잇몸 속 깊은 곳까지 깨끗하게 제거하고, 잇몸 재생을 유도하는 전문적인 잇몸 관리입니다. (치아당 비용)", 
                 "prices": [
-                    { "label": "치근활택술", "value": 55000 },
+                    { "label": "치근활택술", "value": 45000 },
                     { "label": "개방치근활택술(봉합)", "value": 240000 },
                     { "label": "미노클린(항생연고)", "value": 22000 },
                     { "label": "엠도게인(재생연고)", "value": 99000 },
