@@ -91,6 +91,70 @@ document.addEventListener('DOMContentLoaded', () => {
                 ]}
             ], 
             "explanation": { "title": "💡 '신경치료' vs '치주치료', 뭐가 다른가요? 🧐", "content": [ "보호자님들께서 가장 헷갈려하시는 두 가지 치료! 알기 쉽게 설명해 드릴게요. 😉", "<br><strong>❤️‍🩹 신경치료 (Endodontics)</strong><br>이것은 **'치아 🦷 내부'**의 문제예요. 치아가 부러지거나 깊은 충치가 생겨 치아 속 신경(치수)이 감염되고 죽었을 때, 이 감염된 신경을 제거하고 그 공간을 생체 친화적인 재료로 채워넣는 치료랍니다. 즉, **'치아 자체를 살리는'** 치료라고 할 수 있죠. 나무의 썩은 속을 파내고 튼튼하게 보강하는 것과 비슷해요! 💪", "<br><strong>🌿 치주치료 (Periodontics)</strong><br>이것은 **'치아 주변 🌳'**의 문제예요. 치아를 지지하는 잇몸과 잇몸뼈에 염증이 생긴 것(치주염)을 치료하는 거예요. 치아와 잇몸 사이 깊숙한 곳의 치석을 제거하고(치근활택술), 염증 조직을 긁어내고, 심한 경우 뼈이식을 통해 무너진 잇몸뼈를 재건하기도 합니다. **'치아의 기반을 튼튼하게 다지는'** 치료라고 생각하시면 돼요. 집의 약해진 땅을 단단하게 보강하는 공사와 같답니다! 🏠" ] } 
+      },
+      "discount": {
+        "headerTitle": "🦷 치과 특화 금호동물병원 할인 🦷",
+        "headerSubtitle": "소중한 인연을 이어가는 보호자님께 드리는 감사의 혜택! 💖",
+        "introduction": "저희 병원을 믿고 다시 찾아주시거나, 새로운 가족을 소개해 주시는 모든 분께<br>감사한 마음을 담아 준비한 특별 할인 혜택을 확인해보세요! ✨",
+        "programs": [
+          {
+            "icon": "🔁",
+            "title": "1. 꾸준한 치과 관리, 더 큰 혜택으로!",
+            "subtitle": "다시 치과 치료를 받으실 때 더 큰 할인을 드려요.",
+            "details": [
+              "🥈 <span style='font-weight:bold; color:#1e88e5;'>두 번째</span> 치과 치료 시: <span style='font-weight:900; font-size:1.5em; color:#ec407a;'>10%</span> 할인",
+              "🥇 <span style='font-weight:bold; color:#1e88e5;'>세 번째부터</span>는 치료마다 <span style='font-weight:900; font-size:1.5em; color:#ec407a;'>5%</span>씩 추가 할인!"
+            ],
+            "example": {
+              "title": "예시 📈",
+              "items": [
+                "세 번째 치료: 10% + 5% = <span style='font-weight:bold;'>15% 할인</span>",
+                "네 번째 치료: 15% + 5% = <span style='font-weight:bold;'>20% 할인</span>"
+              ]
+            }
+          },
+          {
+            "icon": "🐶🐱",
+            "title": "2. 다둥이 가족을 응원합니다!",
+            "subtitle": "두 마리 이상 반려동물과 함께하는 가정을 위한 특별 할인!",
+            "details": [
+              "🐾 <span style='font-weight:bold; color:#43a047;'>두 번째 아이</span> 치료 시: <span style='font-weight:900; font-size:1.5em; color:#ec407a;'>10%</span> 할인",
+              "🐾🐾 <span style='font-weight:bold; color:#43a047;'>세 번째 아이</span> 치료 시: <span style='font-weight:900; font-size:1.5em; color:#ec407a;'>15%</span> 할인",
+              "<small>이후 다른 아이들이 치료받을 때도 할인 혜택은 계속 커집니다! 🥰</small>"
+            ]
+          },
+          {
+            "icon": "🤝",
+            "title": "3. 좋은 병원 함께 알려요!",
+            "subtitle": "지인 추천은 물론, 블로그나 SNS에 저희 병원을 소개해주셔도 모두에게 혜택을 드려요!",
+            "referral": [
+                {
+                    "bgColor": "#eef2ff",
+                    "titleColor": "#4338ca",
+                    "title": "💌 추천받고 오신 분",
+                    "benefit": "첫 치과 수술 시 <br><span style='font-weight:900; font-size:1.5em; color:#ec407a;'>5%</span> 할인!",
+                    "subtext": "(다음 재방문 시, 바로 15% 할인부터 적용!)",
+                    "note": "※ 접수 시, 추천해주신 분의 <strong>보호자님 성함</strong>과 <strong>아이 이름</strong>을 꼭 말씀해주세요!"
+                },
+                {
+                    "bgColor": "#f5f3ff",
+                    "titleColor": "#7e22ce",
+                    "title": "🎁 추천해주신 분",
+                    "benefit": "친구가 수술 마치면 다음 치료 시<br><span style='font-weight:900; font-size:1.5em; color:#ec407a;'>+5%</span> 추가 할인!",
+                    "subtext": "(추천 인원만큼 계속 누적돼요!)",
+                    "note": "※ 추천받은 분이 <strong>보호자님 성함</strong>과 <strong>아이 이름</strong>을 말씀해주셔야 혜택이 적용됩니다!"
+                }
+            ]
+          }
+        ],
+        "footer": {
+          "title": "📢 꼭! 확인해주세요",
+          "notes": [
+            "본 할인은 <strong style='background: linear-gradient(to top, #fecaca 50%, transparent 50%);'>당일 진행된 치과 치료 비용</strong>에 한해 적용됩니다.<br><small>(사료, 용품, 타 진료과목 제외)</small>",
+            "안내된 모든 할인은 중복 적용 가능하며, <br>최대 <strong style='font-size:1.8em; color:red; animation: pulse 1.5s infinite;'>20%</strong>까지 할인 받으실 수 있습니다!",
+            "<br>💳 저희 병원은 <strong style='background:white; padding: 2px 6px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);'>온누리상품권</strong> 사용이 가능합니다."
+          ]
+        }
       }
     };
 
@@ -220,6 +284,70 @@ function populateAllTabs(data) {
     if (data.surgery) createCostCard(data.surgery, 'surgery');
     if (data.addons) createCostCard(data.addons, 'addons');
     if (data.nerve) createCostCard(data.nerve, 'nerve');
+    
+    // 6. 할인혜택 탭
+    if (data.discount) {
+        const d = data.discount;
+        document.getElementById('discount-header-title').innerHTML = d.headerTitle;
+        document.getElementById('discount-header-subtitle').innerHTML = d.headerSubtitle;
+        
+        let mainContentHTML = `<p style="text-align:center; margin-bottom:30px;">${d.introduction}</p>`;
+        
+        d.programs.forEach(program => {
+            mainContentHTML += `
+            <section class="info-card" style="margin-bottom: 25px; padding: 30px; border-top: 8px solid #4caf50;">
+                <div style="text-align:center; margin-bottom: 20px;">
+                    <span style="font-size: 2.5em; display:block;">${program.icon}</span>
+                    <h2 style="font-size: 1.8em; font-weight: 700; color: #2e7d32; margin-bottom: 5px;">${program.title}</h2>
+                    <p style="font-size: 1.1em; color: #555;">${program.subtitle}</p>
+                </div>`;
+
+            if (program.details) {
+                mainContentHTML += `<div style="font-size: 1.2em; text-align: center; line-height: 2;">${program.details.map(detail => `<p>${detail}</p>`).join('')}</div>`;
+            }
+
+            if (program.example) {
+                mainContentHTML += `
+                <div style="background-color: #e8f5e9; border-left: 5px solid #66bb6a; padding: 15px; margin-top: 20px; border-radius: 8px;">
+                    <h4 style="font-weight: bold; color: #388e3c; margin: 0 0 10px 0;">${program.example.title}</h4>
+                    <ul style="list-style-type: '✔️ '; padding-left: 20px; margin: 0;">
+                        ${program.example.items.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>`;
+            }
+            
+            if (program.referral) {
+                mainContentHTML += `<div class="info-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top:20px;">`;
+                program.referral.forEach(ref => {
+                    mainContentHTML += `
+                    <div style="background-color: ${ref.bgColor}; padding: 20px; border-radius: 12px; text-align: center; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <h3 style="font-weight: bold; font-size: 1.3em; color: ${ref.titleColor}; margin-bottom: 10px;">${ref.title}</h3>
+                            <p style="font-size: 1.1em; line-height:1.6;">${ref.benefit}</p>
+                            <p style="font-size: 0.9em; color: #555; margin-top: 8px;">${ref.subtext}</p>
+                        </div>
+                        <p style="font-size: 0.8em; color: ${ref.titleColor}; margin-top: 15px; padding: 8px; background-color: rgba(255,255,255,0.5); border-radius: 5px;">${ref.note}</p>
+                    </div>`;
+                });
+                mainContentHTML += `</div>`;
+            }
+
+            mainContentHTML += `</section>`;
+        });
+
+        document.getElementById('discount-content-area').innerHTML = mainContentHTML;
+        
+        const footerArea = document.getElementById('discount-footer-area');
+        if (footerArea && d.footer) {
+            footerArea.innerHTML = `
+            <div style="text-align: center; padding: 25px; margin-top: 30px; background: linear-gradient(135deg, #fff1f2, #e0f2fe); border-radius: 15px; border-top: 5px solid #ff8a80;">
+                <h3 style="font-weight: 900; font-size: 1.8em; color: #333; margin: 0 0 15px 0;">${d.footer.title}</h3>
+                <div style="line-height: 2; font-size: 1.1em; color: #444;">
+                    ${d.footer.notes.map(note => `<p>${note}</p>`).join('')}
+                </div>
+            </div>`;
+        }
+    }
 }
 
 /**
