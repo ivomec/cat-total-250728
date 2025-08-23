@@ -64,6 +64,7 @@
         #tab-surgery.active { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
         #tab-addons.active { background: linear-gradient(135deg, #f8bbd0, #b39ddb); }
         #tab-nerve.active { background: linear-gradient(135deg, #ff9a44, #ff5e62); }
+        #tab-discount.active { background: linear-gradient(135deg, #ffeb3b, #ff9800); color: #424242; } /* 할인혜택 탭 색상 */
         #tab-calculator.active, #tab-estimate.active, #tab-guardian-report.active { background: linear-gradient(135deg, #fbc2eb, #a6c1ee); }
 
 
@@ -140,6 +141,7 @@
         #content-surgery header { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
         #content-addons header { background: linear-gradient(135deg, #f8bbd0, #b39ddb); }
         #content-nerve header { background: linear-gradient(135deg, #ff9a44, #ff5e62); }
+        #content-discount header { background: linear-gradient(135deg, #ffea00, #ffab00); }
 
         /* --- 수술 과정 타임라인 스타일 (신규) --- */
         .procedure-timeline {
@@ -376,6 +378,7 @@
         <a href="#" class="nav-tab" id="tab-surgery" data-target="content-surgery">😿 수술비용</a>
         <a href="#" class="nav-tab" id="tab-addons" data-target="content-addons">💊 추가처치</a>
         <a href="#" class="nav-tab" id="tab-nerve" data-target="content-nerve">❤️‍🩹 신경/보존</a>
+        <a href="#" class="nav-tab" id="tab-discount" data-target="content-discount">🎉 할인혜택</a>
         <a href="#" class="nav-tab" id="tab-calculator" data-target="content-calculator">🧮 치료비 계산기</a>
         <a href="#" class="nav-tab" id="tab-estimate" data-target="content-estimate">📄 예상비용 안내</a>
         <a href="#" class="nav-tab" id="tab-guardian-report" data-target="content-guardian-report">❤️ 보호자용</a>
@@ -489,6 +492,17 @@
                     <h2 id="nerve-explanation-title"></h2>
                     <div id="nerve-explanation-content"></div>
                 </div>
+            </div>
+        </div>
+
+        <div id="content-discount" class="content-panel info-page">
+            <div class="container">
+                <header>
+                    <h1 id="discount-header-title" style="color:#424242;"></h1>
+                    <p id="discount-header-subtitle" style="color:#424242;"></p>
+                </header>
+                <main id="discount-content-area"></main>
+                <footer id="discount-footer-area"></footer>
             </div>
         </div>
 
@@ -612,6 +626,7 @@
         <a href="#" class="nav-tab" data-target="content-surgery">😿 수술비용</a>
         <a href="#" class="nav-tab" data-target="content-addons">💊 추가처치</a>
         <a href="#" class="nav-tab" data-target="content-nerve">❤️‍🩹 신경/보존</a>
+        <a href="#" class="nav-tab" data-target="content-discount">🎉 할인혜택</a>
         <a href="#" class="nav-tab" data-target="content-calculator">🧮 계산기</a>
         <a href="#" class="nav-tab" data-target="content-estimate">📄 예상비용</a>
         <a href="#" class="nav-tab" data-target="content-guardian-report">❤️ 보호자용</a>
